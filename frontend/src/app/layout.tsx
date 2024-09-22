@@ -6,6 +6,9 @@ import '@mantine/core/styles.css'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { Header } from './components/Header'
 import * as font from './fonts/fonts'
+import { useState } from 'react'
+import { ThemeProvider } from 'next-themes'
+import SideNav from './components/SideNav'
 
 
 export const metadata: Metadata = {
@@ -24,10 +27,13 @@ export default function RootLayout({
 				<ColorSchemeScript />
 			</head>
 			<body className={`${font.geistSans.variable} ${font.geistMono.variable} ${font.helvetica_bold.variable} ${font.helvetica_regular.variable} antialiased max-w-[1224px] mx-auto`}>
-				<MantineProvider defaultColorScheme='dark'>
+				<ThemeProvider defaultTheme="dark">
+				<MantineProvider defaultColorScheme='dark' >
 					<Header />
+					<SideNav/>
 					{children}
 				</MantineProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	)

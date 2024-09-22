@@ -1,0 +1,7 @@
+.input {
+	transition: all 0.2s;
+	&:focus-within {
+    outline: 2px solid #ffd37d;
+    border-color: transparent;
+  }
+}
