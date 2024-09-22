@@ -33,3 +33,30 @@ body {
 .helvetica-regular {
   font-family: var(--font-helvetica-regular);
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.inter-900 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+.inter-700 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.inter-500 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.inter-400 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

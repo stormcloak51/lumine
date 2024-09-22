@@ -6,7 +6,6 @@ import '@mantine/core/styles.css'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import { Header } from './components/Header'
 import * as font from './fonts/fonts'
-import { useState } from 'react'
 import { ThemeProvider } from 'next-themes'
 import SideNav from './components/SideNav'
 

@@ -11,7 +11,7 @@ export const geistMono = localFont({
 	weight: '100 900',
 })
 
-export const helvetica_bold = localFont({
+export const helvetica_extrabold = localFont({
   src: './Helvetica_bold.otf',
   variable: '--font-helvetica-bold',
   weight: '100 900',
@@ -19,6 +19,12 @@ export const helvetica_bold = localFont({
 
 export const helvetica_regular = localFont({
   src: './Helvetica_regular.otf',
+  variable: '--font-helvetica-regular',
+  weight: '100 900',
+})
+
+export const helvetica_bold = localFont({
+  src: './helvetica_boldoblique.otf',
   variable: '--font-helvetica-regular',
   weight: '100 900',
 })
