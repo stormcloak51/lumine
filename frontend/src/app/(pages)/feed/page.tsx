@@ -1,26 +1,42 @@
-import { Card, Title, Group, Container, Input, Avatar } from '@mantine/core'
+'use client'
+import {
+	Card,
+	Title,
+	Group,
+	Container,
+	Input,
+	Avatar,
+	Textarea,
+	MantineComponent,
+} from '@mantine/core'
 import { NextPage } from 'next'
-import classes from '../../components/styles/Header.module.scss'
+
+import { useRef } from 'react'
 
 const Feed: NextPage = ({}) => {
+	const inputRef = useRef<HTMLTextAreaElement>(null)
+	const handleFocus = () => {
+		console.log(inputRef.current?.attributes)
+	}
 
-	
 	return (
 		<Container className='ml-[290px] pl-[20px] box-border flex flex-col'>
-			<Card className='!bg-[#1f2124] mb-[20px]' shadow='sm' withBorder radius='lg'>
-				<Input
-					placeholder="What's news?"
+			<Card className='!bg-[#1f2124] mb-[20px] border-[#ffcb64] border-[1px]' shadow='sm' radius='lg' classNames={classes}>
+				<Textarea
+					ref={inputRef}
 					size='md'
+					radius='lg'
 					variant='unstyled'
-					className='w-[500px] text-[14px] outline-[#ffcb64] pl-[15px] focus:h-[300px]'
-					radius={'lg'}
+					className='w-[500px] !h-full text-[14px] pl-[15px]'
+					onFocus={handleFocus}
+					autosize
+					minRows={1}
+					placeholder="What's news?"
 					leftSection={
-						<Avatar size={46} src='https://i.pravatar.cc/300'>
+						<Avatar size={46} src='https://i.pravatar.cc/300' className='mr-[25px]'>
 							SC
 						</Avatar>
 					}
-					
-					classNames={classes}
 				/>
 			</Card>
 			<Card className='!bg-[#1f2124]' shadow='sm' withBorder radius='lg'>
