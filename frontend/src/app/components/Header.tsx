@@ -2,8 +2,9 @@ import { Box, Group, Text, Title, Input, ActionIcon, Avatar } from '@mantine/cor
 import LumineBlackMaterialLogo from '../../assets/icons/lumine-material-black.png'
 import Image from 'next/image'
 import { Bell, Search, Settings, SunMoon } from 'lucide-react'
-import classes from './styles/Header.module.scss'
+import input from './styles/Header.module.scss'
 import Link from 'next/link'
+import LumineAvatar from './LumineAvatar'
 
 export function Header() {
 	return (
@@ -33,7 +34,7 @@ export function Header() {
 					className='w-[200px] text-[14px] outline-[#ffcb64]'
 					radius={'lg'}
 					leftSection={<Search size={16} />}
-					classNames={classes}
+					classNames={input}
 				/>
 				<Group>
 					<ActionIcon
@@ -64,9 +65,9 @@ export function Header() {
 						radius={'md'}>
 							<Bell size={24} stroke='black' />
 					</ActionIcon>
-					<Avatar size={46} src='https://i.pravatar.cc/300'>
+					<LumineAvatar size={46} src='https://i.pravatar.cc/300'>
 						SC
-					</Avatar>
+					</LumineAvatar>
 				</Group>
 			</Group>
 		</Box>
