@@ -1,13 +1,13 @@
 'use client';
 import { Avatar, Flex, Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
-import { House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
+import { CircleUserRound, House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
 const SideNav = () => {
 	const [index, setIndex] = useState<number>(1)
 	return (
-		<nav className='pt-[120px] flex flex-col w-[270px] fixed'>
+		<nav className='flex flex-col w-[270px] fixed'>
 			<Group className='mx-auto flex flex-col'>
 				<Avatar color='blue' size='xl' className='rounded-full' src='https://i.pravatar.cc/300' />
 				<Title className='inter-500'>Alex White</Title>
@@ -38,6 +38,25 @@ const SideNav = () => {
 			</Group>
 			<Card className='px-2 py-3 mt-4 bg-[#1f2124] helvetica-bold' radius='md'>
 				<Group className='gap-y-1 inter-500'>
+				<NavLink
+						className='rounded-lg transition-all'
+						label='Profile'
+						component={Link}
+						href={'/profile'}
+						active={index === 0}
+						onClick={() => setIndex(0)}
+						color='#ffd37d'
+						leftSection={<CircleUserRound size={'18 '} stroke={index === 0 ? '#050514' : '#d1d3d6'} />}
+						variant='filled'
+
+						styles={{
+							label: {
+								fontSize: '16px',
+								fontWeight: '500',
+								color: index === 0 ? '#050514' : '#d1d3d6',
+							},
+						}}
+					/>
 					<NavLink
 						className='rounded-lg transition-all'
 						label='Feed'
