@@ -2,10 +2,17 @@
 import { Avatar, Flex, Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
 import { CircleUserRound, House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
 
 const SideNav = () => {
-	const [index, setIndex] = useState<number>(1)
+	const pathname = usePathname().substring(1)
+	console.log(pathname)
+	const [index, setIndex] = useState<string>('feed')
+	useEffect(() => {
+		setIndex(pathname)
+	}, [pathname])
 	return (
 		<nav className='flex flex-col w-[270px] fixed'>
 			<Group className='mx-auto flex flex-col'>
@@ -43,17 +50,17 @@ const SideNav = () => {
 						label='Profile'
 						component={Link}
 						href={'/profile'}
-						active={index === 0}
-						onClick={() => setIndex(0)}
+						active={index === 'profile'}
+						onClick={() => setIndex('profile')}
 						color='#ffd37d'
-						leftSection={<CircleUserRound size={'18 '} stroke={index === 0 ? '#050514' : '#d1d3d6'} />}
+						leftSection={<CircleUserRound size={'18 '} stroke={index === 'profile' ? '#050514' : '#d1d3d6'} />}
 						variant='filled'
 
 						styles={{
 							label: {
 								fontSize: '16px',
 								fontWeight: '500',
-								color: index === 0 ? '#050514' : '#d1d3d6',
+								color: index === 'profile' ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>
@@ -62,17 +69,17 @@ const SideNav = () => {
 						label='Feed'
 						component={Link}
 						href={'/feed'}
-						active={index === 1}
-						onClick={() => setIndex(1)}
+						active={index === 'feed'}
+						onClick={() => setIndex('feed')}
 						color='#ffd37d'
-						leftSection={<House size={'18 '} stroke={index === 1 ? '#050514' : '#d1d3d6'} />}
+						leftSection={<House size={'18 '} stroke={index === 'feed' ? '#050514' : '#d1d3d6'} />}
 						variant='filled'
 
 						styles={{
 							label: {
 								fontSize: '16px',
 								fontWeight: '500',
-								color: index === 1 ? '#050514' : '#d1d3d6',
+								color: index === 'feed' ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>
@@ -81,16 +88,16 @@ const SideNav = () => {
 						component={Link}
 						label='Messages'
 						href={'/messages'}
-						active={index === 2}
-						onClick={() => setIndex(2)}
+						active={index === 'messages'}
+						onClick={() => setIndex('messages')}
 						color='#ffd37d'
-						leftSection={<MessageCircle size={'18 '} stroke={index === 2 ? '#050514' : '#d1d3d6'} />}
+						leftSection={<MessageCircle size={'18 '} stroke={index === 'messages' ? '#050514' : '#d1d3d6'} />}
 						variant='filled'
 						styles={{
 							label: {
 								fontSize: '16px',
 								fontWeight: '500',
-								color: index === 2 ? '#050514' : '#d1d3d6',
+								color: index === 'messages' ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>
@@ -99,15 +106,15 @@ const SideNav = () => {
 						component={Link}
 						label='Friends'
 						href={'/friends'}
-						active={index === 3}
-						onClick={() => setIndex(3)}
+						active={index === 'friends'}
+						onClick={() => setIndex('friends')}
 						color='#ffd37d'
-						leftSection={<UserRound size={'18'} stroke={index === 3 ? '#050514' : '#d1d3d6'} />}
+						leftSection={<UserRound size={'18'} stroke={index === 'friends' ? '#050514' : '#d1d3d6'} />}
 						variant='filled'
 						styles={{
 							label: {
 								fontSize: '16px',
-								color: index === 3 ? '#050514' : '#d1d3d6',
+								color: index === 'friends' ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>
@@ -116,16 +123,16 @@ const SideNav = () => {
 						component={Link}
 						label='Groups'
 						href={'/groups'}
-						active={index === 4}
-						onClick={() => setIndex(4)}
+						active={index === 'groups'}
+						onClick={() => setIndex('groups')}
 						color='#ffd37d'
 						variant='filled'
-						leftSection={<UsersRound size={'18 '} stroke={index === 4 ? '#050514' : '#d1d3d6'} />}
+						leftSection={<UsersRound size={'18 '} stroke={index === 'groups' ? '#050514' : '#d1d3d6'} />}
 						styles={{
 							label: {
 								fontSize: '16px',
 								fontWeight: '500',
-								color: index === 4 ? '#050514' : '#d1d3d6',
+								color: index === 'groups' ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>
