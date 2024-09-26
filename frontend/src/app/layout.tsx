@@ -24,6 +24,7 @@ export default function RootLayout({
 	children: React.ReactNode
 	isUserAuth: boolean
 }>) {
+	console.log('LOGGER', children)
 	return (
 		<html lang='en'>
 			<head>
