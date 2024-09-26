@@ -1,4 +1,4 @@
-import { Box, Group, Text, Title, Input, ActionIcon, Avatar } from '@mantine/core'
+import { Box, Group, Text, Title, Input, ActionIcon } from '@mantine/core'
 import LumineBlackMaterialLogo from '../../assets/icons/lumine-material-black.png'
 import Image from 'next/image'
 import { Bell, Search, Settings, SunMoon } from 'lucide-react'
@@ -8,7 +8,7 @@ import LumineAvatar from './LumineAvatar'
 
 export function Header() {
 	return (
-		<Box className='p-3 back !bg-[#1f2124] rounded-b-2xl border border-[rgb(66,66,66)] border-t-0 fixed max-w-[1224px] w-[100%]'>
+		<Box className='p-3 bg-[rgba(31,33,36,0.7)] rounded-b-2xl border border-[rgb(66,66,66)] border-t-0 fixed max-w-[1224px] w-[100%] z-10 backdrop-blur-md'>
 			<Group justify='space-between'>
 				<Group>
 					<Image

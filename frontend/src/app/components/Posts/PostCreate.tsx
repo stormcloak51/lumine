@@ -4,30 +4,37 @@ import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
 import { useClickOutside } from '@mantine/hooks'
+import { createPost } from '@/lib/actions/posts'
 
 const PostCreate: FC = () => {
+	const [postContent, setPostContent] = useState<string>('')
 	const [minRows, setMinRows] = useState(1)
 	const [styled, setStyled] = useState(false)
-	const cardRef = useRef<HTMLDivElement>(null)
 	const rightSectionRef = useRef<HTMLDivElement>(null)
 
 	const ref = useClickOutside(() => {
 		setStyled(!styled)
 		setMinRows(1)
-		if (cardRef.current && rightSectionRef.current) {
+		if (ref.current && rightSectionRef.current) {
 			rightSectionRef.current.children[2].children[0].children[0].setAttribute('style', 'display: none')
-			cardRef.current.style.border = '1px solid rgb(66,66,66)'
+			ref.current.style.border = '1px solid rgb(66,66,66)'
 			rightSectionRef.current.children[0].setAttribute('style', 'stroke: ')
 			rightSectionRef.current.children[1].setAttribute('style', 'stroke: ')
 		}
 	})
 	const handleFocus = () => {
-		if (cardRef.current && rightSectionRef.current) {
-			cardRef.current.style.border = '1px solid #ffd37d'
+		if (ref.current && rightSectionRef.current) {
+			ref.current.style.border = '1px solid #ffd37d'
 			rightSectionRef.current.children[0].setAttribute('style', 'stroke: #ffd37d')
 			rightSectionRef.current.children[1].setAttribute('style', 'stroke: #ffd37d')
 			rightSectionRef.current.children[2].children[0].children[0].setAttribute('style', 'display: block')
 			setMinRows(3)
+		}
+	}
+
+	const handleSend = () => {
+		if (postContent) {
+			createPost({ content: postContent })
 		}
 	}
 	return (
@@ -39,18 +46,17 @@ const PostCreate: FC = () => {
 			}}
 			shadow='sm'
 			radius='lg'
-			ref={(node) => {
-				cardRef.current = node
-				if (typeof clickOutsideRef === 'function') clickOutsideRef(node)
-			}}>
+			ref={ref}>
 			<Textarea
-				ref={ref}
+				// ref={ref}
 				size='md'
 				radius='lg'
 				variant='unstyled'
 				className='w-full text-[14px] px-[15px] relative'
 				onFocus={handleFocus}
 				autosize
+				value={postContent}
+				onChange={(e) => setPostContent(e.target.value)}
 				minRows={minRows}
 				placeholder="What's news?"
 				leftSection={
@@ -69,8 +75,8 @@ const PostCreate: FC = () => {
 			w-[100px] flex items-center justify-center flex-row gap-2 relative'>
 				<Camera className='transition-all absolute top-0 right-[30px]' />
 				<Video className='transition-all absolute top-0 right-0' />
-				<ActionIcon variant='transparent'>
-					<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0' />
+				<ActionIcon onClick={() => handleSend()} variant='transparent' className='bg-none w-full h-full'>
+					<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
 				</ActionIcon>
 			</Group>
 		</Card>

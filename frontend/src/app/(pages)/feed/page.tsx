@@ -1,7 +1,5 @@
-import { Card, Title, Group, Container, Textarea, Flex } from '@mantine/core'
-import LumineAvatar from '@/app/components/LumineAvatar'
+import { Card, Title, Group, Container, Flex } from '@mantine/core'
 import { NextPage } from 'next'
-import { Camera, Video } from 'lucide-react'
 
 import PostList from '@/app/components/Posts/PostList'
 import PostCreate from '@/app/components/Posts/PostCreate'
