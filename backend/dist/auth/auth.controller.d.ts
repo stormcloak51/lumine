@@ -1,11 +1,9 @@
 import { AuthService } from './auth.service';
 export declare class AuthController {
-    private readonly authService;
+    private authService;
     constructor(authService: AuthService);
-    signIn(data: {
-        email: string;
-        password: string;
-    }): Promise<{
+    signIn(signInDto: Record<string, any>): Promise<{
         access_token: string;
     }>;
+    getProfile(req: any): any;
 }

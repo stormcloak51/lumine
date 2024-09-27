@@ -9,32 +9,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
+exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("../user/user.service");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt_1 = require("bcrypt");
-let AuthService = class AuthService {
-    constructor(userService, jwtService) {
-        this.userService = userService;
+const process_1 = require("process");
+let AuthGuard = class AuthGuard {
+    constructor(jwtService) {
         this.jwtService = jwtService;
     }
-    async signIn(email, pass) {
-        const user = await this.userService.findOne(email);
-        const hashedPass = await (0, bcrypt_1.hash)(pass, 10);
-        if (!user && !(await (0, bcrypt_1.compare)(hashedPass, user.password))) {
+    async canActivate(context) {
+        const request = context.switchToHttp().getRequest();
+        const token = this.extractTokenFromHeader(request);
+        if (!token) {
             throw new common_1.UnauthorizedException();
         }
-        const payload = { sub: user.id, username: user.username };
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: process_1.env.JWT_SECRET
+            });
+            request['user'] = payload;
+        }
+        catch {
+            throw new common_1.UnauthorizedException();
+        }
+        return true;
+    }
+    extractTokenFromHeader(request) {
+        const [type, token] = request.headers.authorization?.split(' ') ?? [];
+        return type === 'Bearer' ? token : undefined;
     }
 };
-exports.AuthService = AuthService;
-exports.AuthService = AuthService = __decorate([
+exports.AuthGuard = AuthGuard;
+exports.AuthGuard = AuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        jwt_1.JwtService])
-], AuthService);
-//# sourceMappingURL=auth.service.js.map
+    __metadata("design:paramtypes", [jwt_1.JwtService])
+], AuthGuard);
+//# sourceMappingURL=auth.guard.js.map
