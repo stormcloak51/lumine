@@ -1,16 +1,7 @@
-import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 export declare class UserService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    create(user: Partial<User>): Promise<{
-        id: string;
-        username: string;
-        email: string;
-        created_at: Date;
-        updated_at: Date;
-        role: import(".prisma/client").$Enums.Role;
-    }>;
     findOne(idOrEmailOrUsername: string): import(".prisma/client").Prisma.Prisma__UserClient<{
         id: string;
         username: string;

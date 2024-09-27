@@ -15,12 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const auth_guard_1 = require("../auth/auth.guard");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
-    }
-    create(user) {
-        return this.userService.create(user);
     }
     findAll() {
         return this.userService.findAll();
@@ -31,13 +29,7 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 __decorate([
-    (0, common_1.Post)('create'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "create", null);
-__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('all'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

@@ -1,17 +1,13 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from '@prisma/client'
+import { AuthGuard } from 'src/auth/auth.guard'
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
-  @Post('create')
-  create(@Body() user: Partial<User>) {
-    return this.userService.create(user)
-  }
-
+  @UseGuards(AuthGuard)
   @Get('all')
   findAll() {
     return this.userService.findAll()
