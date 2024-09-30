@@ -1,9 +1,6 @@
-import {Container } from '@mantine/core';
 
-export default function Home() {
+export default async function Home() {
   return (
-    <Container>
-      
-    </Container>
-  );
+    <article>as</article>
+  )
 }

@@ -1,10 +1,10 @@
 'use client'
-import { Card, Textarea, Group, ActionIcon } from '@mantine/core'
+import { createPost } from '@/lib/actions/posts'
+import { ActionIcon, Card, Group, Textarea } from '@mantine/core'
+import { useClickOutside } from '@mantine/hooks'
 import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
-import { useClickOutside } from '@mantine/hooks'
-import { createPost } from '@/lib/actions/posts'
 
 const PostCreate: FC = () => {
 	const [postContent, setPostContent] = useState<string>('')
@@ -16,7 +16,10 @@ const PostCreate: FC = () => {
 		setStyled(!styled)
 		setMinRows(1)
 		if (ref.current && rightSectionRef.current) {
-			rightSectionRef.current.children[2].children[0].children[0].setAttribute('style', 'display: none')
+			rightSectionRef.current.children[2].children[0].children[0].setAttribute(
+				'style',
+				'display: none',
+			)
 			ref.current.style.border = '1px solid rgb(66,66,66)'
 			rightSectionRef.current.children[0].setAttribute('style', 'stroke: ')
 			rightSectionRef.current.children[1].setAttribute('style', 'stroke: ')
@@ -27,7 +30,10 @@ const PostCreate: FC = () => {
 			ref.current.style.border = '1px solid #ffd37d'
 			rightSectionRef.current.children[0].setAttribute('style', 'stroke: #ffd37d')
 			rightSectionRef.current.children[1].setAttribute('style', 'stroke: #ffd37d')
-			rightSectionRef.current.children[2].children[0].children[0].setAttribute('style', 'display: block')
+			rightSectionRef.current.children[2].children[0].children[0].setAttribute(
+				'style',
+				'display: block',
+			)
 			setMinRows(3)
 		}
 	}
@@ -56,7 +62,7 @@ const PostCreate: FC = () => {
 				onFocus={handleFocus}
 				autosize
 				value={postContent}
-				onChange={(e) => setPostContent(e.target.value)}
+				onChange={e => setPostContent(e.target.value)}
 				minRows={minRows}
 				placeholder="What's news?"
 				leftSection={
@@ -75,7 +81,10 @@ const PostCreate: FC = () => {
 			w-[100px] flex items-center justify-center flex-row gap-2 relative'>
 				<Camera className='transition-all absolute top-0 right-[30px]' />
 				<Video className='transition-all absolute top-0 right-0' />
-				<ActionIcon onClick={() => handleSend()} variant='transparent' className='bg-none w-full h-full'>
+				<ActionIcon
+					onClick={() => handleSend()}
+					variant='transparent'
+					className='bg-none w-full h-full'>
 					<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
 				</ActionIcon>
 			</Group>

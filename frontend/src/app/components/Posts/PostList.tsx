@@ -1,7 +1,7 @@
 'use client'
 
 import { getAllPosts } from '@/lib/actions/posts'
-import { Card, Flex, Group, Text, Image } from '@mantine/core'
+import { Card, Flex, Group, Image, Text } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
 
 const PostList = () => {
@@ -26,7 +26,10 @@ const PostList = () => {
 						</Text>
 
 						<Card.Section mt='sm'>
-							<Image src='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png' alt='picture' />
+							<Image
+								src='https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-4.png'
+								alt='picture'
+							/>
 						</Card.Section>
 					</Card>
 				)

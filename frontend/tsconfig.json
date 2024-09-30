@@ -18,9 +18,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
+      "@/*": ["./src/*"],
+      "@hookform": ["./node_modules/@hookform"],
+    },
+    },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

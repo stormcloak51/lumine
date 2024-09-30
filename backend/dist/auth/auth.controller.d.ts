@@ -10,4 +10,5 @@ export declare class AuthController {
     signUp(user: Partial<User>): Promise<{
         access_token: string;
     }>;
+    logout(response: Response): void;
 }

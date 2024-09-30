@@ -13,7 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("../user/user.service");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt_1 = require("bcrypt");
+const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let AuthService = class AuthService {
     constructor(userService, jwtService, prisma) {
@@ -21,12 +21,11 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.prisma = prisma;
     }
-    async signIn(email, pass, isHashed) {
+    async signIn(email, pass) {
+        console.log(pass);
         const user = await this.userService.findOne(email);
-        console.log(pass, user.password);
-        const hashedPass = isHashed ? pass : await (0, bcrypt_1.hash)(pass, 10);
-        console.log(hashedPass, user.password);
-        if (user && !(hashedPass === user.password)) {
+        const hashedPass = await bcrypt.hash(pass, 10);
+        if (user && !(await bcrypt.compare(pass, user.password))) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
@@ -35,7 +34,7 @@ let AuthService = class AuthService {
         };
     }
     async signUp(user) {
-        const hashedPass = await (0, bcrypt_1.hash)(user.password, 10);
+        const hashedPass = await bcrypt.hash(user.password, 10);
         await this.prisma.user.create({
             data: {
                 email: user.email,
@@ -52,7 +51,10 @@ let AuthService = class AuthService {
                 role: true,
             }
         });
-        return this.signIn(user.email, hashedPass, true);
+        const payload = { sub: user.id, username: user.username };
+        return {
+            access_token: await this.jwtService.signAsync(payload),
+        };
     }
 };
 exports.AuthService = AuthService;

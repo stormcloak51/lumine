@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Post,
   Request,
+  Res,
   UseGuards
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
@@ -19,7 +20,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.email, signInDto.password, false);
+    return this.authService.signIn(signInDto.email, signInDto.password);
   }
 
   @UseGuards(AuthGuard)
@@ -31,5 +32,9 @@ export class AuthController {
   @Post('signup')
   signUp(@Body() user: Partial<User>) {
     return this.authService.signUp(user)
+  }
+  @Post('logout')
+  logout(@Res() response: Response) {
+    console.log(12)
   }
 }

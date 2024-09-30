@@ -21,13 +21,16 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     signIn(signInDto) {
-        return this.authService.signIn(signInDto.email, signInDto.password, false);
+        return this.authService.signIn(signInDto.email, signInDto.password);
     }
     getProfile(req) {
         return req.user;
     }
     signUp(user) {
         return this.authService.signUp(user);
+    }
+    logout(response) {
+        console.log(12);
     }
 };
 exports.AuthController = AuthController;
@@ -54,6 +57,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "signUp", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Response]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "logout", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
