@@ -7,13 +7,6 @@ export declare class PostController {
         content: string;
         created_at: Date;
         updated_at: Date;
+        userId: string;
     }[]>;
-    createPost(data: {
-        content: string;
-    }): import(".prisma/client").Prisma.Prisma__PostClient<{
-        id: number;
-        content: string;
-        created_at: Date;
-        updated_at: Date;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }

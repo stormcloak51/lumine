@@ -10,9 +10,9 @@ export class PostController {
     return this.postService.findAll();
   }
 
-  @Post('create')
-  createPost(@Body() data: {content: string}) {
-    const {content} = data
-    return this.postService.createPost(content)
-  }
+  // @Post('create')
+  // createPost(@Body() data: {content: string}) {
+  //   const {content} = data
+  //   return this.postService.createPost(content)
+  // }
 }

@@ -19,13 +19,6 @@ let PostService = class PostService {
     findAll() {
         return this.prisma.post.findMany();
     }
-    createPost(content) {
-        return this.prisma.post.create({
-            data: {
-                content
-            }
-        });
-    }
 };
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([

@@ -6,7 +6,8 @@ import { useRef } from 'react'
 import { z } from 'zod'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { uploadFile } from '@/lib/utils/uploadFile'
+import { uploadAvatar } from '@/lib/actions/uploadAvatar'
+import { signUp } from '@/lib/actions/api'
 
 const schema = z.object({
 	name: z.string().min(2, 'Name must be at least 2 characters long'),
@@ -37,9 +38,16 @@ export const AuthForm = () => {
 	})
 
 	const onSubmit = async (data: FormData) => {
-		console.log(data)
-		const url = await uploadFile(data.avatar!)
-		console.log(url)
+		const {agreeToTerms, ...rest} = data
+		await uploadAvatar(data.avatar as File, data.username).then((url) => {
+			const userAvatar = url
+			console.log(userAvatar)
+
+			signUp({ userAvatar, ...rest, })
+		}).catch(() => {
+			signUp({userAvatar: rest.username, ...rest, })
+		})
+
 	}
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>

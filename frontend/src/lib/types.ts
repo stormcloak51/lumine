@@ -6,3 +6,12 @@ export type TPost = {
 	created_at: string
 	updated_at: string
 }
+
+export type TUser = {
+	name: string,
+	surname: string,
+	username: string
+	email: string
+	password: string,
+	userAvatar: string | undefined
+}

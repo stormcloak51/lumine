@@ -9,11 +9,11 @@ export class PostService {
     return this.prisma.post.findMany();
   }
 
-  createPost(content: string) {
-    return this.prisma.post.create({
-      data: {
-        content
-      }
-    })
-  }
+  // createPost(content: string) {
+  //   return this.prisma.post.create({
+  //     data: {
+  //       content: content
+  //     }
+  //   })
+  // }
 }

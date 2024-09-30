@@ -1,0 +1,8 @@
+.input {
+  transition: all 0.3s linear;
+}
+.input:focus-within {
+  outline-offset: -1px;
+  outline: 1px solid #ffd37d;
+  border-color: transparent;
+}/*# sourceMappingURL=Header.module.css.map */

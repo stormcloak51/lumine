@@ -35,22 +35,23 @@ let AuthService = class AuthService {
     }
     async signUp(user) {
         const hashedPass = await bcrypt.hash(user.password, 10);
+        const { password, ...rest } = user;
+        const selectProps = Object.fromEntries(Object.keys(rest).map(key => [key, true]));
+        selectProps.password = false;
         await this.prisma.user.create({
             data: {
+                name: user.name,
+                surname: user.surname,
+                bio: '',
                 email: user.email,
                 password: hashedPass,
                 username: user.username,
+                userAvatar: user.userAvatar,
                 role: 'USER'
             },
-            select: {
-                id: true,
-                username: true,
-                email: true,
-                updated_at: true,
-                created_at: true,
-                role: true,
-            }
+            select: selectProps
         });
+        console.log('success');
         const payload = { sub: user.id, username: user.username };
         return {
             access_token: await this.jwtService.signAsync(payload),
