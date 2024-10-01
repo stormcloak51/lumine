@@ -12,6 +12,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client'
+import { SignInDto } from './dto/signIn.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -19,8 +20,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto.usernameOrEmail, signInDto.password);
   }
 
   @UseGuards(AuthGuard)
@@ -35,6 +36,5 @@ export class AuthController {
   }
   @Post('logout')
   logout(@Res() response: Response) {
-    console.log(12)
   }
 }

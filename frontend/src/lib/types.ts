@@ -1,4 +1,3 @@
-
 export type TPost = {
 	id: number
 	title: string
@@ -8,10 +7,16 @@ export type TPost = {
 }
 
 export type TUser = {
-	name: string,
-	surname: string,
+	name: string
+	surname: string
 	username: string
 	email: string
-	password: string,
+	password: string
 	userAvatar: string | undefined
+	access_token?: string
+}
+
+export type TUserLogin = {
+	usernameOrEmail: string
+	password: string
 }

@@ -21,15 +21,15 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.prisma = prisma;
     }
-    async signIn(email, pass) {
-        console.log(pass);
-        const user = await this.userService.findOne(email);
-        const hashedPass = await bcrypt.hash(pass, 10);
+    async signIn(usernameOrEmail, pass) {
+        const user = await this.userService.findOne(usernameOrEmail);
+        await bcrypt.hash(pass, 10);
         if (user && !(await bcrypt.compare(pass, user.password))) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
         return {
+            user,
             access_token: await this.jwtService.signAsync(payload),
         };
     }
@@ -51,9 +51,11 @@ let AuthService = class AuthService {
             },
             select: selectProps
         });
-        console.log('success');
         const payload = { sub: user.id, username: user.username };
         return {
+            ...rest,
+            bio: '',
+            role: 'USER',
             access_token: await this.jwtService.signAsync(payload),
         };
     }

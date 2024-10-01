@@ -1,14 +1,26 @@
 import { AuthService } from './auth.service';
 import { User } from '@prisma/client';
+import { SignInDto } from './dto/signIn.dto';
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
-    signIn(signInDto: Record<string, any>): Promise<{
+    signIn(signInDto: SignInDto): Promise<{
+        user: User;
         access_token: string;
     }>;
     getProfile(req: any): any;
     signUp(user: Partial<User>): Promise<{
+        bio: string;
+        role: string;
         access_token: string;
+        name?: string;
+        id?: string;
+        username?: string;
+        email?: string;
+        surname?: string;
+        userAvatar?: string;
+        created_at?: Date;
+        updated_at?: Date;
     }>;
     logout(response: Response): void;
 }

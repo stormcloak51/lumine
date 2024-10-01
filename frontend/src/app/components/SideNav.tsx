@@ -1,5 +1,6 @@
 'use client';
-import { Avatar, Flex, Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
+import { useAuth } from '@/lib/actions/state'
+import { Avatar, Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
 import { CircleUserRound, House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -7,12 +8,16 @@ import { useEffect, useState } from 'react'
 
 
 const SideNav = () => {
+	const {isAuth} = useAuth()
 	const pathname = usePathname().substring(1)
-	console.log(pathname)
 	const [index, setIndex] = useState<string>('feed')
 	useEffect(() => {
 		setIndex(pathname)
 	}, [pathname])
+
+	if (!isAuth) {
+		return null;
+	}
 	return (
 		<nav className='flex flex-col w-[270px] fixed'>
 			<Group className='mx-auto flex flex-col'>

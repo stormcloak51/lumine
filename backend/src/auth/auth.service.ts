@@ -14,15 +14,15 @@ export class AuthService {
     private prisma: PrismaService
   ) {}
 
-  async signIn(email: string, pass: string): Promise<{access_token: string}> {
-    console.log(pass)
-    const user = await this.userService.findOne(email);
-    const hashedPass = await bcrypt.hash(pass, 10)
+  async signIn(usernameOrEmail: string, pass: string): Promise<{user: User, access_token: string}> {
+    const user = await this.userService.findOne(usernameOrEmail);
+    await bcrypt.hash(pass, 10)
     if (user && !(await bcrypt.compare(pass, user.password))) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.username };
     return {
+      user,
       access_token: await this.jwtService.signAsync(payload),
     };
   }
@@ -48,11 +48,12 @@ export class AuthService {
 			},
 			select: selectProps
 		})
-    console.log('success')
     const payload = { sub: user.id, username: user.username };
     return {
+      ...rest,
+      bio: '',
+      role: 'USER',
       access_token: await this.jwtService.signAsync(payload),
     };
 	}
-
 }

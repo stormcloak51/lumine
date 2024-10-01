@@ -7,10 +7,21 @@ export declare class AuthService {
     private jwtService;
     private prisma;
     constructor(userService: UserService, jwtService: JwtService, prisma: PrismaService);
-    signIn(email: string, pass: string): Promise<{
+    signIn(usernameOrEmail: string, pass: string): Promise<{
+        user: User;
         access_token: string;
     }>;
     signUp(user: Partial<User>): Promise<{
+        bio: string;
+        role: string;
         access_token: string;
+        name?: string;
+        id?: string;
+        username?: string;
+        email?: string;
+        surname?: string;
+        userAvatar?: string;
+        created_at?: Date;
+        updated_at?: Date;
     }>;
 }

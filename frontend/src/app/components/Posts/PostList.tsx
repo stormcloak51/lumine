@@ -9,7 +9,6 @@ const PostList = () => {
 		queryKey: ['posts'],
 		queryFn: getAllPosts,
 	})
-	console.log(data)
 	return (
 		<Flex direction={'column'} className='gap-y-4'>
 			{data?.map(post => {

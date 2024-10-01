@@ -26,21 +26,21 @@ export default async function RootLayout({
 	children: React.ReactNode,
 }>) {
 	
-	const isUserAuth = false
+	const isUserAuth = true
 	return (
 		<html lang='en'>
 			<head>
 				<ColorSchemeScript />
 			</head>
 			<body
-				className={`${font.geistSans.variable} ${font.geistMono.variable} ${font.helvetica_bold.variable} ${font.helvetica_regular.variable} antialiased mx-auto ${await isUserAuth ? 'max-w-[1224px]' : ''}`}>
+				className={`${font.geistSans.variable} ${font.geistMono.variable} ${font.helvetica_bold.variable} ${font.helvetica_regular.variable} antialiased mx-auto max-w-[1224px]`}>
 				<ClientProvider>
 					<ThemeProvider defaultTheme='dark'>
 						<MantineProvider defaultColorScheme='dark'>
 							
-								{isUserAuth && <Header />}
+								<Header />
 								<main className={isUserAuth ? 'pt-[120px]' : ''}>
-									{isUserAuth && <SideNav />}
+									<SideNav/>
 									{children}
 								</main>
 						</MantineProvider>
