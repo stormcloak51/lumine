@@ -8,6 +8,7 @@ export const useAuth = () => {
 	const data = useSelector((state: RootState) => state.user)
 	const {access_token, ...userData} = data
 
+
 	return {
 		isAuth: !!access_token,
 		user: userData

@@ -13,10 +13,32 @@ export type TUser = {
 	email: string
 	password: string
 	userAvatar: string | undefined
+	bio?: string
+	role?: string
 	access_token?: string
 }
+
+
 
 export type TUserLogin = {
 	usernameOrEmail: string
 	password: string
+}
+
+
+export interface IUserCredentials {
+	name: string
+	surname: string
+	username: string
+	email: string
+	password: string
+	userAvatar: string
+	bio: string
+	role: string
+	created_at: Date | string
+}
+
+export type TUserData = {
+	access_token?: string
+	user: IUserCredentials
 }

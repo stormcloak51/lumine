@@ -1,21 +1,28 @@
 'use client'
 import { createPost } from '@/lib/actions/posts'
 import { ActionIcon, Card, Group, Textarea } from '@mantine/core'
-import { useClickOutside } from '@mantine/hooks'
+import { useClickOutside, useDidUpdate } from '@mantine/hooks'
 import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
 
 const PostCreate: FC = () => {
+	useDidUpdate(() => {
+		console.log('did update')
+	})
 	const [postContent, setPostContent] = useState<string>('')
 	const [minRows, setMinRows] = useState(1)
 	const [styled, setStyled] = useState(false)
 	const rightSectionRef = useRef<HTMLDivElement>(null)
 
+	const isJoined = useRef(false)
+
 	const ref = useClickOutside(() => {
+		if (!isJoined.current) return
 		setStyled(!styled)
 		setMinRows(1)
 		if (ref.current && rightSectionRef.current) {
+			isJoined.current = false
 			rightSectionRef.current.children[2].children[0].children[0].setAttribute(
 				'style',
 				'display: none',
@@ -26,6 +33,7 @@ const PostCreate: FC = () => {
 		}
 	})
 	const handleFocus = () => {
+		isJoined.current = true
 		if (ref.current && rightSectionRef.current) {
 			ref.current.style.border = '1px solid #ffd37d'
 			rightSectionRef.current.children[0].setAttribute('style', 'stroke: #ffd37d')
@@ -92,4 +100,4 @@ const PostCreate: FC = () => {
 	)
 }
 
-export default PostCreate
+export default PostCreate;

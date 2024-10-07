@@ -37,4 +37,10 @@ export class AuthController {
   @Post('logout')
   logout(@Res() response: Response) {
   }
+
+  @UseGuards(AuthGuard)
+  @Get('isAuthenticated')
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
 }

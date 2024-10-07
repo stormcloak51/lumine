@@ -59,6 +59,9 @@ let AuthService = class AuthService {
             access_token: await this.jwtService.signAsync(payload),
         };
     }
+    isAuthenticated() {
+        return true;
+    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([

@@ -10,7 +10,6 @@ import { uploadAvatar } from '@/lib/actions/uploadAvatar'
 import { signUp } from '@/lib/actions/api'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
 
@@ -41,6 +40,7 @@ export const AuthForm = () => {
 			try {
 				const userAvatar = await uploadAvatar(data.avatar as File, data.username)
 				const user = await signUp({ userAvatar, ...rest })
+				document.cookie = `token=${user.access_token}; path=/;`
 				return user
 			} catch (err) {
 				console.log(err)
@@ -67,7 +67,7 @@ export const AuthForm = () => {
 	useEffect(() => {
 		if (mutation.isSuccess === true && mutation.data !== null) {
 			dispatch(setUser(mutation.data))
-			redirect('/feed')
+			window.location.href = '/feed'
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess, mutation.data])

@@ -24,4 +24,5 @@ export declare class AuthService {
         created_at?: Date;
         updated_at?: Date;
     }>;
+    isAuthenticated(): boolean;
 }

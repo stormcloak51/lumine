@@ -5,16 +5,10 @@ import Image from 'next/image'
 import { Bell, Search, Settings, SunMoon } from 'lucide-react'
 import input from './styles/Header.module.scss'
 import Link from 'next/link'
-import LumineAvatar from './LumineAvatar'
-import { useAuth } from '@/lib/actions/state'
-// import { useQuery } from '@tanstack/react-query'
-// import { getUser } from '@/lib/actions/api'
+import { MenuAvatar } from './menu/MenuAvatar'
 
 export function Header() {
-	const {isAuth, user} = useAuth()
-	if (!isAuth) {
-		return null
-	}
+
 	return (
 		<Box className='p-3 bg-[rgba(31,33,36,0.7)] rounded-b-2xl border border-[rgb(66,66,66)] border-t-0 fixed max-w-[1224px] w-[100%] z-10 backdrop-blur-md'>
 			<Group justify='space-between'>
@@ -44,7 +38,7 @@ export function Header() {
 					leftSection={<Search size={16} />}
 					classNames={input}
 				/>
-				<Group>
+				<Group className='flex items-center'>
 					<ActionIcon
 						size={36}
 						variant='filled'
@@ -73,7 +67,7 @@ export function Header() {
 						radius={'md'}>
 							<Bell size={24} stroke='black' />
 					</ActionIcon>
-					<LumineAvatar size={46}/>
+					<MenuAvatar size={40}/>
 						
 					
 				</Group>

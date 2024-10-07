@@ -10,7 +10,7 @@ import Link from 'next/link'
 import { signIn } from '@/lib/actions/api'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
-import { redirect } from 'next/navigation'
+import { TUserData } from '@/lib/types'
 
 
 const schema = z.object({
@@ -31,6 +31,8 @@ export const LoginForm = () => {
 		mutationFn: async (data: FormData) => {
 			try {
 				const user = await signIn(data)
+				console.log('user', user);
+				document.cookie = `token=${user.access_token}; path=/;`
 				return user
 			} catch (err) {
 				console.log(err)
@@ -39,7 +41,6 @@ export const LoginForm = () => {
 			}
 		},
 	})
-
 	const submitRef = useRef<HTMLButtonElement>(null)
 
 	const {
@@ -56,10 +57,30 @@ export const LoginForm = () => {
 
 	useEffect(() => {
 		if (mutation.isSuccess && mutation.data) {
-			dispatch(setUser(mutation.data))
-			redirect('/feed')
+			handleLogin(mutation.data)
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.data, mutation.isSuccess])
+
+	const handleLogin = async (data: TUserData) => {
+		console.log(data, 'data')
+		await dispatch(setUser({
+			access_token: data.access_token,
+			user: {
+				name: data.user.name,
+				surname: data.user.surname,
+				username: data.user.username,
+				email: data.user.email,
+				password: data.user.password,
+				userAvatar: data.user.userAvatar,
+				bio: data.user.bio,
+				role: data.user.role,
+				created_at: data.user.created_at
+			}
+		}))
+		window.location.href = '/feed'
+	}
+
 	return (
 		<form className='flex flex-col justify-between w-[390px]' onSubmit={handleSubmit(onSubmit)}>
 			<Title>Log In</Title>

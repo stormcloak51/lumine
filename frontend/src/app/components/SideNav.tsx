@@ -1,28 +1,26 @@
 'use client';
 import { useAuth } from '@/lib/actions/state'
-import { Avatar, Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
+import { Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
 import { CircleUserRound, House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import LumineAvatar from './LumineAvatar'
 
 
 const SideNav = () => {
-	const {isAuth} = useAuth()
+	const { user: {user: {userAvatar, surname, name} }} = useAuth()
 	const pathname = usePathname().substring(1)
 	const [index, setIndex] = useState<string>('feed')
 	useEffect(() => {
 		setIndex(pathname)
 	}, [pathname])
-
-	if (!isAuth) {
-		return null;
-	}
+	
 	return (
 		<nav className='flex flex-col w-[270px] fixed'>
 			<Group className='mx-auto flex flex-col'>
-				<Avatar color='blue' size='xl' className='rounded-full' src='https://i.pravatar.cc/300' />
-				<Title className='inter-500'>Alex White</Title>
+				<LumineAvatar className='rounded-full' src={userAvatar} size='xl' hasStories={true} shouldRedirect={false} />
+				<Title className='inter-500'>{name} {surname}</Title>
 				<Card
 					shadow='sm'
 					padding='md'
@@ -93,8 +91,11 @@ const SideNav = () => {
 						component={Link}
 						label='Messages'
 						href={'/messages'}
+						// disabled={index === 'messages'}
 						active={index === 'messages'}
-						onClick={() => setIndex('messages')}
+						onClick={() => {
+							setIndex('messages')
+						}}
 						color='#ffd37d'
 						leftSection={<MessageCircle size={'18 '} stroke={index === 'messages' ? '#050514' : '#d1d3d6'} />}
 						variant='filled'
@@ -111,6 +112,7 @@ const SideNav = () => {
 						component={Link}
 						label='Friends'
 						href={'/friends'}
+						// disabled={index === 'friends'}
 						active={index === 'friends'}
 						onClick={() => setIndex('friends')}
 						color='#ffd37d'
@@ -124,10 +126,11 @@ const SideNav = () => {
 						}}
 					/>
 					<NavLink
-						className='rounded-lg transition-all transition-duration-300'
+						className={`rounded-lg transition-all transition-duration-300 $`}
 						component={Link}
 						label='Groups'
 						href={'/groups'}
+						// disabled={index === 'groups'}
 						active={index === 'groups'}
 						onClick={() => setIndex('groups')}
 						color='#ffd37d'

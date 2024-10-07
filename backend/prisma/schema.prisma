@@ -19,28 +19,32 @@ model Post {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  User User @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
   userId String
+
   @@map("posts")
 }
 
 model User {
-  id         String   @id @default(uuid())
-  username   String   @unique
-  email      String   @unique
-  password   String
+  id       String @id @default(uuid())
+  username String @unique
+  email    String @unique
+  password String
 
   name       String
   surname    String
   bio        String
-  userAvatar     String
+  userAvatar String
 
   posts      Post[]
   created_at DateTime @default(now()) @map("created_at")
   updated_at DateTime @updatedAt @map("updated_at")
-  role      Role
+  role       Role
+
+  access_token String
 
   Token Token[]
+
   @@map("users")
 }
 
@@ -49,6 +53,7 @@ model Token {
   exp    DateTime
   user   User     @relation(fields: [userId], references: [id])
   userId String
+
   @@map("tokens")
 }
 

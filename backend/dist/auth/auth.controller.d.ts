@@ -23,4 +23,5 @@ export declare class AuthController {
         updated_at?: Date;
     }>;
     logout(response: Response): void;
+    isAuthenticated(): boolean;
 }
