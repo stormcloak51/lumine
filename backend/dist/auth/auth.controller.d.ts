@@ -10,17 +10,19 @@ export declare class AuthController {
     }>;
     getProfile(req: any): any;
     signUp(user: Partial<User>): Promise<{
-        bio: string;
-        role: string;
+        user: {
+            bio: string;
+            role: string;
+            name?: string;
+            id?: string;
+            username?: string;
+            email?: string;
+            surname?: string;
+            userAvatar?: string;
+            created_at?: Date;
+            updated_at?: Date;
+        };
         access_token: string;
-        name?: string;
-        id?: string;
-        username?: string;
-        email?: string;
-        surname?: string;
-        userAvatar?: string;
-        created_at?: Date;
-        updated_at?: Date;
     }>;
     logout(response: Response): void;
     isAuthenticated(): boolean;

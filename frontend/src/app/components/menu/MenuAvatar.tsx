@@ -3,8 +3,6 @@ import { Menu, rem } from '@mantine/core'
 import LumineAvatar from '../LumineAvatar'
 import { FC } from 'react'
 import { Aperture, LogOut, Settings } from 'lucide-react'
-import { useDispatch } from 'react-redux'
-import { deleteUser } from '@/lib/store/slices/user.slice'
 
 
 interface IMenuAvatar {
@@ -12,11 +10,11 @@ interface IMenuAvatar {
 }
 
 export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
-	const dispatch = useDispatch()
+	// const dispatch = useDispatch()
 	const handleLogout = async () => {
-		await dispatch(deleteUser())
 		document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 		window.location.href = '/auth/login'
+		// await dispatch(deleteUser())
 	}
 	return (
 		<Menu shadow='md' width={200}>

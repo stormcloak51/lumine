@@ -12,6 +12,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
+    "@lottiefiles/dotlottie-react": "^0.9.1",
     "@mantine/core": "^7.12.2",
     "@mantine/hooks": "^7.12.2",
     "@reduxjs/toolkit": "^2.2.7",

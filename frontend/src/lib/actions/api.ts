@@ -5,7 +5,7 @@ const api = axios.create({
 	baseURL: 'http://localhost:1488/api/',
 })
 
-export const signUp = async (user: TUser): Promise<TUser> => {
+export const signUp = async (user: TUser): Promise<TUserData> => {
 	const data = await api.post('auth/signup', user)
 	return data.data
 }

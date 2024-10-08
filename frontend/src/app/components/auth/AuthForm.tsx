@@ -15,8 +15,12 @@ import { setUser } from '@/lib/store/slices/user.slice'
 
 
 const schema = z.object({
-	name: z.string().min(2, 'Name must be at least 2 characters long'),
-	surname: z.string().min(3, 'Surname must be at least 3 characters long'),
+  name: z.string()
+    .min(2, 'Name must be at least 2 characters long')
+    .regex(/^[a-zA-Zа-яА-Я]+$/, 'Name can only contain Latin or Russian letters'),
+  surname: z.string()
+    .min(3, 'Surname must be at least 3 characters long')
+    .regex(/^[a-zA-Zа-яА-Я]+$/, 'Surname can only contain Latin or Russian letters'),
 	username: z
 		.string()
 		.min(3, 'Username must be at least 3 characters long')
