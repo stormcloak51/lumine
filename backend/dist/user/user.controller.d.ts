@@ -3,29 +3,29 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
-        name: string;
         id: string;
+        created_at: Date;
+        updated_at: Date;
+        name: string;
         username: string;
         email: string;
         password: string;
         surname: string;
         bio: string;
         userAvatar: string;
-        created_at: Date;
-        updated_at: Date;
         role: import(".prisma/client").$Enums.Role;
     }[]>;
     findOne(idOrEmailOrUsername: string): import(".prisma/client").Prisma.Prisma__UserClient<{
-        name: string;
         id: string;
+        created_at: Date;
+        updated_at: Date;
+        name: string;
         username: string;
         email: string;
         password: string;
         surname: string;
         bio: string;
         userAvatar: string;
-        created_at: Date;
-        updated_at: Date;
         role: import(".prisma/client").$Enums.Role;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
 }

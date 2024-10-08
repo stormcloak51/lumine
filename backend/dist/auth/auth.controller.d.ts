@@ -13,14 +13,14 @@ export declare class AuthController {
         user: {
             bio: string;
             role: string;
-            name?: string;
             id?: string;
+            created_at?: Date;
+            updated_at?: Date;
+            name?: string;
             username?: string;
             email?: string;
             surname?: string;
             userAvatar?: string;
-            created_at?: Date;
-            updated_at?: Date;
         };
         access_token: string;
     }>;
