@@ -11,6 +11,7 @@ import {
 	Button,
 	HoverCard,
 	Transition,
+	Grid,
 } from '@mantine/core'
 import { Image } from '@mantine/core'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
@@ -27,7 +28,7 @@ const Profile = () => {
 	const [mounted, setMounted] = useState<boolean>(false)
 
 	return (
-		<div className='w-full grid gap-2'>
+		<Grid className='w-full !p-0'>
 			<Flex className='w-full relative' direction={'column'}>
 				<div className='w-full h-[200px] overflow-hidden'>
 					<Image
@@ -110,15 +111,22 @@ const Profile = () => {
 					size={130}
 				/>
 			</Flex>
-			<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
-				<Avatar.Group spacing={'sm'}>
-					<Avatar size={46} src={user.userAvatar} />
-					<Avatar size={46} src={user.userAvatar} />
-					<Avatar size={46} src={user.userAvatar} />
-					<Avatar size={46}>+5</Avatar>
-				</Avatar.Group>
-			</Card>
-		</div>
+			<Grid.Col span={7.5} className='px-0 pt-4'>
+				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
+					
+				</Card>
+			</Grid.Col>
+			<Grid.Col className='px-0 pt-4' span={4} offset={0.5}>
+				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
+					<Avatar.Group spacing={'sm'}>
+						<Avatar size={46} src={user.userAvatar} />
+						<Avatar size={46} src={user.userAvatar} />
+						<Avatar size={46} src={user.userAvatar} />
+						<Avatar size={46}>+5</Avatar>
+					</Avatar.Group>
+				</Card>
+			</Grid.Col>
+		</Grid>
 	)
 }
 

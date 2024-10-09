@@ -1,4 +1,10 @@
+import {IBM_Plex_Mono} from 'next/font/google'
 import localFont from 'next/font/local'
+
+export const IBMPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: '400',
+})
 
 export const geistSans = localFont({
 	src: './GeistVF.woff',
