@@ -40,6 +40,7 @@ let AuthService = class AuthService {
         selectProps.password = false;
         await this.prisma.user.create({
             data: {
+                id: user.id,
                 name: user.name,
                 surname: user.surname,
                 bio: '',
@@ -47,7 +48,8 @@ let AuthService = class AuthService {
                 password: hashedPass,
                 username: user.username,
                 userAvatar: user.userAvatar,
-                role: 'USER'
+                role: 'USER',
+                access_token: '',
             },
             select: selectProps
         });

@@ -7,6 +7,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: TUserData = {
 	user: {
+		id: '',
 		name: '',
 		surname: '',
 		username: '',
@@ -28,6 +29,7 @@ const userSlice = createSlice({
 			state.access_token = action.payload.access_token
 			console.log('state', JSON.parse(JSON.stringify(state)))
 			console.log('action', action.payload)
+			state.user.id = action.payload.user.id
 			state.user.name = action.payload.user.name
 			state.user.surname = action.payload.user.surname
 			state.user.username = action.payload.user.username
@@ -38,6 +40,7 @@ const userSlice = createSlice({
 			state.user.role = action.payload.user.role
 		},
 		deleteUser(state) {
+			state.user.id = ''
 			state.access_token = ''
 			state.user.name =  ''
 			state.user.surname = ''

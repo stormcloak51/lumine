@@ -31,7 +31,6 @@ export const LoginForm = () => {
 		mutationFn: async (data: FormData) => {
 			try {
 				const user = await signIn(data)
-				console.log('user', user);
 				document.cookie = `token=${user.access_token}; path=/;`
 				return user
 			} catch (err) {
@@ -67,6 +66,7 @@ export const LoginForm = () => {
 		await dispatch(setUser({
 			access_token: data.access_token,
 			user: {
+				id: data.user.id,
 				name: data.user.name,
 				surname: data.user.surname,
 				username: data.user.username,

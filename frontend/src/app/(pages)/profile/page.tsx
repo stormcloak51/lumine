@@ -29,7 +29,7 @@ const Profile = () => {
 	const [mounted, setMounted] = useState<boolean>(false)
 
 	return (
-		<Grid className='w-full !p-0'>
+		<Grid className='w-full !p-0' gutter={{ xs: 0, sm: 0, md: 0, lg: 0, xl: 0 }}>
 			<Flex className='w-full relative' direction={'column'}>
 				<div className='w-full h-[200px] overflow-hidden'>
 					<Image
@@ -127,9 +127,9 @@ const Profile = () => {
 				</Card>
 			</Grid.Col>
 			<Grid.Col span={7.5} className='px-0'>
-				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
-					<PostList title='Posts' queryKey={user.username}/>
-				</Card>
+				
+				<PostList title='Posts' queryKey={user.username}/>
+				
 			</Grid.Col>
 		</Grid>
 	)

@@ -20,18 +20,24 @@ let PostService = class PostService {
         return this.prisma.postModel.findMany();
     }
     createPost(data) {
-        const postData = {
-            content: data.content,
-            userId: data.User.id,
-        };
         return this.prisma.postModel.create({
-            data: postData,
+            data: {
+                content: data.content,
+                User: {
+                    connect: {
+                        id: data.User.id,
+                        username: data.User.username
+                    }
+                }
+            }
         });
     }
-    findByUsername(user) {
+    findByUsername(username) {
         return this.prisma.postModel.findMany({
             where: {
-                userId: user.id,
+                User: {
+                    username: username
+                }
             },
         });
     }

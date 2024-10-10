@@ -20,6 +20,7 @@ export type TUserLogin = {
 
 
 export interface IUserCredentials {
+	id: string
 	name: string
 	surname: string
 	username: string

@@ -18,5 +18,5 @@ export declare class PostController {
         content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
-    findByUsername(userId: string): Promise<PostModel[]>;
+    findByUsername(username: string): Promise<PostModel[]>;
 }

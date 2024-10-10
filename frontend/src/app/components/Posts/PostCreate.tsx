@@ -5,9 +5,11 @@ import { useClickOutside } from '@mantine/hooks'
 import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
+import { useAuth } from '@/lib/actions/state'
 
 const PostCreate: FC = () => {
 
+	const {user: {user}} = useAuth()
 	const [postContent, setPostContent] = useState<string>('')
 	const [minRows, setMinRows] = useState(1)
 	const [styled, setStyled] = useState(false)
@@ -44,9 +46,14 @@ const PostCreate: FC = () => {
 		}
 	}
 
-	const handleSend = () => {
+	const handleSend = async () => {
 		if (postContent) {
-			createPost({ content: postContent })
+			try {
+				const data = await createPost({ content: postContent, User: user })
+				console.log('seccs', data)
+			} catch(err) {
+				console.log(err)
+			}
 		}
 	}
 	return (

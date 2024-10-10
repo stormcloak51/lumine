@@ -27,8 +27,8 @@ let PostController = class PostController {
     createPost(data) {
         return this.postService.createPost(data);
     }
-    findByUsername(userId) {
-        return this.postService.findByUsername(userId);
+    findByUsername(username) {
+        return this.postService.findByUsername(username);
     }
 };
 exports.PostController = PostController;
