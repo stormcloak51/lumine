@@ -1,15 +1,13 @@
 'use client'
 import { createPost } from '@/lib/actions/posts'
 import { ActionIcon, Card, Group, Textarea } from '@mantine/core'
-import { useClickOutside, useDidUpdate } from '@mantine/hooks'
+import { useClickOutside } from '@mantine/hooks'
 import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
 
 const PostCreate: FC = () => {
-	useDidUpdate(() => {
-		console.log('did update')
-	})
+
 	const [postContent, setPostContent] = useState<string>('')
 	const [minRows, setMinRows] = useState(1)
 	const [styled, setStyled] = useState(false)

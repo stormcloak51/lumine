@@ -2,7 +2,6 @@
 import LumineAvatar from '@/app/components/LumineAvatar'
 import { useAuth } from '@/lib/actions/state'
 import {
-	ActionIcon,
 	Avatar,
 	Card,
 	Flex,
@@ -18,6 +17,8 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { useClipboard } from '@mantine/hooks'
 import { useState } from 'react'
 import { Pen } from 'lucide-react'
+import PostList from '@/app/components/Posts/PostList'
+import PostCreate from '@/app/components/Posts/PostCreate'
 
 const Profile = () => {
 	const clipboard = useClipboard({ timeout: 1000 })
@@ -45,7 +46,7 @@ const Profile = () => {
 									{user.name} {user.surname}
 								</Title>
 								<DotLottieReact
-									src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f342/lottie.json'
+									src='https://fonts.gstatic.com/s/e/notoemoji/latest/1f393/lottie.json'
 									autoplay
 									className=''
 									playOnHover
@@ -112,18 +113,22 @@ const Profile = () => {
 				/>
 			</Flex>
 			<Grid.Col span={7.5} className='px-0 pt-4'>
-				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
-					
-				</Card>
+				<PostCreate />
 			</Grid.Col>
 			<Grid.Col className='px-0 pt-4' span={4} offset={0.5}>
 				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
+					<Title order={3}>Followers</Title>
 					<Avatar.Group spacing={'sm'}>
 						<Avatar size={46} src={user.userAvatar} />
 						<Avatar size={46} src={user.userAvatar} />
 						<Avatar size={46} src={user.userAvatar} />
 						<Avatar size={46}>+5</Avatar>
 					</Avatar.Group>
+				</Card>
+			</Grid.Col>
+			<Grid.Col span={7.5} className='px-0'>
+				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'>
+					<PostList title='Posts' queryKey={user.username}/>
 				</Card>
 			</Grid.Col>
 		</Grid>

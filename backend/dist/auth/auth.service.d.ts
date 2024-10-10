@@ -23,6 +23,7 @@ export declare class AuthService {
             email?: string;
             surname?: string;
             userAvatar?: string;
+            access_token?: string;
         };
         access_token: string;
     }>;

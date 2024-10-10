@@ -14,6 +14,7 @@ export declare class UserService {
         bio: string;
         userAvatar: string;
         role: import(".prisma/client").$Enums.Role;
+        access_token: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: string;
@@ -27,6 +28,7 @@ export declare class UserService {
         bio: string;
         userAvatar: string;
         role: import(".prisma/client").$Enums.Role;
+        access_token: string;
     }[]>;
     delete(id: string): import(".prisma/client").Prisma.Prisma__UserClient<{
         id: string;
@@ -40,5 +42,6 @@ export declare class UserService {
         bio: string;
         userAvatar: string;
         role: import(".prisma/client").$Enums.Role;
+        access_token: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }

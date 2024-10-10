@@ -14,6 +14,7 @@ export declare class UserController {
         bio: string;
         userAvatar: string;
         role: import(".prisma/client").$Enums.Role;
+        access_token: string;
     }[]>;
     findOne(idOrEmailOrUsername: string): import(".prisma/client").Prisma.Prisma__UserClient<{
         id: string;
@@ -27,5 +28,6 @@ export declare class UserController {
         bio: string;
         userAvatar: string;
         role: import(".prisma/client").$Enums.Role;
+        access_token: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
 }

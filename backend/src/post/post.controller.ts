@@ -1,5 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { PostService } from './post.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { PostModel } from '@prisma/client';
+import { CreatePostDto } from './post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -10,9 +13,18 @@ export class PostController {
     return this.postService.findAll();
   }
 
-  // @Post('create')
-  // createPost(@Body() data: {content: string}) {
-  //   const {content} = data
-  //   return this.postService.createPost(content)
-  // }
+  @Post('create')
+  createPost(
+    @Body()
+    data: CreatePostDto,
+  ) {
+    // const { content } = data;
+    return this.postService.createPost(data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  findByUsername(@Query('username') userId: string): Promise<PostModel[]> {
+    return this.postService.findByUsername(userId);
+  }
 }

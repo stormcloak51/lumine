@@ -1,24 +1,32 @@
 'use client'
-
-import { getAllPosts } from '@/lib/actions/posts'
+import { getPostByQuery } from '@/lib/actions/posts'
 import { Card, Flex, Group, Image, Text } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
+import { FC } from 'react'
 
-const PostList = () => {
+interface IPostList {
+	queryKey: string
+	title: string
+}
+
+const PostList: FC<IPostList> = ({title = 'Posts', queryKey }) => {
 	const { data } = useQuery({
-		queryKey: ['posts'],
-		queryFn: getAllPosts,
+		queryKey: ['posts', queryKey],
+		queryFn: () => getPostByQuery(queryKey),
 	})
+
 	return (
 		<Flex direction={'column'} className='gap-y-4'>
-			{data?.map(post => {
+			{data?.map((post, index) => {
 				return (
 					<Card key={post.id} withBorder shadow='sm' radius='md'>
-						<Card.Section withBorder inheritPadding py='xs'>
-							<Group justify='space-between'>
-								<Text fw={500}>Title</Text>
-							</Group>
-						</Card.Section>
+						{index === 0 && (
+							<Card.Section withBorder inheritPadding py='xs'>
+								<Group justify='space-between'>
+									<Text fw={500}>{title}</Text>
+								</Group>
+							</Card.Section>
+						)}
 
 						<Text mt='sm' c='dimmed' size='sm'>
 							{post.content}

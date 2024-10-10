@@ -1,10 +1,5 @@
-export type TPost = {
-	id: number
-	title: string
-	content: string
-	created_at: string
-	updated_at: string
-}
+// ----------------------------USERS---------------------------------------
+
 
 export type TUser = {
 	name: string
@@ -17,8 +12,6 @@ export type TUser = {
 	role?: string
 	access_token?: string
 }
-
-
 
 export type TUserLogin = {
 	usernameOrEmail: string
@@ -42,3 +35,18 @@ export type TUserData = {
 	access_token?: string
 	user: IUserCredentials
 }
+
+// ----------------------------POSTS---------------------------------------
+
+export interface IPostData {
+	content: string
+	User: TUser
+}
+
+export type TPost = {
+	id: number
+	content: string
+	created_at: string
+	updated_at: string
+}
+

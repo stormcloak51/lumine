@@ -21,6 +21,7 @@ export declare class AuthController {
             email?: string;
             surname?: string;
             userAvatar?: string;
+            access_token?: string;
         };
         access_token: string;
     }>;

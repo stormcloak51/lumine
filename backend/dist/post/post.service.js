@@ -17,7 +17,23 @@ let PostService = class PostService {
         this.prisma = prisma;
     }
     findAll() {
-        return this.prisma.post.findMany();
+        return this.prisma.postModel.findMany();
+    }
+    createPost(data) {
+        const postData = {
+            content: data.content,
+            userId: data.User.id,
+        };
+        return this.prisma.postModel.create({
+            data: postData,
+        });
+    }
+    findByUsername(user) {
+        return this.prisma.postModel.findMany({
+            where: {
+                userId: user.id,
+            },
+        });
     }
 };
 exports.PostService = PostService;
