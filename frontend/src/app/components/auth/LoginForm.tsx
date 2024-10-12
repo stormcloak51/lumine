@@ -62,7 +62,6 @@ export const LoginForm = () => {
 	}, [mutation.data, mutation.isSuccess])
 
 	const handleLogin = async (data: TUserData) => {
-		console.log(data, 'data')
 		await dispatch(setUser({
 			access_token: data.access_token,
 			user: {

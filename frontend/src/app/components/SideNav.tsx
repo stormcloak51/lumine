@@ -45,19 +45,19 @@ const SideNav = () => {
 						className='rounded-lg transition-all'
 						label='Profile'
 						component={Link}
-						href={'/profile'}
-						active={index === 'profile'}
-						onClick={() => setIndex('profile')}
+						href={`/profile/${username}`}
+						active={index === `profile/${username}`}
+						onClick={() => setIndex(`profile/${username}`)}
 						color='#ffd37d'
 						leftSection={
-							<CircleUserRound size={'18 '} stroke={index === 'profile' ? '#050514' : '#d1d3d6'} />
+							<CircleUserRound size={'18 '} stroke={index === `profile/${username}` ? '#050514' : '#d1d3d6'} />
 						}
 						variant='filled'
 						styles={{
 							label: {
 								fontSize: '16px',
 								fontWeight: '500',
-								color: index === 'profile' ? '#050514' : '#d1d3d6',
+								color: index === `profile/${username}` ? '#050514' : '#d1d3d6',
 							},
 						}}
 					/>

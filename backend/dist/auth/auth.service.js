@@ -11,23 +11,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("../user/user.service");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let AuthService = class AuthService {
-    constructor(userService, jwtService, prisma) {
-        this.userService = userService;
+    constructor(jwtService, prisma) {
         this.jwtService = jwtService;
         this.prisma = prisma;
     }
     async signIn(usernameOrEmail, pass) {
-        const user = await this.userService.findOne(usernameOrEmail);
+        const user = await this.prisma.user.findFirst({
+            where: {
+                OR: [
+                    {
+                        id: usernameOrEmail,
+                    },
+                    {
+                        email: usernameOrEmail,
+                    },
+                    {
+                        username: usernameOrEmail,
+                    },
+                ],
+            },
+        });
         await bcrypt.hash(pass, 10);
         if (user && !(await bcrypt.compare(pass, user.password))) {
             throw new common_1.UnauthorizedException();
         }
         const payload = { sub: user.id, username: user.username };
+        const access_token = await this.jwtService.signAsync(payload, {
+            expiresIn: '15m'
+        });
+        const refresh_token = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
         return {
             user,
             access_token: await this.jwtService.signAsync(payload),
@@ -70,8 +86,7 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [user_service_1.UserService,
-        jwt_1.JwtService,
+    __metadata("design:paramtypes", [jwt_1.JwtService,
         prisma_service_1.PrismaService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

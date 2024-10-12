@@ -16,12 +16,18 @@ const post_service_1 = require("./post/post.service");
 const prisma_service_1 = require("./prisma.service");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
+const jwt_1 = require("@nestjs/jwt");
+const process_1 = require("process");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot(), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule],
+        imports: [config_1.ConfigModule.forRoot(), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, jwt_1.JwtModule.register({
+                global: true,
+                secret: process_1.env.JWT_SECRET,
+                signOptions: { expiresIn: '2m' },
+            }),],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService, post_service_1.PostService, prisma_service_1.PrismaService],
     })

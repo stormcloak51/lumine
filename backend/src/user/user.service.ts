@@ -23,6 +23,17 @@ export class UserService {
 						username: idOrEmailOrUsername
 					}
 				]
+			},
+			select: {
+				id: true,
+				username: true,
+				email: true,
+				name: true,
+				surname: true,
+				bio: true,
+				userAvatar: true,
+				created_at: true,
+				role: true,
 			}
 		})
 	}

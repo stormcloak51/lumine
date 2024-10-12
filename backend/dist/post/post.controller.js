@@ -28,6 +28,7 @@ let PostController = class PostController {
         return this.postService.createPost(data);
     }
     findByUsername(username) {
+        console.log('sev,', username);
         return this.postService.findByUsername(username);
     }
 };
@@ -47,7 +48,7 @@ __decorate([
 ], PostController.prototype, "createPost", null);
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    (0, common_1.Get)(),
+    (0, common_1.Get)('findByUsername'),
     __param(0, (0, common_1.Query)('username')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),

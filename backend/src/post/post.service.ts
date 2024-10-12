@@ -19,8 +19,7 @@ export class PostService {
           connect: { 
             id: data.User.id,
             username: data.User.username
-            
-           }
+          }
         }
       }
     });

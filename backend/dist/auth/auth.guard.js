@@ -20,6 +20,8 @@ let AuthGuard = class AuthGuard {
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeader(request);
+        console.log(token, 'token epta');
+        console.log(process_1.env.JWT_SECRET, 'jwt sectet token epta');
         if (!token) {
             throw new common_1.UnauthorizedException();
         }
@@ -28,9 +30,21 @@ let AuthGuard = class AuthGuard {
                 secret: process_1.env.JWT_SECRET
             });
             request['user'] = payload;
+            console.log('Token verified successfully', payload);
         }
-        catch {
-            throw new common_1.UnauthorizedException();
+        catch (error) {
+            if (error instanceof jwt_1.TokenExpiredError) {
+                console.error('Token has expired');
+                throw new common_1.UnauthorizedException('Token has expired');
+            }
+            else if (error instanceof jwt_1.JsonWebTokenError) {
+                console.error('Invalid token');
+                throw new common_1.UnauthorizedException('Invalid token');
+            }
+            else {
+                console.error('Unexpected error during token verification', error);
+                throw new common_1.UnauthorizedException('Authentication failed');
+            }
         }
         return true;
     }

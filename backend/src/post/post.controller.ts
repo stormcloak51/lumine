@@ -23,8 +23,9 @@ export class PostController {
   }
 
   @UseGuards(AuthGuard)
-  @Get()
+  @Get('findByUsername')
   findByUsername(@Query('username') username: string): Promise<PostModel[]> {
+    console.log('sev,',username)
     return this.postService.findByUsername(username);
   }
 }

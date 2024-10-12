@@ -6,12 +6,22 @@ export type TUser = {
 	surname: string
 	username: string
 	email: string
-	password: string
+	password?: string
 	userAvatar: string | undefined
 	bio?: string
 	role?: string
 	access_token?: string
 }
+
+// export type TUserProfile = {
+// 	name: string
+// 	surname: string
+// 	username: string
+// 	email: string
+// 	userAvatar: string | undefined
+// 	bio: string
+// 	role: string
+// }
 
 export type TUserLogin = {
 	usernameOrEmail: string

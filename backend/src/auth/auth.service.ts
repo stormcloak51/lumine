@@ -9,18 +9,37 @@ import { User } from '@prisma/client'
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    // private userService: UserService,
     private jwtService: JwtService,
     private prisma: PrismaService
   ) {}
 
   async signIn(usernameOrEmail: string, pass: string): Promise<{user: User, access_token: string}> {
-    const user = await this.userService.findOne(usernameOrEmail);
+    const user = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          {
+            id: usernameOrEmail,
+          },
+          {
+            email: usernameOrEmail,
+          },
+          {
+            username: usernameOrEmail,
+          },
+        ],
+      },
+    });
     await bcrypt.hash(pass, 10)
     if (user && !(await bcrypt.compare(pass, user.password))) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.username };
+
+    const access_token = await this.jwtService.signAsync(payload, {
+      expiresIn: '15m'
+    });
+    const refresh_token = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
 
     return {
       user,

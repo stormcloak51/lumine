@@ -6,17 +6,16 @@ import { AuthGuard } from 'src/auth/auth.guard'
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-
-
   @Get('all')
   findAll() {
     return this.userService.findAll()
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':idOrEmailOrUsername')
-  findOne(@Param('idOrEmailOrUsername') idOrEmailOrUsername: string) {
-    return this.userService.findOne(idOrEmailOrUsername)
+  async findOne(@Param('idOrEmailOrUsername') idOrEmailOrUsername: string) {
+    const user = this.userService.findOne(idOrEmailOrUsername)
+    return user
   }
 
 }

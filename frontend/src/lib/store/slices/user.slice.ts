@@ -27,8 +27,6 @@ const userSlice = createSlice({
 	reducers: {
 		setUser(state, action: PayloadAction<TUserData>) {
 			state.access_token = action.payload.access_token
-			console.log('state', JSON.parse(JSON.stringify(state)))
-			console.log('action', action.payload)
 			state.user.id = action.payload.user.id
 			state.user.name = action.payload.user.name
 			state.user.surname = action.payload.user.surname

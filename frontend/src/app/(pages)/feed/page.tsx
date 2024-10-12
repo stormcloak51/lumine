@@ -16,12 +16,12 @@ const Feed: NextPage = async ({}) => {
 	}
 	return (
 		<Container className='box-border flex flex-col'>
-			<PostCreate/>
+			<PostCreate isGrid={false}/>
 			<Card className='!bg-[#1f2124]' shadow='sm' withBorder radius='lg'>
 				<Group>
 					<Title className='font-sans font-medium'>asd</Title>
 					<Flex>
-						<PostList />
+						<PostList title='Recommended Posts'/>
 					</Flex>
 				</Group>
 			</Card>

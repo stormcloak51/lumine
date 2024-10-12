@@ -1,15 +1,20 @@
 'use client'
 import { createPost } from '@/lib/actions/posts'
-import { ActionIcon, Card, Group, Textarea } from '@mantine/core'
+import { ActionIcon, Card, Grid, Group, Textarea } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import { Camera, SendHorizontal, Video } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
 import { useAuth } from '@/lib/actions/state'
 
-const PostCreate: FC = () => {
+interface IPostCreate {
+	isGrid: boolean
+}
 
-	const {user: {user}} = useAuth()
+const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
+	const {
+		user: { user },
+	} = useAuth()
 	const [postContent, setPostContent] = useState<string>('')
 	const [minRows, setMinRows] = useState(1)
 	const [styled, setStyled] = useState(false)
@@ -51,58 +56,110 @@ const PostCreate: FC = () => {
 			try {
 				const data = await createPost({ content: postContent, User: user })
 				console.log('seccs', data)
-			} catch(err) {
+			} catch (err) {
 				console.log(err)
 			}
 		}
 	}
-	return (
-		<Card
-			className='!bg-[#1f2124] mb-[20px] transition-all flex flex-row'
-			withBorder
-			style={{
-				transition: 'height 0.3s ease-in-out',
-			}}
-			shadow='sm'
-			radius='lg'
-			ref={ref}>
-			<Textarea
-				// ref={ref}
-				size='md'
+	
+	if (!isGrid) {
+		return (
+			<Card
+				className='!bg-[#1f2124] mb-[20px] transition-all flex flex-row'
+				withBorder
+				style={{
+					transition: 'height 0.3s ease-in-out',
+				}}
+				shadow='sm'
 				radius='lg'
-				variant='unstyled'
-				className='w-full text-[14px] px-[15px] relative'
-				onFocus={handleFocus}
-				autosize
-				value={postContent}
-				onChange={e => setPostContent(e.target.value)}
-				minRows={minRows}
-				placeholder="What's news?"
-				leftSection={
-					<LumineAvatar
-						size={38}
-						src='https://i.pravatar.cc/300'
-						className='mr-[35px]'
-						position={'absolute'}
-						hasStories={true}
-					/>
-				}
-			/>
-			<Group
-				ref={rightSectionRef}
-				className='
+				ref={ref}>
+				<Textarea
+					// ref={ref}
+					size='md'
+					radius='lg'
+					variant='unstyled'
+					className='w-full text-[14px] px-[15px] relative'
+					onFocus={handleFocus}
+					autosize
+					value={postContent}
+					onChange={e => setPostContent(e.target.value)}
+					minRows={minRows}
+					placeholder="What's news?"
+					leftSection={
+						<LumineAvatar
+							size={38}
+							src='https://i.pravatar.cc/300'
+							className='mr-[35px]'
+							position={'absolute'}
+							hasStories={true}
+						/>
+					}
+				/>
+				<Group
+					ref={rightSectionRef}
+					className='
 			w-[100px] flex items-center justify-center flex-row gap-2 relative'>
-				<Camera className='transition-all absolute top-0 right-[30px]' />
-				<Video className='transition-all absolute top-0 right-0' />
-				<ActionIcon
-					onClick={() => handleSend()}
-					variant='transparent'
-					className='bg-none w-full h-full'>
-					<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
-				</ActionIcon>
-			</Group>
-		</Card>
+					<Camera className='transition-all absolute top-0 right-[30px]' />
+					<Video className='transition-all absolute top-0 right-0' />
+					<ActionIcon
+						onClick={() => handleSend()}
+						variant='transparent'
+						className='bg-none w-full h-full'>
+						<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
+					</ActionIcon>
+				</Group>
+			</Card>
+		)
+	}
+	return (
+		<Grid.Col span={7.5} className='px-0 pt-4'>
+			<Card
+				className='!bg-[#1f2124] mb-[20px] transition-all flex flex-row'
+				withBorder
+				style={{
+					transition: 'height 0.3s ease-in-out',
+				}}
+				shadow='sm'
+				radius='lg'
+				ref={ref}>
+				<Textarea
+					// ref={ref}
+					size='md'
+					radius='lg'
+					variant='unstyled'
+					className='w-full text-[14px] px-[15px] relative'
+					onFocus={handleFocus}
+					autosize
+					value={postContent}
+					onChange={e => setPostContent(e.target.value)}
+					minRows={minRows}
+					placeholder="What's news?"
+					leftSection={
+						<LumineAvatar
+							size={38}
+							src='https://i.pravatar.cc/300'
+							className='mr-[35px]'
+							position={'absolute'}
+							hasStories={true}
+						/>
+					}
+				/>
+				<Group
+					ref={rightSectionRef}
+					className='
+			w-[100px] flex items-center justify-center flex-row gap-2 relative'>
+					<Camera className='transition-all absolute top-0 right-[30px]' />
+					<Video className='transition-all absolute top-0 right-0' />
+					<ActionIcon
+						onClick={() => handleSend()}
+						variant='transparent'
+						className='bg-none w-full h-full'>
+						<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
+					</ActionIcon>
+				</Group>
+			</Card>
+		</Grid.Col>
 	)
 }
 
-export default PostCreate;
+export default PostCreate
