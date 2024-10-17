@@ -14,79 +14,104 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
+const user_service_1 = require("../user/user.service");
 let AuthService = class AuthService {
-    constructor(jwtService, prisma) {
+    constructor(userService, jwtService, prisma) {
+        this.userService = userService;
         this.jwtService = jwtService;
         this.prisma = prisma;
+        this.EXPIRE_DAY_REFRESH_TOKEN = 1;
+        this.REFRESH_TOKEN_NAME = 'refreshToken';
     }
-    async signIn(usernameOrEmail, pass) {
+    async login(dto) {
+        const { password, ...user } = await this.validateUser(dto);
+        const tokens = this.issueTokens(user.id);
+        return {
+            user,
+            ...tokens,
+        };
+    }
+    async register(dto) {
+        const oldUser = await this.userService.findOne(dto.email);
+        if (oldUser)
+            throw new common_1.BadRequestException('User already exists');
+        const { password, ...user } = await this.userService.create(dto);
+        const tokens = this.issueTokens(user.id);
+        return {
+            user,
+            ...tokens,
+        };
+    }
+    async getNewTokens(refreshToken) {
+        const result = await this.jwtService.verifyAsync(refreshToken);
+        if (!result)
+            throw new common_1.UnauthorizedException('Invalid refresh token');
+        const user = await this.userService.findOne(result.id);
+        const tokens = this.issueTokens(user.id);
+        return {
+            user,
+            ...tokens
+        };
+    }
+    issueTokens(userId) {
+        const data = { id: userId };
+        const accessToken = this.jwtService.sign(data, {
+            expiresIn: '1h',
+        });
+        const refreshToken = this.jwtService.sign(data, {
+            expiresIn: '7d',
+        });
+        return { accessToken, refreshToken };
+    }
+    async validateUser(dto) {
         const user = await this.prisma.user.findFirst({
             where: {
                 OR: [
                     {
-                        id: usernameOrEmail,
+                        id: dto.usernameOrEmail,
                     },
                     {
-                        email: usernameOrEmail,
+                        email: dto.usernameOrEmail,
                     },
                     {
-                        username: usernameOrEmail,
+                        username: dto.usernameOrEmail,
                     },
                 ],
             },
         });
-        await bcrypt.hash(pass, 10);
-        if (user && !(await bcrypt.compare(pass, user.password))) {
-            throw new common_1.UnauthorizedException();
-        }
-        const payload = { sub: user.id, username: user.username };
-        const access_token = await this.jwtService.signAsync(payload, {
-            expiresIn: '15m'
-        });
-        const refresh_token = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
-        return {
-            user,
-            access_token: await this.jwtService.signAsync(payload),
-        };
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        const isValid = await bcrypt.compare(dto.password, user.password);
+        if (!isValid)
+            throw new common_1.UnauthorizedException('Invalid password');
+        return user;
     }
-    async signUp(user) {
-        const hashedPass = await bcrypt.hash(user.password, 10);
-        const { password, ...rest } = user;
-        const selectProps = Object.fromEntries(Object.keys(rest).map(key => [key, true]));
-        selectProps.password = false;
-        await this.prisma.user.create({
-            data: {
-                id: user.id,
-                name: user.name,
-                surname: user.surname,
-                bio: '',
-                email: user.email,
-                password: hashedPass,
-                username: user.username,
-                userAvatar: user.userAvatar,
-                role: 'USER',
-                access_token: '',
-            },
-            select: selectProps
+    addRefreshTokenToResponse(res, refreshToken) {
+        const expiresIn = new Date();
+        expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+        res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
+            httpOnly: true,
+            domain: 'localhost',
+            expires: expiresIn,
+            secure: true,
+            sameSite: 'none',
         });
-        const payload = { sub: user.id, username: user.username };
-        return {
-            user: {
-                ...rest,
-                bio: '',
-                role: 'USER',
-            },
-            access_token: await this.jwtService.signAsync(payload),
-        };
     }
-    isAuthenticated() {
-        return true;
+    removeRefreshTokenFromResponse(res) {
+        res.cookie(this.REFRESH_TOKEN_NAME, '', {
+            httpOnly: true,
+            domain: 'localhost',
+            expires: new Date(0),
+            secure: true,
+            sameSite: 'none',
+        });
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService,
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        jwt_1.JwtService,
         prisma_service_1.PrismaService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

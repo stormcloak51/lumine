@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/auth.guard'
+import { Request } from 'express'
 
 @Controller('user')
 export class UserController {
@@ -11,11 +11,16 @@ export class UserController {
     return this.userService.findAll()
   }
 
-  // @UseGuards(AuthGuard)
   @Get(':idOrEmailOrUsername')
   async findOne(@Param('idOrEmailOrUsername') idOrEmailOrUsername: string) {
     const user = this.userService.findOne(idOrEmailOrUsername)
     return user
   }
 
+  @Get('current')
+  async findCurrent(@Req() req: Request) {
+    console.log(req, 'req')
+    // const user = await this.userService.findCurrent(req.)
+    // return user
+  }
 }

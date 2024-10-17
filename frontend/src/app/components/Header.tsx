@@ -6,6 +6,7 @@ import { Bell, Search, Settings, SunMoon } from 'lucide-react'
 import input from './styles/Header.module.scss'
 import Link from 'next/link'
 import { MenuAvatar } from './menu/MenuAvatar'
+import { krona } from '@/fonts/fonts';
 
 export function Header() {
 
@@ -19,12 +20,13 @@ export function Header() {
 						height={36}
 						width={36}
 					/>
-					<Title className='inter-700 letter tracking-wide' size='28'>
+					<Title className={`${krona.className}  tracking-tighter`} size='28'>
 						<Text
 							size='28'
 							fw={700}
 							className='!leading-8'
 							variant='gradient'
+							
 							gradient={{ from: '#ffd37d', to: '#ffbb38', deg: 90 }}>
 							lumine
 						</Text>

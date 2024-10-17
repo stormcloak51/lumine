@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { uploadAvatar } from '@/lib/actions/uploadAvatar'
-import { signUp } from '@/lib/actions/api'
+import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
@@ -42,9 +42,8 @@ export const AuthForm = () => {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { avatar, agreeToTerms, ...rest } = data
 			try {
-				const userAvatar = await uploadAvatar(data.avatar as File, data.username)
-				const user = await signUp({ userAvatar, ...rest })
-				document.cookie = `token=${user.access_token}; path=/;`
+				const userAvatar: string = await uploadAvatar(data.avatar as File, data.username)
+				const user = await authService.main('register', { userAvatar, ...rest })
 				return user
 			} catch (err) {
 				console.log(err)

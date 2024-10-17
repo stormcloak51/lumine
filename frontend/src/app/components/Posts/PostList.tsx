@@ -1,28 +1,20 @@
 'use client'
-import { TPost } from '@/lib/types'
+import purify from 'dompurify'
+import { TPost } from '@/types/post.types'
 import { Card, Flex, Grid, Group, Text } from '@mantine/core'
 import { FC } from 'react'
 
 interface IPostList {
-	queryKey?: string
+	// queryKey?: string
 	title: string
 	posts?: TPost[]
 	isGrid?: boolean
 }
 
-const PostList: FC<IPostList> = ({ title = 'Posts', queryKey, posts, isGrid = false }) => {
-	// const { data } = useQuery({
-	// 	queryKey: ['posts', queryKey],
-	// 	queryFn: () => getPostByQuery(queryKey),
-	// })
-	// useEffect(() => {
-	// 	if (data) {
-	// 		data.reverse()
-	// 	}
-	// }, [data])
+const PostList: FC<IPostList> = ({ title = 'Posts', posts, isGrid = false }) => {
 	if (isGrid) {
 		return (
-			<Grid.Col span={7.5} className='px-0'>
+			<Grid.Col span={7.5} className='mt-3'>
 				<Flex direction={'column'} className='gap-y-4'>
 					{posts?.map((post, index) => {
 						return (
@@ -40,9 +32,13 @@ const PostList: FC<IPostList> = ({ title = 'Posts', queryKey, posts, isGrid = fa
 									</Card.Section>
 								)}
 
-								<Text mt='sm' c='dimmed' size='sm'>
-									{post.content}
-								</Text>
+								<Text
+									mt='sm'
+									className='text-white'
+									size='lg'
+									dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
+								/>
+
 								{/* 
 						<Card.Section mt='sm'>
 							<Image
@@ -75,9 +71,12 @@ const PostList: FC<IPostList> = ({ title = 'Posts', queryKey, posts, isGrid = fa
 							</Card.Section>
 						)}
 
-						<Text mt='sm' c='dimmed' size='sm'>
-							{post.content}
-						</Text>
+						<Text
+							mt='sm'
+							className='text-white'
+							size='md'
+							dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
+						/>
 						{/* 
 						<Card.Section mt='sm'>
 							<Image

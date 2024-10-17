@@ -7,10 +7,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-import { signIn } from '@/lib/actions/api'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
-import { TUserData } from '@/lib/types'
+import { TUserData } from '@/types/user.types'
+import { authService } from '@/services/auth.service'
 
 
 const schema = z.object({
@@ -30,12 +30,10 @@ export const LoginForm = () => {
 	const mutation = useMutation({
 		mutationFn: async (data: FormData) => {
 			try {
-				const user = await signIn(data)
-				document.cookie = `token=${user.access_token}; path=/;`
+				const user = await authService.main('login', data)
 				return user
 			} catch (err) {
 				console.log(err)
-				alert(`Something went wrong: ${err}`)
 				return null
 			}
 		},
@@ -74,7 +72,8 @@ export const LoginForm = () => {
 				userAvatar: data.user.userAvatar,
 				bio: data.user.bio,
 				role: data.user.role,
-				created_at: data.user.created_at
+				created_at: data.user.created_at,
+				updated_at: data.user.updated_at,
 			}
 		}))
 		window.location.href = '/feed'

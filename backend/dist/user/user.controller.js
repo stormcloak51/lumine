@@ -26,6 +26,9 @@ let UserController = class UserController {
         const user = this.userService.findOne(idOrEmailOrUsername);
         return user;
     }
+    async findCurrent(req) {
+        console.log(req, 'req');
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -41,6 +44,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('current'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "findCurrent", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

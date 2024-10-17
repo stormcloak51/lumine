@@ -1,4 +1,5 @@
 import { UserService } from './user.service';
+import { Request } from 'express';
 export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
@@ -13,8 +14,7 @@ export declare class UserController {
         updated_at: Date;
         password: string;
         bio: string;
-        role: import(".prisma/client").$Enums.Role;
-        access_token: string;
+        role: string;
     }[]>;
     findOne(idOrEmailOrUsername: string): Promise<{
         username: string;
@@ -25,6 +25,7 @@ export declare class UserController {
         id: string;
         created_at: Date;
         bio: string;
-        role: import(".prisma/client").$Enums.Role;
+        role: string;
     }>;
+    findCurrent(req: Request): Promise<void>;
 }

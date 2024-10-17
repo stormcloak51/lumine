@@ -3,19 +3,25 @@ import { Menu, rem } from '@mantine/core'
 import LumineAvatar from '../LumineAvatar'
 import { FC } from 'react'
 import { Aperture, LogOut, Settings } from 'lucide-react'
-
+import { useAuth } from '@/lib/actions/state'
+import { authService } from '@/services/auth.service'
 
 interface IMenuAvatar {
 	size: number
 }
 
 export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
-	// const dispatch = useDispatch()
+	const {user: {user: {id}}} = useAuth()
+
 	const handleLogout = async () => {
-		document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-		window.location.href = '/auth/login'
-		// await dispatch(deleteUser())
+		try {
+			await authService.logout()
+			window.location.href = 'auth/login'
+		} catch (err) {
+			console.log(err)
+		}
 	}
+
 	return (
 		<Menu shadow='md' width={200}>
 			<Menu.Target>

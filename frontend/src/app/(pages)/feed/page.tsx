@@ -1,30 +1,19 @@
-
-import { Card, Title, Group, Container, Flex } from '@mantine/core'
+import { Container } from '@mantine/core'
 import { NextPage } from 'next'
 
 import PostList from '@/app/components/Posts/PostList'
 import PostCreate from '@/app/components/Posts/PostCreate'
-import { cookies } from 'next/headers'
+import { postService } from '@/services/post.service'
 
 // import { useQueryClient } from '@tanstack/react-query'
 
 const Feed: NextPage = async ({}) => {
-	const cookieStore = cookies()
-	const token = await cookieStore.get('token')?.value
-	if (!token) {
-		return null
-	}
+	const posts = await postService.findAll()
 	return (
 		<Container className='box-border flex flex-col'>
-			<PostCreate isGrid={false}/>
-			<Card className='!bg-[#1f2124]' shadow='sm' withBorder radius='lg'>
-				<Group>
-					<Title className='font-sans font-medium'>asd</Title>
-					<Flex>
-						<PostList title='Recommended Posts'/>
-					</Flex>
-				</Group>
-			</Card>
+			<PostCreate isGrid={false} />
+
+			<PostList posts={posts} title='Recommended Posts' />
 		</Container>
 	)
 }

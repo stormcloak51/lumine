@@ -11,10 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
+const bcrypt_1 = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
+    }
+    async create(dto) {
+        const password = await (0, bcrypt_1.hash)(dto.password, 10);
+        const data = {
+            ...dto,
+            password,
+            bio: '',
+        };
+        return this.prisma.user.create({
+            data
+        });
     }
     findOne(idOrEmailOrUsername) {
         return this.prisma.user.findFirst({

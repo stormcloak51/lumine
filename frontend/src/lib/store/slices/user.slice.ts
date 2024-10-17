@@ -1,7 +1,7 @@
 
 
 
-import { TUserData } from '@/lib/types'
+import { TUserData } from '@/types/user.types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
@@ -17,6 +17,7 @@ const initialState: TUserData = {
 		bio: '',
 		role: '',
 		created_at: '' ,
+		updated_at: ''
 	},
 	access_token: '',
 }
@@ -48,6 +49,8 @@ const userSlice = createSlice({
 			state.user.userAvatar = ''
 			state.user.bio = ''
 			state.user.role = ''
+			state.user.created_at = ''
+			state.user.updated_at = ''
 		}
 	}
 });

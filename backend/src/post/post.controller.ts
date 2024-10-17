@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { PostService } from './post.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { PostModel } from '@prisma/client';
 import { CreatePostDto } from './post.dto';
 
@@ -12,20 +11,17 @@ export class PostController {
   findAll() {
     return this.postService.findAll();
   }
-
+  // @UseGuards(JwtAuthGuard)
   @Post('create')
   createPost(
     @Body()
     data: CreatePostDto,
   ) {
-    // const { content } = data;
     return this.postService.createPost(data);
   }
-
-  @UseGuards(AuthGuard)
+  
   @Get('findByUsername')
   findByUsername(@Query('username') username: string): Promise<PostModel[]> {
-    console.log('sev,',username)
     return this.postService.findByUsername(username);
   }
 }

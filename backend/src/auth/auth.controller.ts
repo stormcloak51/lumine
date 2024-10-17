@@ -1,46 +1,66 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
-  HttpStatus,
   Post,
-  Request,
+  Req,
   Res,
-  UseGuards
+  UnauthorizedException,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
-import { User } from '@prisma/client'
-import { SignInDto } from './dto/signIn.dto'
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto'
+import { Request, response, Response } from 'express'
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
+  @UsePipes(new ValidationPipe())
   @Post('login')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.usernameOrEmail, signInDto.password);
+  @HttpCode(200)
+  async signIn(@Body() dto: LoginDto, @Res({passthrough: true}) res: Response) {
+
+    const {refreshToken, ...response} = await this.authService.login(dto);
+    this.authService.addRefreshTokenToResponse(res, refreshToken);
+
+    return response
   }
 
-  @UseGuards(AuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @UsePipes(new ValidationPipe())
+  @HttpCode(200)
+  @Post('register')
+  async register(@Body() dto: RegisterDto, @Res({passthrough: true}) res: Response) {
+    const {refreshToken, ...response} = await this.authService.register(dto);
+    this.authService.addRefreshTokenToResponse(res, refreshToken);
+
+    return response
   }
 
-  @Post('signup')
-  signUp(@Body() user: Partial<User>) {
-    return this.authService.signUp(user)
+  @HttpCode(200)
+  @Post('login/access-token')
+  async getNewTokens(@Req() req: Request, @Res({passthrough: true}) res: Response) {
+    const refreshTokenFromCookies = req.cookies[this.authService.REFRESH_TOKEN_NAME]
+
+    if (!refreshTokenFromCookies) {
+      this.authService.removeRefreshTokenFromResponse(res);
+      throw new UnauthorizedException('Refresh token not found')
+    }
+
+    const {refreshToken, ...response} = await this.authService.getNewTokens(refreshTokenFromCookies)
+
+    this.authService.addRefreshTokenToResponse(res, refreshToken)
+
+    return response
   }
+
+  @HttpCode(200)
   @Post('logout')
-  logout(@Res() response: Response) {
-  }
+  async logout(@Res({passthrough: true}) res: Response) {
+    this.authService.removeRefreshTokenFromResponse(res);
 
-  @UseGuards(AuthGuard)
-  @Get('isAuthenticated')
-  isAuthenticated() {
-    return this.authService.isAuthenticated();
+    return true
   }
 }

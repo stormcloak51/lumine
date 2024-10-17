@@ -1,10 +1,16 @@
-import {IBM_Plex_Mono} from 'next/font/google'
+import {IBM_Plex_Mono, Krona_One} from 'next/font/google'
 import localFont from 'next/font/local'
 
 export const IBMPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: '400',
 })
+
+export const krona = Krona_One({
+  subsets: ['latin'],
+  weight: '400',
+})
+
 
 export const geistSans = localFont({
 	src: './GeistVF.woff',

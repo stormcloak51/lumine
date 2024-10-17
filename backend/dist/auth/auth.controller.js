@@ -14,66 +14,76 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const auth_guard_1 = require("./auth.guard");
 const auth_service_1 = require("./auth.service");
-const signIn_dto_1 = require("./dto/signIn.dto");
+const login_dto_1 = require("./dto/login.dto");
+const register_dto_1 = require("./dto/register.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    signIn(signInDto) {
-        return this.authService.signIn(signInDto.usernameOrEmail, signInDto.password);
+    async signIn(dto, res) {
+        const { refreshToken, ...response } = await this.authService.login(dto);
+        this.authService.addRefreshTokenToResponse(res, refreshToken);
+        return response;
     }
-    getProfile(req) {
-        return req.user;
+    async register(dto, res) {
+        const { refreshToken, ...response } = await this.authService.register(dto);
+        this.authService.addRefreshTokenToResponse(res, refreshToken);
+        return response;
     }
-    signUp(user) {
-        return this.authService.signUp(user);
+    async getNewTokens(req, res) {
+        const refreshTokenFromCookies = req.cookies[this.authService.REFRESH_TOKEN_NAME];
+        if (!refreshTokenFromCookies) {
+            this.authService.removeRefreshTokenFromResponse(res);
+            throw new common_1.UnauthorizedException('Refresh token not found');
+        }
+        const { refreshToken, ...response } = await this.authService.getNewTokens(refreshTokenFromCookies);
+        this.authService.addRefreshTokenToResponse(res, refreshToken);
+        return response;
     }
-    logout(response) {
-    }
-    isAuthenticated() {
-        return this.authService.isAuthenticated();
+    async logout(res) {
+        this.authService.removeRefreshTokenFromResponse(res);
+        return true;
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, common_1.UsePipes)(new common_1.ValidationPipe()),
     (0, common_1.Post)('login'),
+    (0, common_1.HttpCode)(200),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [signIn_dto_1.SignInDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signIn", null);
 __decorate([
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    (0, common_1.Get)('profile'),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "getProfile", null);
-__decorate([
-    (0, common_1.Post)('signup'),
+    (0, common_1.UsePipes)(new common_1.ValidationPipe()),
+    (0, common_1.HttpCode)(200),
+    (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [register_dto_1.RegisterDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.HttpCode)(200),
+    (0, common_1.Post)('login/access-token'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)({ passthrough: true })),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getNewTokens", null);
+__decorate([
+    (0, common_1.HttpCode)(200),
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "signUp", null);
-__decorate([
-    (0, common_1.Post)('logout'),
-    __param(0, (0, common_1.Res)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Response]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
-__decorate([
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    (0, common_1.Get)('isAuthenticated'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "isAuthenticated", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

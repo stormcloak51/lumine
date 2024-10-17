@@ -40,9 +40,7 @@ model User {
   posts      PostModel[]
   created_at DateTime    @default(now()) @map("created_at")
   updated_at DateTime    @updatedAt @map("updated_at")
-  role       Role
-
-  access_token String
+  role       String      @default("USER")
 
   Token Token[]
 

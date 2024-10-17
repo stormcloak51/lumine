@@ -9,8 +9,8 @@ import * as font from '../fonts/fonts'
 import { ThemeProvider } from 'next-themes'
 import SideNav from './components/SideNav'
 import ClientProvider from './ClientProvider'
-import { cookies } from 'next/headers'
 import { AuthWrapper } from './AuthWrapper'
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
 	title: 'lumine',
@@ -22,8 +22,8 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const cookieStore = cookies()
-	const token = await cookieStore.get('token')?.value
+	const token = cookies().get('refreshToken')?.value
+
 	if (!token) {
 		return (
 			<html lang='en'>

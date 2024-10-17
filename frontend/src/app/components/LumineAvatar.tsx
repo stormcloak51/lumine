@@ -9,22 +9,23 @@ interface IAvatar extends AvatarProps {
 	hasStories?: boolean
 	shouldRedirect?: boolean
 	position?: 'relative' | 'absolute'
+	url: string
+	username: string
 }
 
-const LumineAvatar: FC<IAvatar> = ({ hasStories = false, className, position = 'relative', shouldRedirect = false, ...props }) => {
-	const { user: {user} } = useAuth()
+const LumineAvatar: FC<IAvatar> = ({ hasStories = false, className, position = 'relative', shouldRedirect = false, url, username, ...props }) => {
 
 	if (!shouldRedirect) {
 		return (
 			<div className={`${classes.avatarWrapper} ${position === 'absolute' ? 'absolute top-0' : 'relative'} ${hasStories ? classes.hasStories : ''} ${className}`}>
-				<Avatar {...props} src={user.userAvatar} >{user.userAvatar?.slice(0, 2)}</Avatar>
+				<Avatar {...props} src={url} >{username?.slice(0, 2)}</Avatar>
 			</div>
 		)
 	}
 
 	return (
 		<Link href='/profile' className={`${classes.avatarWrapper} ${position === 'absolute' ? 'absolute top-0' : 'relative'} ${hasStories ? classes.hasStories : ''} ${className}`}>
-			<Avatar {...props} src={user.userAvatar} >{user.userAvatar?.slice(0, 2)}</Avatar>
+			<Avatar {...props} src={url} >{username?.slice(0, 2)}</Avatar>
 		</Link>
 	);
 }

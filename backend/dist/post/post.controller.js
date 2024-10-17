@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_service_1 = require("./post.service");
-const auth_guard_1 = require("../auth/auth.guard");
 const post_dto_1 = require("./post.dto");
 let PostController = class PostController {
     constructor(postService) {
@@ -28,7 +27,6 @@ let PostController = class PostController {
         return this.postService.createPost(data);
     }
     findByUsername(username) {
-        console.log('sev,', username);
         return this.postService.findByUsername(username);
     }
 };
@@ -47,7 +45,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "createPost", null);
 __decorate([
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('findByUsername'),
     __param(0, (0, common_1.Query)('username')),
     __metadata("design:type", Function),

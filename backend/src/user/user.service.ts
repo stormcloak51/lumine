@@ -2,12 +2,27 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client'
 import { hash } from 'bcrypt'
 import { AuthService } from 'src/auth/auth.service'
+import { RegisterDto } from 'src/auth/dto/register.dto'
 
 import { PrismaService } from 'src/prisma.service'
 
 @Injectable()
 export class UserService {
 	constructor(private readonly prisma: PrismaService){}
+
+	async create(dto: RegisterDto){
+		const password: string = await hash(dto.password, 10)
+		const data = {
+			...dto,
+			password,
+			bio: '',
+		}
+
+		return this.prisma.user.create({
+			data
+		})
+		
+	}
 
 	findOne(idOrEmailOrUsername: string) {
 		return this.prisma.user.findFirst({
@@ -37,6 +52,8 @@ export class UserService {
 			}
 		})
 	}
+
+
 
 	findAll() {
 		return this.prisma.user.findMany()

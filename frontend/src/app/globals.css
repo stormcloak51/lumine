@@ -60,3 +60,21 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #666;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.prose-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* Optional: Style the placeholder text differently when editor is focused */
+.ProseMirror:focus p.is-editor-empty:first-child::before {
+  color: #777;
+}

@@ -29,6 +29,8 @@ const SideNav = () => {
 					size='xl'
 					hasStories={true}
 					shouldRedirect={false}
+					username={username}
+					url={userAvatar}
 				/>
 				<div className='text-center'>
 					<Title className={`${IBMPlexMono.className}`}>

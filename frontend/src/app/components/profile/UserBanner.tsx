@@ -1,23 +1,16 @@
 'use client'
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
-import { Flex, Card, Title, HoverCard, Transition, Button, Image, Text } from '@mantine/core'
-import { Pen } from 'lucide-react'
+import { Flex, Card, Title, HoverCard, Transition, Image, Text } from '@mantine/core'
 import { FC, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
-import { useAuth } from '@/lib/actions/state'
 import { useClipboard } from '@mantine/hooks'
-import { TUser } from '@/lib/types'
+import { IUserCredentials } from '@/types/user.types'
+import { ChangeCredentials } from './ChangeCredentials'
 
-interface IUserBanner {
-	user: TUser | undefined
-}
 
-export const UserBanner: FC<IUserBanner> = ({user}) => {
+export const UserBanner: FC<IUserCredentials> = (user) => {
 	const clipboard = useClipboard({ timeout: 1000 })
-	const {
-		user: { user: { id } },
-	} = useAuth()
 
 	const [mounted, setMounted] = useState<boolean>(false)
 	return (
@@ -86,13 +79,7 @@ export const UserBanner: FC<IUserBanner> = ({user}) => {
 						</Transition>
 					</div>
 				</div>
-				<Button
-					className='text-[16px] font-sans'
-					leftSection={<Pen size={20} />}
-					color={'#ffd37d'}
-					variant={'light'}>
-					Change
-				</Button>
+				<ChangeCredentials currId={user.id}/>
 			</div>
 		</Card>
 		<LumineAvatar
@@ -100,6 +87,8 @@ export const UserBanner: FC<IUserBanner> = ({user}) => {
 			className='top-[130px] transform -translate-x-1/2 left-[10%]'
 			hasStories={true}
 			size={130}
+			url={user?.userAvatar}
+			username={user?.username}
 		/>
 	</Flex>
 	)
