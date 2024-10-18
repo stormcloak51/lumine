@@ -17,11 +17,6 @@ export class UserService {
 		return JSON.parse(JSON.stringify(response.data))
 	}
 	
-	// async getCurrentUser() {
-	// 	const response = await axiosWithAuth.get(this.BASE_URL + '/current')
-	// 	console.log(response)
-	// 	return JSON.parse(JSON.stringify(response.data))
-	// }
 }
 
 export const userService = new UserService()

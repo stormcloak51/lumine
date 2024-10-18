@@ -1,5 +1,6 @@
 import { axiosWithAuth } from '@/api/interceptors'
 import { IPostData } from '@/types/post.types'
+import { AxiosResponse } from 'axios'
 
 
 
@@ -14,6 +15,7 @@ class PostService {
 
 	async create(data: IPostData){
 		const response = await axiosWithAuth.post(this.BASE_URL + '/create', data)
+		console.log(response.data, 'RESPONSE')
 		return JSON.parse(JSON.stringify(response.data))
 	}
 

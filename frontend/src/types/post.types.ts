@@ -1,8 +1,8 @@
-import { TUser } from './user.types'
+import { IUserCredentials, TUser } from './user.types'
 
 export interface IPostData {
 	content: string
-	User: TUser
+	User: IUserCredentials
 }
 
 export type TPost = {
@@ -10,4 +10,5 @@ export type TPost = {
 	content: string
 	created_at: string
 	updated_at: string
+	User: IUserCredentials
 }

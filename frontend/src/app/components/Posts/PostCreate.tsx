@@ -1,6 +1,5 @@
 'use client'
 
-import { postService } from '@/services/post.service'
 import { ActionIcon, Button, Card, Flex, Grid, Group, Textarea, Title } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import {
@@ -30,6 +29,7 @@ import Strike from '@tiptap/extension-strike'
 
 import Text from '@tiptap/extension-text'
 import { motion } from 'framer-motion'
+import { createPost } from '@/lib/actions/createPost'
 interface IPostCreate {
 	isGrid: boolean
 	currId: string
@@ -80,7 +80,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 		const postContent = editor?.getHTML()
 		if (postContent) {
 			try {
-				const data = await postService.create({ content: postContent, User: user })
+				const data = await createPost({ content: postContent, User: user })
 				console.log('seccs', data)
 			} catch (err) {
 				console.log(err)

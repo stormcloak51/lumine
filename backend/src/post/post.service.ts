@@ -8,7 +8,16 @@ export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.postModel.findMany();
+    return this.prisma.postModel.findMany({
+      include: {
+        User: {
+          select: {
+            username: true,
+            userAvatar: true
+          }
+        }
+      }
+    });
   }
 
   createPost(data: CreatePostDto) {
@@ -19,6 +28,14 @@ export class PostService {
           connect: { 
             id: data.User.id,
             username: data.User.username
+          },
+        }
+      },
+      include: {
+        User: {
+          select: {
+            username: true,
+            userAvatar: true
           }
         }
       }

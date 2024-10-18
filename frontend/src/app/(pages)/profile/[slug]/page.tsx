@@ -24,7 +24,7 @@ export const Profile = async ({ params }: { params: { slug: string } }) => {
 				<UserBanner {...user} />
 				<PostCreate isGrid={true} currId={user.id}/>
 				<FollowerSection userAvatar={user?.userAvatar}/>
-				<PostList title={`${user?.name}'s Posts`} posts={posts} isGrid={true}/>
+				{/* <PostList title={`${user?.name}'s Posts`} posts={posts} isGrid={true}/> */}
 				
 			</Grid>
 		</div>

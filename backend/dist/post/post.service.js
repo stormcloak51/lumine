@@ -17,7 +17,16 @@ let PostService = class PostService {
         this.prisma = prisma;
     }
     findAll() {
-        return this.prisma.postModel.findMany();
+        return this.prisma.postModel.findMany({
+            include: {
+                User: {
+                    select: {
+                        username: true,
+                        userAvatar: true
+                    }
+                }
+            }
+        });
     }
     createPost(data) {
         return this.prisma.postModel.create({
@@ -27,6 +36,14 @@ let PostService = class PostService {
                     connect: {
                         id: data.User.id,
                         username: data.User.username
+                    },
+                }
+            },
+            include: {
+                User: {
+                    select: {
+                        username: true,
+                        userAvatar: true
                     }
                 }
             }

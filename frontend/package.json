@@ -37,10 +37,12 @@
     "react-redux": "^9.1.2",
     "redux-persist": "^6.0.0",
     "sass": "^1.79.3",
+    "socket.io-client": "^4.8.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/backblaze-b2": "^1.5.6",
+    "@types/dompurify": "^3.0.5",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
