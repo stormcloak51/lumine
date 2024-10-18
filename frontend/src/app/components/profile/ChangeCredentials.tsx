@@ -12,7 +12,7 @@ interface IChagneCredentials {
 export const ChangeCredentials: FC<IChagneCredentials> = ({ currId }) => {
 	const {
 		user: {
-			user: { id },
+			 id,
 		},
 	} = useAuth()
 

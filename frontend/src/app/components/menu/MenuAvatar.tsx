@@ -11,7 +11,7 @@ interface IMenuAvatar {
 }
 
 export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
-	const {user: {user: {id}}} = useAuth()
+	const {user: {id}} = useAuth()
 
 	const handleLogout = async () => {
 		try {

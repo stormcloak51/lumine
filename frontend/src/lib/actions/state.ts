@@ -11,6 +11,6 @@ export const useAuth = () => {
 
 	return {
 		isAuth: !!access_token,
-		user: userData
+		user: userData.user
 	}
 }

@@ -1,13 +1,10 @@
 'use client'
 
-import { ActionIcon, Button, Card, Flex, Grid, Group, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Card, Grid, Group, Textarea } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import {
 	Camera,
-	MessageSquare,
-	MessagesSquare,
 	SendHorizontal,
-	UserPlus,
 	Video,
 	Bold as BoldButton,
 	Italic as ItalicButton,
@@ -26,31 +23,51 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Strike from '@tiptap/extension-strike'
-
+import Heading from '@tiptap/extension-heading'
 import Text from '@tiptap/extension-text'
+
 import { motion } from 'framer-motion'
 import { createPost } from '@/lib/actions/createPost'
+import { HeadingButton } from './HeadingButton'
 interface IPostCreate {
 	isGrid: boolean
-	currId: string
 }
 
-const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
-	const {
-		user: { user: user },
-	} = useAuth()
+const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
+	const { user } = useAuth()
 
-	// const [postContent, setPostContent] = useState<string>('')
+	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
 	const rightSectionRef = useRef<HTMLButtonElement>(null)
-	const isJoined = useRef(false)
 
 	const editor = useEditor({
-		extensions: [Document, Paragraph, Text, Bold, Italic, Underline,  Strike,Placeholder.configure({ placeholder: "What's news, bro?", emptyEditorClass: 'is-editor-empty' })],
+		extensions: [
+			Document,
+			Paragraph,
+			Text,
+			Bold,
+			Italic,
+			Underline,
+			Strike,
+			Placeholder.configure({
+				placeholder: "What's news, bro?",
+				emptyEditorClass: 'is-editor-empty',
+			}),
+			Heading.configure({
+				levels: [1, 2, 3],
+			}),
+		],
 		immediatelyRender: false,
+		onUpdate: ({ editor }) => {
+			const element = editor.options.element
+
+			if (element) {
+				setContentHeight(Math.max(100, element.scrollHeight))
+			}
+		},
 		editorProps: {
 			attributes: {
-				class: '!outline-none !border-none prose-sm',
+				class: '!outline-none !border-none',
 			},
 		},
 	})
@@ -58,16 +75,14 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 	const textRefLen = editor?.getText().length
 
 	const ref = useClickOutside(() => {
-		if (!isJoined.current) return
+		if (!styled) return
 
 		if (ref.current) {
 			setStyled(false)
-			isJoined.current = false
 			ref.current.style.border = '1px solid rgb(66,66,66)'
 		}
 	})
 	const handleFocus = () => {
-		isJoined.current = true
 		editor?.chain().focus()
 		if (ref.current) {
 			setStyled(true)
@@ -78,6 +93,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 
 	const handleSend = async () => {
 		const postContent = editor?.getHTML()
+		console.log(postContent)
 		if (postContent) {
 			try {
 				const data = await createPost({ content: postContent, User: user })
@@ -90,41 +106,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 
 	if (!editor) return null
 
-	if (currId !== user?.id && typeof currId !== 'undefined') {
-		return (
-			<Grid.Col span={7.5} className='px-0 pt-4 '>
-				<Card className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)] p-[16px] py-[12px]'>
-					<Title order={3} className='mb-4'>
-						Actions
-					</Title>
-					<div className='flex justify-start gap-x-4 items-center'>
-						<Button
-							leftSection={<UserPlus size={20} />}
-							className='text-[16px] font-sans'
-							color={'#ffd37d'}
-							variant={'outline'}>
-							Follow
-						</Button>
-						<Button
-							className='text-[16px] font-sans'
-							color={'#ffd37d'}
-							variant={'outline'}
-							leftSection={<MessageSquare size={20} />}>
-							Write a message
-						</Button>
-						<Button
-							className='text-[16px] font-sans'
-							color={'#ffd37d'}
-							variant={'outline'}
-							leftSection={<MessagesSquare size={20} />}>
-							Add to chat
-						</Button>
-					</div>
-				</Card>
-			</Grid.Col>
-		)
-	}
-
+	console.log(editor.options.element.scrollHeight)
 	if (!isGrid) {
 		return (
 			<motion.div
@@ -132,26 +114,35 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 					handleFocus()
 				}}
 				initial={{ height: 'auto' }}
-				animate={{ height: styled ? '150px' : typeof textRefLen !== 'undefined' && textRefLen > 15 ? '150px' : '58px' }}
+				animate={{
+					height: styled ? `${contentHeight + 40}px` : 'auto',
+				}}
+				transition={{ duration: 0.2 }}
 				ref={ref}
 				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
 				<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
-					{/* Editor content */}
 					<EditorContent
-						className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${styled ? 'h-4/6' : 'h-full'}`}
+						className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
+							styled ? 'max-h-[500px]' : 'h-full'
+						}`}
 						editor={editor}
 						color='white'
 					/>
 
-					{/* Flex container with Button positioned in the bottom-left corner */}
-					<Flex className={`${!isJoined.current ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: styled ? 1 : 0 }}
+						className={`${!styled ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
+						<HeadingButton editor={editor} level={1} />
+						<HeadingButton editor={editor} level={2} />
+						<HeadingButton editor={editor} level={3} />
 						<ActionIcon
 							onClick={() => editor.chain().focus().toggleBold().run()}
 							ref={rightSectionRef}
 							className='h-auto transition-all'
 							color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
 							variant={'outline'}>
-							<BoldButton size={14} />
+							<BoldButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
 							onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -159,7 +150,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 							className='h-auto transition-all'
 							color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
 							variant={'outline'}>
-							<ItalicButton size={14} />
+							<ItalicButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
 							onClick={() => editor.chain().focus().toggleUnderline().run()}
@@ -167,7 +158,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 							className='h-auto transition-all'
 							color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
 							variant={'outline'}>
-							<UnderlineButton size={14} />
+							<UnderlineButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
 							onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -175,17 +166,16 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 							className='h-auto transition-all'
 							color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
 							variant={'outline'}>
-							<StrikeButton size={14} />
+							<StrikeButton size={14} strokeWidth={3} />
 						</ActionIcon>
-					</Flex>
+					</motion.div>
 					<Group className='absolute bottom-0 right-0 p-4'>
 						<ActionIcon
 							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
 							className='transition-all'
 							variant='transparent'
 							color=''
-							onClick={() => handleSend()}
-						>
+							onClick={() => handleSend()}>
 							<SendHorizontal size={22} />
 						</ActionIcon>
 					</Group>
@@ -194,53 +184,80 @@ const PostCreate: FC<IPostCreate> = ({ isGrid, currId = undefined }) => {
 		)
 	}
 	return (
-		<Grid.Col span={7.5} className='px-0 pt-4'>
-			<Card
-				className='!bg-[#1f2124] mb-[20px] transition-all flex flex-row'
-				withBorder
-				style={{
-					transition: 'height 0.3s ease-in-out',
+		// <Grid.Col span={7.5} className='px-0 pt-4'>
+			<motion.div
+				onClick={() => {
+					handleFocus()
 				}}
-				shadow='sm'
-				radius='lg'
-				ref={ref}>
-				<Textarea
-					// ref={ref}
-					size='md'
-					radius='lg'
-					variant='unstyled'
-					className='w-full text-[14px] px-[15px] relative'
-					onFocus={handleFocus}
-					autosize
-					// minRows={minRows}
-					placeholder="What's news?"
-					leftSection={
-						<LumineAvatar
-							size={38}
-							src='https://i.pravatar.cc/300'
-							className='mr-[35px]'
-							position={'absolute'}
-							hasStories={true}
-							url={user?.userAvatar}
-							username={user?.username}
-						/>
-					}
-				/>
-				<Group
-					// ref={rightSectionRef}
-					className='
-		w-[100px] flex items-center justify-center flex-row gap-2 relative'>
-					<Camera className='transition-all absolute top-0 right-[30px]' />
-					<Video className='transition-all absolute top-0 right-0' />
-					<ActionIcon
-						onClick={() => handleSend()}
-						variant='transparent'
-						className='bg-none w-full h-full'>
-						<SendHorizontal className='stroke-[#ffcb64] hidden absolute bottom-0 right-0 transform' />
-					</ActionIcon>
-				</Group>
-			</Card>
-		</Grid.Col>
+				initial={{ height: 'auto' }}
+				animate={{
+					height: styled ? `${contentHeight + 40}px` : 'auto',
+				}}
+				transition={{ duration: 0.2 }}
+				ref={ref}
+				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
+				<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
+					<EditorContent
+						className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
+							styled ? 'max-h-[500px]' : 'h-full'
+						}`}
+						editor={editor}
+						color='white'
+					/>
+
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: styled ? 1 : 0 }}
+						className={`${!styled ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
+						<HeadingButton editor={editor} level={1} />
+						<HeadingButton editor={editor} level={2} />
+						<HeadingButton editor={editor} level={3} />
+						<ActionIcon
+							onClick={() => editor.chain().focus().toggleBold().run()}
+							ref={rightSectionRef}
+							className='h-auto transition-all'
+							color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
+							variant={'outline'}>
+							<BoldButton size={14} strokeWidth={3} />
+						</ActionIcon>
+						<ActionIcon
+							onClick={() => editor.chain().focus().toggleItalic().run()}
+							ref={rightSectionRef}
+							className='h-auto transition-all'
+							color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
+							variant={'outline'}>
+							<ItalicButton size={14} strokeWidth={3} />
+						</ActionIcon>
+						<ActionIcon
+							onClick={() => editor.chain().focus().toggleUnderline().run()}
+							ref={rightSectionRef}
+							className='h-auto transition-all'
+							color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
+							variant={'outline'}>
+							<UnderlineButton size={14} strokeWidth={3} />
+						</ActionIcon>
+						<ActionIcon
+							onClick={() => editor.chain().focus().toggleStrike().run()}
+							ref={rightSectionRef}
+							className='h-auto transition-all'
+							color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
+							variant={'outline'}>
+							<StrikeButton size={14} strokeWidth={3} />
+						</ActionIcon>
+					</motion.div>
+					<Group className='absolute bottom-0 right-0 p-4'>
+						<ActionIcon
+							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
+							className='transition-all'
+							variant='transparent'
+							color=''
+							onClick={() => handleSend()}>
+							<SendHorizontal size={22} />
+						</ActionIcon>
+					</Group>
+				</div>
+			</motion.div>
+		
 	)
 }
 export default PostCreate

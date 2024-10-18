@@ -12,7 +12,10 @@ export class PostService {
       include: {
         User: {
           select: {
+            name: true,
+            surname: true,
             username: true,
+            bio: true,
             userAvatar: true
           }
         }
@@ -34,7 +37,10 @@ export class PostService {
       include: {
         User: {
           select: {
+            name: true,
+            surname: true,
             username: true,
+            bio: true,
             userAvatar: true
           }
         }
@@ -49,6 +55,17 @@ export class PostService {
           username: username
         }
       },
+      include: {
+        User: {
+          select: {
+            name: true,
+            surname: true,
+            username: true,
+            bio: true,
+            userAvatar: true
+          }
+        }
+      }
     });
   }
 }

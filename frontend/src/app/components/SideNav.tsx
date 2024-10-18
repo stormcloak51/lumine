@@ -11,7 +11,7 @@ import { IBMPlexMono } from '@/fonts/fonts'
 const SideNav = () => {
 	const {
 		user: {
-			user: { userAvatar, surname, name, username },
+			userAvatar, surname, name, username
 		},
 	} = useAuth()
 	const pathname = usePathname().substring(1)

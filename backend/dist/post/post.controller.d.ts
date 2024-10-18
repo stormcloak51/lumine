@@ -7,6 +7,9 @@ export declare class PostController {
     findAll(): import(".prisma/client").Prisma.PrismaPromise<({
         User: {
             username: string;
+            name: string;
+            surname: string;
+            bio: string;
             userAvatar: string;
         };
     } & {
@@ -19,6 +22,9 @@ export declare class PostController {
     createPost(data: CreatePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         User: {
             username: string;
+            name: string;
+            surname: string;
+            bio: string;
             userAvatar: string;
         };
     } & {

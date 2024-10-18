@@ -70,11 +70,26 @@ body {
 }
 
 .prose-sm {
-  font-size: 0.875rem;
+  /* font-size: 0.875rem; */
   line-height: 1.25rem;
 }
 
 /* Optional: Style the placeholder text differently when editor is focused */
 .ProseMirror:focus p.is-editor-empty:first-child::before {
   color: #777;
+}
+
+.ProseMirror h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.ProseMirror h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: bold;
 }

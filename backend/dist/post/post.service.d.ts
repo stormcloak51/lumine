@@ -6,6 +6,9 @@ export declare class PostService {
     findAll(): import(".prisma/client").Prisma.PrismaPromise<({
         User: {
             username: string;
+            name: string;
+            surname: string;
+            bio: string;
             userAvatar: string;
         };
     } & {
@@ -18,6 +21,9 @@ export declare class PostService {
     createPost(data: CreatePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         User: {
             username: string;
+            name: string;
+            surname: string;
+            bio: string;
             userAvatar: string;
         };
     } & {
@@ -27,11 +33,19 @@ export declare class PostService {
         content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
-    findByUsername(username: string): import(".prisma/client").Prisma.PrismaPromise<{
+    findByUsername(username: string): import(".prisma/client").Prisma.PrismaPromise<({
+        User: {
+            username: string;
+            name: string;
+            surname: string;
+            bio: string;
+            userAvatar: string;
+        };
+    } & {
         id: number;
         created_at: Date;
         updated_at: Date;
         content: string;
         userId: string;
-    }[]>;
+    })[]>;
 }

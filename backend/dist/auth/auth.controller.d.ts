@@ -8,44 +8,44 @@ export declare class AuthController {
     signIn(dto: LoginDto, res: Response): Promise<{
         accessToken: string;
         user: {
-            id: string;
             username: string;
             email: string;
+            userAvatar: string;
             name: string;
             surname: string;
-            bio: string;
-            userAvatar: string;
+            id: string;
             created_at: Date;
             updated_at: Date;
+            bio: string;
             role: string;
         };
     }>;
     register(dto: RegisterDto, res: Response): Promise<{
         accessToken: string;
         user: {
-            id: string;
             username: string;
             email: string;
+            userAvatar: string;
             name: string;
             surname: string;
-            bio: string;
-            userAvatar: string;
+            id: string;
             created_at: Date;
             updated_at: Date;
+            bio: string;
             role: string;
         };
     }>;
     getNewTokens(req: Request, res: Response): Promise<{
         accessToken: string;
         user: {
-            id: string;
             username: string;
             email: string;
+            userAvatar: string;
             name: string;
             surname: string;
-            bio: string;
-            userAvatar: string;
+            id: string;
             created_at: Date;
+            bio: string;
             role: string;
         };
     }>;
