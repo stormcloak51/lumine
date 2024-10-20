@@ -1,4 +1,4 @@
-import { Card, Title, Button, Grid } from '@mantine/core'
+import { Card, Title, Button } from '@mantine/core'
 import { UserPlus, MessageSquare, MessagesSquare } from 'lucide-react'
 
 export const ActionsSection = () => {

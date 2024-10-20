@@ -1,17 +1,9 @@
 'use client'
-import {
-	Button,
-	PasswordInput,
-	Switch,
-	TextInput,
-	Title,
-	Text,
-} from '@mantine/core'
+import { Button, PasswordInput, Switch, TextInput, Title, Text } from '@mantine/core'
 import input from '../../components/styles/Header.module.scss'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
-import { useForm, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+// import { useForm, Controller } from 'react-hook-form'
 import { uploadAvatar } from '@/lib/actions/uploadAvatar'
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
@@ -19,23 +11,17 @@ import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
 import { UploadImage } from './UploadImage'
-
+import { useForm } from '@mantine/form'
 
 const schema = z.object({
 	name: z
 		.string()
 		.min(2, 'Name must be at least 2 characters long')
-		.regex(
-			/^[a-zA-Zа-яА-Я]+$/,
-			'Name can only contain Latin or Russian letters'
-		),
+		.regex(/^[a-zA-Zа-яА-Я]+$/, 'Name can only contain Latin or Russian letters'),
 	surname: z
 		.string()
 		.min(3, 'Surname must be at least 3 characters long')
-		.regex(
-			/^[a-zA-Zа-яА-Я]+$/,
-			'Surname can only contain Latin or Russian letters'
-		),
+		.regex(/^[a-zA-Zа-яА-Я]+$/, 'Surname can only contain Latin or Russian letters'),
 	username: z
 		.string()
 		.min(3, 'Username must be at least 3 characters long')
@@ -44,7 +30,7 @@ const schema = z.object({
 	email: z.string().email('Invalid email'),
 	password: z.string().min(6, 'Password must be at least 6 characters long'),
 	avatar: z.instanceof(File).optional().or(z.literal(null)),
-	agreeToTerms: z.boolean().refine(val => val, 'You must agree to the terms'),
+	agreeToTerms: z.boolean().refine(val => val === true, { message: 'You must agree to the terms' }),
 })
 
 type FormData = z.infer<typeof schema>
@@ -57,10 +43,7 @@ export const AuthForm = () => {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { avatar, agreeToTerms, ...rest } = data
 			try {
-				const userAvatar: string = await uploadAvatar(
-					data.avatar as File,
-					data.username
-				)
+				const userAvatar: string = await uploadAvatar(data.avatar as File, data.username)
 				const user = await authService.main('register', { userAvatar, ...rest })
 				return user
 			} catch (err) {
@@ -72,19 +55,48 @@ export const AuthForm = () => {
 
 	const submitRef = useRef<HTMLButtonElement>(null)
 
-	const {
-		control,
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FormData>({
-		resolver: zodResolver(schema),
+	// const {
+	// 	control,
+	// 	register,
+	// 	handleSubmit,
+	// 	formState: { errors },
+	// } = <FormData>({
+	// 	resolver: zodResolver(schema),
+	// 	mode: 'onChange',
+	// 	reValidateMode: 'onChange',
+	// })
+
+	const form = useForm({
+		mode: 'uncontrolled',
+		initialValues: {
+			name: '',
+			surname: '',
+			username: '',
+			email: '',
+			password: '',
+			avatar: null as File | null,
+			agreeToTerms: false,
+		},
+
+		validate: {
+			name: value => (value.length < 2 ? 'Name must be at least 2 characters long' : null),
+			surname: value => (value.length < 3 ? 'Surname must be at least 3 characters long' : null),
+			username: value => (value.length < 3 ? 'Username must be at least 3 characters long' : null),
+			email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+			password: value => (value.length < 6 ? 'Password must be at least 6 characters long' : null),
+			avatar: value => (!value ? 'Avatar is required' : null),
+			agreeToTerms: value => (!value && 'You must agree to the terms'),
+		},
 	})
 
-	const onSubmit = async (data: FormData) => {
-		mutation.mutate(data)
-	}
+	// const onSubmit = async (data: FormData) => {
+	// 	console.log('Form submitted', data);
+	// 	mutation.mutate(data)
+	// }
 
+	// useEffect(() => {
+	// 	console.log('Form errors:', errors);
+	// }, [errors]);
 	useEffect(() => {
 		if (mutation.isSuccess === true && mutation.data !== null) {
 			dispatch(setUser(mutation.data))
@@ -92,80 +104,74 @@ export const AuthForm = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess, mutation.data])
-
-
 	return (
 		<form
-			className='flex flex-col justify-between'
-			onSubmit={handleSubmit(onSubmit)}
-		>
+			onSubmit={form.onSubmit(values => console.log(values))}
+			className='flex flex-col justify-between'>
 			<Title>Create An Account</Title>
 			<div className='mt-5 flex gap-x-4'>
 				<TextInput
-					{...register('name')}
+					key={form.key('name')}
+					{...form.getInputProps('name')}
 					label='Your name'
 					name='name'
 					type='text'
 					classNames={input}
 					className='min-w-[215px] h-[82px]'
-					error={errors.name?.message}
 				/>
 				<TextInput
+					key={form.key('surname')}
+					{...form.getInputProps('surname')}
 					label='Your surname'
 					type='text'
-					{...register('surname')}
 					classNames={input}
 					className='min-w-[215px] h-[82px]'
-					error={errors.surname?.message}
 				/>
 			</div>
 			<div className='flex gap-y-2 flex-col'>
 				<TextInput
+					key={form.key('username')}
+					{...form.getInputProps('username')}
 					label='Username (id)'
 					type='text'
-					{...register('username')}
 					classNames={input}
 					className='min-h-[82px]'
-					error={errors.username?.message}
 				/>
 				<TextInput
 					label='Email'
 					type='text'
 					classNames={input}
 					className='h-[82px]'
-					{...register('email')}
-					error={errors.email?.message}
+					key={form.key('email')}
+					{...form.getInputProps('email')}
 				/>
 				<div>
 					<PasswordInput
+						key={form.key('password')}
+						{...form.getInputProps('password')}
 						size='sm'
-						{...register('password')}
 						label='Password'
 						description='ill know your password :)'
 						placeholder='Input placeholder'
 						classNames={input}
 						className='h-[82px]'
-						error={errors.password?.message}
 					/>
 				</div>
 				<div>
-					<Controller
-						name='avatar'
-						control={control}
-						render={({ field }) => (
-							// file input inside
-							<UploadImage onChange={field.onChange} classNames={input} error={errors.avatar?.message}/>
-						)}
+					<UploadImage
+						{...form.getInputProps('avatar')}
+						onChange={(file) => form.setFieldValue('avatar', file)}
+						key={form.key('avatar')}
+						classNames={input}
 					/>
 				</div>
 			</div>
 			<div className='flex flex-row justify-between'>
 				<Switch
-					{...register('agreeToTerms')}
 					color='#ffd37d'
 					label='I agree to sell my privacy'
-					required
-					error={errors.agreeToTerms?.message}
+					key={form.key('agreeToTerms')}
+					{...form.getInputProps('agreeToTerms')}
 				/>
 				<Text fz={12}>
 					<Link href={'/auth/login'}>Already have an account?</Link>
@@ -177,8 +183,7 @@ export const AuthForm = () => {
 				color='#ffd37d'
 				type='submit'
 				loading={mutation.isPending}
-				className='mt-4 w-full'
-			>
+				className='mt-4 w-full'>
 				Create account
 			</Button>
 		</form>

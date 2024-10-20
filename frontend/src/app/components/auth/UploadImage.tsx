@@ -11,7 +11,7 @@ import {
 	StylesRecord,
 } from '@mantine/core'
 import ReactCrop, { Crop, makeAspectCrop, centerCrop } from 'react-image-crop'
-import { SyntheticEvent, useState } from 'react'
+import { Key, SyntheticEvent, useState } from 'react'
 import 'react-image-crop/src/ReactCrop.scss'
 import { Paperclip } from 'lucide-react'
 
@@ -24,14 +24,14 @@ interface UploadImageProps {
 				ctx: unknown
 		  ) => StylesRecord<__InputStylesNames, string>)
 		| undefined
-	error: React.ReactNode
-	onChange: (payload: File | null) => void
+	key: Key | null | undefined
+	onChange: (file: File | null) => void;
 }
 
 export const UploadImage = ({
 	classNames,
-	error,
 	onChange,
+	key,
 }: UploadImageProps) => {
 	const [opened, { open, close }] = useDisclosure(false)
 	const [crop, setCrop] = useState<Crop>()
@@ -52,17 +52,19 @@ export const UploadImage = ({
 					const { naturalHeight, naturalWidth } = img
 					if (naturalHeight < 75 || naturalWidth < 75) {
 						setErrorDimensions('Image must be at least 75x75 pixels')
-
+						onChange(null)
 						return setImgSrc(undefined)
 					}
 				})
 
 				setImgSrc(imageUrl)
+				onChange(file)
 			})
 			reader.readAsDataURL(file)
 			open()
 		} else {
 			setImgSrc(undefined)
+			onChange(null)
 		}
 	}
 
@@ -84,21 +86,20 @@ export const UploadImage = ({
 	return (
 		<>
 			<FileInput
+				key={key}
 				leftSection={<Paperclip size={16} />}
 				label='Attach your avatar'
 				accept='image/png,image/jpeg,image/jpg'
 				placeholder='Your avatar'
 				leftSectionPointerEvents='none'
 				classNames={classNames}
-				className='h-[82px]'
-				error={error}
+				className='h-[82px] mt-5'
 				onChange={file => {
 					if (!file) return
-					onChange(file)
 					handleAvatarChange(file)
 				}}
+				error={errorDimensions}
 			/>
-			{errorDimensions && <p className='text-red-500'>{errorDimensions}</p>}
 			{imgSrc && (
 				<Modal
 					radius={'lg'}
