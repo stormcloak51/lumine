@@ -5,7 +5,7 @@ import { AuthForm } from '@/app/components/auth/AuthForm'
 const Auth = () => {
 	return (
 		<Card
-			className='mx-auto flex items-center justify-center'
+			className='flex items-center justify-center'
 			radius='md'
 			style={{
 				backdropFilter: 'blur(10px)',

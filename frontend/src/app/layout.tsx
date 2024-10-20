@@ -4,13 +4,9 @@ import './globals.css'
 import '@mantine/core/styles.css'
 
 import { ColorSchemeScript, createTheme, MantineColorsTuple, MantineProvider } from '@mantine/core'
-import { Header } from './components/Header'
 import * as font from '../fonts/fonts'
 import { ThemeProvider } from 'next-themes'
-import SideNav from './components/SideNav'
 import ClientProvider from './ClientProvider'
-import { AuthWrapper } from './AuthWrapper'
-import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
 	title: 'lumine',
@@ -18,6 +14,7 @@ export const metadata: Metadata = {
 }
 
 const myColor: MantineColorsTuple = [
+	'#ffd37d',
   '#fff8e1',
   '#ffefcb',
   '#ffdd9a',
@@ -41,31 +38,6 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const token = cookies().get('refreshToken')?.value
-
-	if (!token) {
-		return (
-			<html lang='en'>
-				<head>
-					<ColorSchemeScript />
-				</head>
-				<body
-					className={`${font.geistSans.variable} ${font.geistMono.variable} ${
-						font.helvetica_bold.variable 
-					} ${font.helvetica_regular.variable} antialiased mx-auto`}>
-					<ClientProvider>
-						<ThemeProvider defaultTheme='dark'>
-							<MantineProvider defaultColorScheme='dark' theme={theme}>
-								{/* <AuthWrapper> */}
-									{children}
-								{/* </AuthWrapper> */}
-							</MantineProvider>
-						</ThemeProvider>
-					</ClientProvider>
-				</body>
-			</html>
-		)
-	}
 
 	return (
 		<html lang='en'>
@@ -75,19 +47,11 @@ export default async function RootLayout({
 			<body
 				className={`${font.geistSans.variable} ${font.geistMono.variable} ${
 					font.helvetica_bold.variable
-				} ${font.helvetica_regular.variable} antialiased mx-auto max-w-[1224px]`}>
+				} ${font.helvetica_regular.variable} antialiased`}>
 				<ClientProvider>
 					<ThemeProvider defaultTheme='dark'>
-						<MantineProvider defaultColorScheme='dark'>
-							<AuthWrapper token={token}>
-								<Header />
-								<main className={`pt-[120px] ${token ? 'block' : 'hidden'}`}>
-									<SideNav />
-									<div className='pl-[290px]'>
-										{children}
-									</div>
-								</main>
-							</AuthWrapper>
+						<MantineProvider defaultColorScheme='dark' theme={theme}>
+							{children}
 						</MantineProvider>
 					</ThemeProvider>
 				</ClientProvider>

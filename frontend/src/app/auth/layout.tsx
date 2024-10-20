@@ -14,7 +14,7 @@ export default function AuthLayout({
 }>) {
 	return (
 		<section
-			className='w-[100%] h-[100vh] flex justify-center items-center'
+			className='w-[100%] min-h-screen flex justify-center items-center'
 			style={{
 				backgroundImage: 'radial-gradient(circle , rgba(245, 195, 86, 0.9), rgba(20, 20, 20, 0.3))',
 			}}>

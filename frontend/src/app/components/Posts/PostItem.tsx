@@ -1,14 +1,17 @@
+'use client'
 import { TPost } from '@/types/post.types'
-import { Card, Group, HoverCard, Text, Title } from '@mantine/core'
+import { ActionIcon, Blockquote, Card, HoverCard, Text, Title, useMantineTheme } from '@mantine/core'
 import { FC } from 'react'
 import LumineAvatar from '../LumineAvatar'
 import purify from 'dompurify'
 import { timeAgo } from '@/lib/utils/timeAgo'
 import { DMSans } from '@/fonts/fonts'
-import { Circle } from 'lucide-react'
+import { Circle, MessagesSquare, Quote, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import styles from '../styles/PostItem.module.scss'
 
 export const PostItem: FC<TPost & { title: string }> = post => {
+	const theme = useMantineTheme();
 	return (
 		<Card
 			className={`!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)] ${DMSans.className}`}
@@ -21,7 +24,13 @@ export const PostItem: FC<TPost & { title: string }> = post => {
 					<LumineAvatar size={40} url={post.User.userAvatar} username={post.User.username} />
 					<HoverCard shadow='xl' openDelay={700}>
 						<HoverCard.Target>
-							<Text href={`/profile/${post.User.username}`} component={Link} className='hover:underline cursor-pointer' ml={-8} size='lg' fw={700}>
+							<Text
+								href={`/profile/${post.User.username}`}
+								component={Link}
+								className='hover:underline cursor-pointer'
+								ml={-8}
+								size='lg'
+								fw={700}>
 								{post.User.name} {post.User.surname}
 							</Text>
 						</HoverCard.Target>
@@ -34,9 +43,43 @@ export const PostItem: FC<TPost & { title: string }> = post => {
 								boxShadow: '0 0 15px rgba(255, 184, 56, 0.1)',
 							}}>
 							<LumineAvatar size={50} url={post.User.userAvatar} username={post.User.username} />
-							<div>
-								<Title>@{post.User.username}</Title>
-								<Text>{post.User.bio === '' ? 'No bio yet :(' : post.User.bio}</Text>
+							<div className=''>
+								<div className='flex justify-between'>
+									<div>
+										<Title order={3}>
+											{post.User.name} {post.User.surname}
+										</Title>
+										<Title mb={20} c='dimmed' order={4}>
+											@{post.User.username}
+										</Title>
+									</div>
+									<div className='flex flex-row gap-x-2'>
+										<ActionIcon color={theme.colors.myColor[0]} variant='outline'>
+											<UserPlus size={20} />
+										</ActionIcon>
+										<ActionIcon color={theme.colors.myColor[0]} variant='outline'>
+											<MessagesSquare size={20} />
+										</ActionIcon>
+									</div>
+								</div>
+								<Blockquote
+									maw={400}
+									color={'#ffd37d'}
+									iconSize={30}
+									icon={<Quote size={16} />}
+									className='pt-3 pl-5 whitespace-normal break-words'
+									cite={post.User.name + ' ' + post.User.surname}
+									styles={{
+										icon: {
+											border: '1px solid #ffd37d',
+										},
+									}}>
+									<i>
+										{post.User.bio === ''
+											? 'No bio yet :( lorem15123123lkawmdkjaskjdaklsdmalkdsmalksdmalkdsmalksdm msdlkm askldma klsda lksdmal sdma'
+											: post.User.bio}
+									</i>
+								</Blockquote>
 							</div>
 						</HoverCard.Dropdown>
 					</HoverCard>

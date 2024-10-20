@@ -1,34 +1,32 @@
 'use client'
 
-import { ActionIcon, Card, Grid, Group, Textarea } from '@mantine/core'
+import { useAuth } from '@/lib/actions/state'
+import { ActionIcon, Group } from '@mantine/core'
 import { useClickOutside } from '@mantine/hooks'
 import {
-	Camera,
-	SendHorizontal,
-	Video,
 	Bold as BoldButton,
 	Italic as ItalicButton,
-	Underline as UnderlineButton,
+	SendHorizontal,
 	Strikethrough as StrikeButton,
+	Underline as UnderlineButton,
 } from 'lucide-react'
 import { FC, useRef, useState } from 'react'
-import LumineAvatar from '../LumineAvatar'
-import { useAuth } from '@/lib/actions/state'
 // import Tiptap from '../Tiptap'
-import { EditorContent, useEditor } from '@tiptap/react'
 import Bold from '@tiptap/extension-bold'
-import Italic from '@tiptap/extension-italic'
 import Document from '@tiptap/extension-document'
+import Heading from '@tiptap/extension-heading'
+import Italic from '@tiptap/extension-italic'
 import Paragraph from '@tiptap/extension-paragraph'
-import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Strike from '@tiptap/extension-strike'
-import Heading from '@tiptap/extension-heading'
 import Text from '@tiptap/extension-text'
+import Underline from '@tiptap/extension-underline'
+import { EditorContent, useEditor } from '@tiptap/react'
 
-import { motion } from 'framer-motion'
 import { createPost } from '@/lib/actions/createPost'
+import { motion } from 'framer-motion'
 import { HeadingButton } from './HeadingButton'
+import LumineAvatar from '../LumineAvatar'
 interface IPostCreate {
 	isGrid: boolean
 }
@@ -93,7 +91,6 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 
 	const handleSend = async () => {
 		const postContent = editor?.getHTML()
-		console.log(postContent)
 		if (postContent) {
 			try {
 				const data = await createPost({ content: postContent, User: user })
@@ -106,7 +103,6 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 
 	if (!editor) return null
 
-	console.log(editor.options.element.scrollHeight)
 	if (!isGrid) {
 		return (
 			<motion.div
@@ -119,10 +115,16 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 				}}
 				transition={{ duration: 0.2 }}
 				ref={ref}
-				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
-				<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
+				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'
+			>
+				<div
+					className={`relative w-full h-full ${
+						!styled ? 'flex items-center' : ''
+					}`}
+				>
+					<LumineAvatar hasStories={true} className='left-2 top-[9px]' position='absolute' url={user.userAvatar} username={user.username} size={36} />
 					<EditorContent
-						className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
+						className={`ml-12 overflow-y-auto p-[16px] w-full !outline-none !border-none ${
 							styled ? 'max-h-[500px]' : 'h-full'
 						}`}
 						editor={editor}
@@ -132,7 +134,10 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: styled ? 1 : 0 }}
-						className={`${!styled ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
+						className={`ml-10 ${
+							!styled ? 'hidden' : 'flex'
+						} absolute bottom-0 left-0 p-4 gap-x-4`}
+					>
 						<HeadingButton editor={editor} level={1} />
 						<HeadingButton editor={editor} level={2} />
 						<HeadingButton editor={editor} level={3} />
@@ -141,7 +146,8 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 							ref={rightSectionRef}
 							className='h-auto transition-all'
 							color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
+							variant={'outline'}
+						>
 							<BoldButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
@@ -149,7 +155,8 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 							ref={rightSectionRef}
 							className='h-auto transition-all'
 							color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
+							variant={'outline'}
+						>
 							<ItalicButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
@@ -157,7 +164,8 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 							ref={rightSectionRef}
 							className='h-auto transition-all'
 							color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
+							variant={'outline'}
+						>
 							<UnderlineButton size={14} strokeWidth={3} />
 						</ActionIcon>
 						<ActionIcon
@@ -165,17 +173,23 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 							ref={rightSectionRef}
 							className='h-auto transition-all'
 							color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
+							variant={'outline'}
+						>
 							<StrikeButton size={14} strokeWidth={3} />
 						</ActionIcon>
 					</motion.div>
 					<Group className='absolute bottom-0 right-0 p-4'>
 						<ActionIcon
-							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
+							disabled={
+								typeof textRefLen !== 'undefined' && textRefLen > 0
+									? false
+									: true
+							}
 							className='transition-all'
 							variant='transparent'
 							color=''
-							onClick={() => handleSend()}>
+							onClick={() => handleSend()}
+						>
 							<SendHorizontal size={22} />
 						</ActionIcon>
 					</Group>
@@ -185,79 +199,93 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 	}
 	return (
 		// <Grid.Col span={7.5} className='px-0 pt-4'>
-			<motion.div
-				onClick={() => {
-					handleFocus()
-				}}
-				initial={{ height: 'auto' }}
-				animate={{
-					height: styled ? `${contentHeight + 40}px` : 'auto',
-				}}
-				transition={{ duration: 0.2 }}
-				ref={ref}
-				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
-				<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
-					<EditorContent
-						className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
-							styled ? 'max-h-[500px]' : 'h-full'
-						}`}
-						editor={editor}
-						color='white'
-					/>
+		<motion.div
+			onClick={() => {
+				handleFocus()
+			}}
+			initial={{ height: 'auto' }}
+			animate={{
+				height: styled ? `${contentHeight + 40}px` : 'auto',
+			}}
+			transition={{ duration: 0.2 }}
+			ref={ref}
+			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'
+		>
+			<div
+				className={`relative w-full h-full ${
+					!styled ? 'flex items-center' : ''
+				}`}
+			>
+				<EditorContent
+					className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
+						styled ? 'max-h-[500px]' : 'h-full'
+					}`}
+					editor={editor}
+					color='white'
+				/>
 
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: styled ? 1 : 0 }}
-						className={`${!styled ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
-						<HeadingButton editor={editor} level={1} />
-						<HeadingButton editor={editor} level={2} />
-						<HeadingButton editor={editor} level={3} />
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleBold().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
-							<BoldButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleItalic().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
-							<ItalicButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleUnderline().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
-							<UnderlineButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleStrike().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}>
-							<StrikeButton size={14} strokeWidth={3} />
-						</ActionIcon>
-					</motion.div>
-					<Group className='absolute bottom-0 right-0 p-4'>
-						<ActionIcon
-							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
-							className='transition-all'
-							variant='transparent'
-							color=''
-							onClick={() => handleSend()}>
-							<SendHorizontal size={22} />
-						</ActionIcon>
-					</Group>
-				</div>
-			</motion.div>
-		
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: styled ? 1 : 0 }}
+					className={`${
+						!styled ? 'hidden' : 'flex'
+					} absolute bottom-0 left-0 p-4 gap-x-4`}
+				>
+					<HeadingButton editor={editor} level={1} />
+					<HeadingButton editor={editor} level={2} />
+					<HeadingButton editor={editor} level={3} />
+					<ActionIcon
+						onClick={() => editor.chain().focus().toggleBold().run()}
+						ref={rightSectionRef}
+						className='h-auto transition-all'
+						color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
+						variant={'outline'}
+					>
+						<BoldButton size={14} strokeWidth={3} />
+					</ActionIcon>
+					<ActionIcon
+						onClick={() => editor.chain().focus().toggleItalic().run()}
+						ref={rightSectionRef}
+						className='h-auto transition-all'
+						color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
+						variant={'outline'}
+					>
+						<ItalicButton size={14} strokeWidth={3} />
+					</ActionIcon>
+					<ActionIcon
+						onClick={() => editor.chain().focus().toggleUnderline().run()}
+						ref={rightSectionRef}
+						className='h-auto transition-all'
+						color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
+						variant={'outline'}
+					>
+						<UnderlineButton size={14} strokeWidth={3} />
+					</ActionIcon>
+					<ActionIcon
+						onClick={() => editor.chain().focus().toggleStrike().run()}
+						ref={rightSectionRef}
+						className='h-auto transition-all'
+						color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
+						variant={'outline'}
+					>
+						<StrikeButton size={14} strokeWidth={3} />
+					</ActionIcon>
+				</motion.div>
+				<Group className='absolute bottom-0 right-0 p-4'>
+					<ActionIcon
+						disabled={
+							typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true
+						}
+						className='transition-all'
+						variant='transparent'
+						color=''
+						onClick={() => handleSend()}
+					>
+						<SendHorizontal size={22} />
+					</ActionIcon>
+				</Group>
+			</div>
+		</motion.div>
 	)
 }
 export default PostCreate

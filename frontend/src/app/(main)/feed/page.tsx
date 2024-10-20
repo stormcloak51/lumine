@@ -1,10 +1,10 @@
 import { Container } from '@mantine/core'
-import { NextPage } from 'next'
 
-import PostList from '@/app/components/Posts/PostList'
 import PostCreate from '@/app/components/Posts/PostCreate'
+import PostList from '@/app/components/Posts/PostList'
 import { postService } from '@/services/post.service'
-import { TPost } from '@/types/post.types'
+import { Suspense } from 'react'
+import Loading from './loading'
 
 // import { useQueryClient } from '@tanstack/react-query'
 
@@ -20,15 +20,15 @@ import { TPost } from '@/types/post.types'
 //   };
 // }
 
-const Feed: NextPage = async () => {
-	const posts = await postService.findAll()
+export default async function Feed() {
+	// const posts = await postService.findAll()
 	return (
-		<Container className='box-border flex flex-col'>
-			<PostCreate isGrid={false} />
-
-			<PostList posts={posts} title='Recommended' />
-		</Container>
+		<Suspense fallback={<Loading />}>
+			<Container className='box-border flex flex-col'>
+				<PostCreate isGrid={false} />
+				<PostList posts={await postService.findAll()} title='Recommended' />
+			</Container>
+		</Suspense>
+		// <Loading/>
 	)
 }
-
-export default Feed

@@ -1,7 +1,13 @@
 'use client'
-import { Button, FileInput, PasswordInput, Switch, TextInput, Title, Text } from '@mantine/core'
+import {
+	Button,
+	PasswordInput,
+	Switch,
+	TextInput,
+	Title,
+	Text,
+} from '@mantine/core'
 import input from '../../components/styles/Header.module.scss'
-import { Paperclip } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,15 +18,24 @@ import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
+import { UploadImage } from './UploadImage'
 
 
 const schema = z.object({
-  name: z.string()
-    .min(2, 'Name must be at least 2 characters long')
-    .regex(/^[a-zA-Zа-яА-Я]+$/, 'Name can only contain Latin or Russian letters'),
-  surname: z.string()
-    .min(3, 'Surname must be at least 3 characters long')
-    .regex(/^[a-zA-Zа-яА-Я]+$/, 'Surname can only contain Latin or Russian letters'),
+	name: z
+		.string()
+		.min(2, 'Name must be at least 2 characters long')
+		.regex(
+			/^[a-zA-Zа-яА-Я]+$/,
+			'Name can only contain Latin or Russian letters'
+		),
+	surname: z
+		.string()
+		.min(3, 'Surname must be at least 3 characters long')
+		.regex(
+			/^[a-zA-Zа-яА-Я]+$/,
+			'Surname can only contain Latin or Russian letters'
+		),
 	username: z
 		.string()
 		.min(3, 'Username must be at least 3 characters long')
@@ -42,7 +57,10 @@ export const AuthForm = () => {
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { avatar, agreeToTerms, ...rest } = data
 			try {
-				const userAvatar: string = await uploadAvatar(data.avatar as File, data.username)
+				const userAvatar: string = await uploadAvatar(
+					data.avatar as File,
+					data.username
+				)
 				const user = await authService.main('register', { userAvatar, ...rest })
 				return user
 			} catch (err) {
@@ -56,7 +74,7 @@ export const AuthForm = () => {
 
 	const {
 		control,
-	register,
+		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormData>({
@@ -72,11 +90,15 @@ export const AuthForm = () => {
 			dispatch(setUser(mutation.data))
 			window.location.href = '/feed'
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [mutation.isSuccess, mutation.data])
 
+
 	return (
-		<form className='flex flex-col justify-between' onSubmit={handleSubmit(onSubmit)}>
+		<form
+			className='flex flex-col justify-between'
+			onSubmit={handleSubmit(onSubmit)}
+		>
 			<Title>Create An Account</Title>
 			<div className='mt-5 flex gap-x-4'>
 				<TextInput
@@ -131,17 +153,8 @@ export const AuthForm = () => {
 						name='avatar'
 						control={control}
 						render={({ field }) => (
-							<FileInput
-								leftSection={<Paperclip size={16} />}
-								label='Attach your avatar'
-								accept='image/png,image/jpeg'
-								placeholder='Your avatar'
-								leftSectionPointerEvents='none'
-								classNames={input}
-								className='h-[82px]'
-								error={errors.avatar?.message}
-								{...field}
-							/>
+							// file input inside
+							<UploadImage onChange={field.onChange} classNames={input} error={errors.avatar?.message}/>
 						)}
 					/>
 				</div>
@@ -164,7 +177,8 @@ export const AuthForm = () => {
 				color='#ffd37d'
 				type='submit'
 				loading={mutation.isPending}
-				className='mt-4 w-full'>
+				className='mt-4 w-full'
+			>
 				Create account
 			</Button>
 		</form>

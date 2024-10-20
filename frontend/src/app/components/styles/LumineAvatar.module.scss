@@ -1,0 +1,14 @@
+
+
+.avatar-image {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+	aspect-ratio: 1; // Поддерживаем квадратную форму
+	width: 40px; // Явно задаем ширину
+	height: 40px; // Явно задаем высоту
+	overflow: hidden;
+	
+}
