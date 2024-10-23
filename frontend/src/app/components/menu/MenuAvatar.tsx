@@ -11,7 +11,7 @@ interface IMenuAvatar {
 }
 
 export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
-	const {user: {id}} = useAuth()
+	const {user: { userAvatar, username}} = useAuth()
 
 	const handleLogout = async () => {
 		try {
@@ -26,7 +26,7 @@ export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
 		<Menu shadow='md' width={200}>
 			<Menu.Target>
 				<div className='flex justify-center p-0 m-0'>
-					<LumineAvatar size={size} hasStories={false} shouldRedirect={false} />
+					<LumineAvatar username={username} url={userAvatar} size={size} hasStories={false} shouldRedirect={false} />
 				</div>
 			</Menu.Target>
 

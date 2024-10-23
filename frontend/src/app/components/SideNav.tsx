@@ -1,18 +1,27 @@
 'use client'
 import { useAuth } from '@/lib/actions/state'
-import { Group, Title, Text, Card, Divider, NavLink } from '@mantine/core'
-import { CircleUserRound, House, MessageCircle, UserRound, UsersRound } from 'lucide-react'
-import Link from 'next/link'
+import {
+	Group,
+	Title,
+	Text,
+	Stack,
+} from '@mantine/core'
+import {
+	CircleUserRound,
+	House,
+	MessageCircle,
+	Settings,
+	UsersRound,
+} from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import LumineAvatar from './LumineAvatar'
-import { IBMPlexMono } from '@/fonts/fonts'
+import { inter } from '@/fonts/fonts'
+import { SideNavItem } from './SideNavItem'
 
 const SideNav = () => {
 	const {
-		user: {
-			userAvatar, surname, name, username
-		},
+		user: { userAvatar, surname, name, username },
 	} = useAuth()
 	const pathname = usePathname().substring(1)
 	const [index, setIndex] = useState<string>('feed')
@@ -21,134 +30,121 @@ const SideNav = () => {
 	}, [pathname])
 
 	return (
-		<nav className='flex flex-col w-[270px] fixed'>
-			<Group className='mx-auto flex flex-col'>
+		<nav
+			className={`${inter.className} flex flex-col px-4 pt-4 pb-3 w-[270px] rounded-xl fixed bg-[rgba(31,33,36,0.7)] shadow-[0px_64px_64px_-32px_rgba(41,15,0,0.56)] backdrop-blur-[80px] border border-[rgba(126,126,126,0.15)]`}
+		>
+			<Group>
 				<LumineAvatar
-					className='rounded-full'
-					src={userAvatar}
-					size='xl'
-					hasStories={true}
-					shouldRedirect={false}
-					username={username}
+					size={50}
 					url={userAvatar}
+					username={`${name} ${surname}`}
 				/>
-				<div className='text-center'>
-					<Title className={`${IBMPlexMono.className}`}>
+				<Stack justify='center' className='gap-y-1'>
+					<Text c='dimmed' className='text-[11px]'>
+						NEWBIE
+					</Text>
+					<Title className={`text-[20px] font-medium`}>
 						{name} {surname}
 					</Title>
-					<Text c={'dimmed'} className='font-mono'>
-						@{username}
-					</Text>
-				</div>
+				</Stack>
 			</Group>
-			<Card className='px-2 py-3 mt-4 bg-[#1f2124] helvetica-bold' radius='md'>
-				<Group className='gap-y-1 inter-500'>
-					<NavLink
-						className='rounded-lg transition-all'
-						label='Profile'
-						component={Link}
-						href={`/profile/${username}`}
-						active={index === `profile/${username}`}
-						onClick={() => setIndex(`profile/${username}`)}
-						color='#ffd37d'
-						leftSection={
-							<CircleUserRound size={'18 '} stroke={index === `profile/${username}` ? '#050514' : '#d1d3d6'} />
-						}
-						variant='filled'
-						styles={{
-							label: {
-								fontSize: '16px',
-								fontWeight: '500',
-								color: index === `profile/${username}` ? '#050514' : '#d1d3d6',
-							},
-						}}
-					/>
-					<NavLink
-						className='rounded-lg transition-all'
-						label='Feed'
-						component={Link}
-						href={'/feed'}
-						active={index === 'feed'}
-						onClick={() => setIndex('feed')}
-						color='#ffd37d'
-						leftSection={<House size={'18 '} stroke={index === 'feed' ? '#050514' : '#d1d3d6'} />}
-						variant='filled'
-						styles={{
-							label: {
-								fontSize: '16px',
-								fontWeight: '500',
-								color: index === 'feed' ? '#050514' : '#d1d3d6',
-							},
-						}}
-					/>
-					<NavLink
-						className='rounded-lg transition-all'
-						component={Link}
-						label='Messages'
-						href={'/messages'}
-						// disabled={index === 'messages'}
-						active={index === 'messages'}
-						onClick={() => {
-							setIndex('messages')
-						}}
-						color='#ffd37d'
-						leftSection={
-							<MessageCircle size={'18 '} stroke={index === 'messages' ? '#050514' : '#d1d3d6'} />
-						}
-						variant='filled'
-						styles={{
-							label: {
-								fontSize: '16px',
-								fontWeight: '500',
-								color: index === 'messages' ? '#050514' : '#d1d3d6',
-							},
-						}}
-					/>
-					<NavLink
-						className='rounded-lg transition-all'
-						component={Link}
-						label='Friends'
-						href={'/friends'}
-						// disabled={index === 'friends'}
-						active={index === 'friends'}
-						onClick={() => setIndex('friends')}
-						color='#ffd37d'
-						leftSection={
-							<UserRound size={'18'} stroke={index === 'friends' ? '#050514' : '#d1d3d6'} />
-						}
-						variant='filled'
-						styles={{
-							label: {
-								fontSize: '16px',
-								color: index === 'friends' ? '#050514' : '#d1d3d6',
-							},
-						}}
-					/>
-					<NavLink
-						className={`rounded-lg transition-all transition-duration-300 $`}
-						component={Link}
-						label='Groups'
-						href={'/groups'}
-						// disabled={index === 'groups'}
-						active={index === 'groups'}
-						onClick={() => setIndex('groups')}
-						color='#ffd37d'
-						variant='filled'
-						leftSection={
-							<UsersRound size={'18 '} stroke={index === 'groups' ? '#050514' : '#d1d3d6'} />
-						}
-						styles={{
-							label: {
-								fontSize: '16px',
-								fontWeight: '500',
-								color: index === 'groups' ? '#050514' : '#d1d3d6',
-							},
-						}}
-					/>
+			<div
+				className='w-full h-[1px] my-3 '
+				style={{
+					background:
+						'radial-gradient(50% 50% at 50% 50%, rgba(255, 218, 145, 0.48) 0%, rgba(255, 198, 86, 0.32) 49%, rgba(223,148,0, 0.00) 100%)',
+					opacity: 0.32,
+					boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+				}}
+			/>
+			<Stack className='gap-y-1'>
+				<Text className='px-4 text-[11px] font-medium' c={'dimmed'}>
+					MAIN
+				</Text>
+				<SideNavItem
+					title='Profile'
+					href={`/profile/${username}`}
+					Icon={CircleUserRound}
+					onClickEvent={() => setIndex(`profile`)}
+					isActive={index.startsWith('profile') || index === 'profile'}
+				/>
+				<SideNavItem
+					title='Feed'
+					href={'/feed'}
+					Icon={House}
+					onClickEvent={() => setIndex(`feed`)}
+					isActive={index === 'feed'}
+				/>
+				<SideNavItem
+					title='Messages'
+					href={'/messages'}
+					Icon={MessageCircle}
+					onClickEvent={() => setIndex(`messages`)}
+					isActive={index === 'messages'}
+				/>
+				<SideNavItem
+					title='Friends'
+					href={'/friends'}
+					Icon={UsersRound}
+					onClickEvent={() => setIndex(`friends`)}
+					isActive={index === 'friends'}
+				/>
+			</Stack>
+			<div
+				className='w-full h-[1px] my-3'
+				style={{
+					background:
+						'radial-gradient(50% 50% at 50% 50%, rgba(255, 218, 145, 0.48) 0%, rgba(255, 198, 86, 0.32) 49%, rgba(223,148,0, 0.00) 100%)',
+					opacity: 0.32,
+					boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+				}}
+			/>
+
+			<Stack className='gap-y-5 pl-4'>
+				<Text className='text-[11px] font-medium' c={'dimmed'}>
+					GO - TO PERSONS
+				</Text>
+				<Group className='text-gray-400 hover:text-gray-300 cursor-pointer'>
+					<LumineAvatar size={30} url={userAvatar} username={`${name} ${surname}`} />
+					<Text className='text-base'>
+						{name} {surname}
+					</Text>
 				</Group>
-				<Divider />
-				<Group></Group>
-			</Card>
+				<Group className='text-gray-400 hover:text-gray-300 cursor-pointer'>
+					<LumineAvatar size={30} url={userAvatar} username={`${name} ${surname}`} />
+					<Text className='text-base'>
+						{name} {surname}
+					</Text>
+				</Group>
+				<Group className='text-gray-400 hover:text-gray-300 cursor-pointer'>
+					<LumineAvatar size={30} url={userAvatar} username={`${name} ${surname}`} />
+					<Text className='text-base'>
+						{name} {surname}
+					</Text>
+				</Group>
+			</Stack>
+			<div
+				className='w-full h-[1px] my-3'
+				style={{
+					background:
+						'radial-gradient(50% 50% at 50% 50%, rgba(255, 218, 145, 0.48) 0%, rgba(255, 198, 86, 0.32) 49%, rgba(223,148,0, 0.00) 100%)',
+					opacity: 0.32,
+					boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+				}}
+			/>
+
+			<Stack className='gap-y-1'>
+				<Text className='px-4 text-[11px] font-medium' c={'dimmed'}>
+					MISC
+				</Text>
+				<SideNavItem
+					title='Settings'
+					href={'/settings'}
+					Icon={Settings}
+					onClickEvent={() => setIndex(`settings`)}
+					isActive={index === 'settings'}
+				/>
+			</Stack>
 		</nav>
 	)
 }

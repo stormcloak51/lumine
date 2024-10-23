@@ -3,15 +3,13 @@ import { Button, PasswordInput, TextInput, Title, Text } from '@mantine/core'
 import input from '../../components/styles/Header.module.scss'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/lib/store/slices/user.slice'
 import { TUserData } from '@/types/user.types'
 import { authService } from '@/services/auth.service'
-
+import { useForm } from '@mantine/form'
 
 const schema = z.object({
   usernameOrEmail: z
@@ -23,7 +21,6 @@ const schema = z.object({
 })
 
 type FormData = z.infer<typeof schema>
-
 export const LoginForm = () => {
 	const dispatch = useDispatch()
 
@@ -40,15 +37,26 @@ export const LoginForm = () => {
 	})
 	const submitRef = useRef<HTMLButtonElement>(null)
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FormData>({
-		resolver: zodResolver(schema),
+	const form = useForm({
+		mode: 'uncontrolled',
+		initialValues: {
+			usernameOrEmail: '',
+			password: '',
+		},
+		validate: {
+      usernameOrEmail: (value) => {
+        const result = schema.shape.usernameOrEmail.safeParse(value)
+        return result.success ? null : result.error.errors[0].message
+      },
+      password: (value) => {
+        const result = schema.shape.password.safeParse(value)
+        return result.success ? null : result.error.errors[0].message
+      }
+		},
 	})
 
-	const onSubmit = async (data: FormData) => {
+	const onSubmit = async() => {
+		const data: FormData = form.getValues()
 		mutation.mutate(data)
 	}
 
@@ -63,45 +71,35 @@ export const LoginForm = () => {
 		await dispatch(setUser({
 			access_token: data.access_token,
 			user: {
-				id: data.user.id,
-				name: data.user.name,
-				surname: data.user.surname,
-				username: data.user.username,
-				email: data.user.email,
-				password: data.user.password,
-				userAvatar: data.user.userAvatar,
-				bio: data.user.bio,
-				role: data.user.role,
-				created_at: data.user.created_at,
-				updated_at: data.user.updated_at,
+				...data.user
 			}
 		}))
 		window.location.href = '/feed'
 	}
 
 	return (
-		<form className='flex flex-col justify-between w-[390px]' onSubmit={handleSubmit(onSubmit)}>
+		<form className='flex flex-col justify-between w-[390px]' onSubmit={form.onSubmit(onSubmit)}>
 			<Title>Log In</Title>
 			<div className='flex gap-y-2 flex-col'>
 				<TextInput
-					{...register('usernameOrEmail')}
+					key={form.key('usernameOrEmail')}
+					{...form.getInputProps('usernameOrEmail')}
 					label='Username / Email'
 					name='usernameOrEmail'
 					type='text'
 					classNames={input}
 					className='min-w-[215px] h-[82px] mt-5'
-					error={errors.usernameOrEmail?.message}
 				/>
 				<div>
 					<PasswordInput
+						key={form.key('password')}
+						{...form.getInputProps('password')}
 						size='sm'
-						{...register('password')}
 						label='Password'
 						description='ill know your password :)'
 						placeholder='Input placeholder'
 						classNames={input}
 						className='h-[82px] mb-9'
-						error={errors.password?.message}
 					/>
 				</div>
 			</div>

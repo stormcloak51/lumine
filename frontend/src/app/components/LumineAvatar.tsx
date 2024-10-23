@@ -3,8 +3,6 @@ import { AvatarProps, Avatar } from '@mantine/core'
 import { FC } from 'react'
 import classes from './styles/Avatar.module.scss'
 import Link from 'next/link'
-import { useAuth } from '@/lib/actions/state'
-import styles from './styles/LumineAvatar.module.scss'
 
 interface IAvatar extends AvatarProps {
 	hasStories?: boolean
@@ -23,7 +21,6 @@ const LumineAvatar: FC<IAvatar> = ({
 	username,
 	...props
 }) => {
-	console.log(styles)
 	if (!shouldRedirect) {
 		return (
 			<div
