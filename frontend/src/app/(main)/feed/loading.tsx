@@ -2,7 +2,7 @@ import { Card, Container, Flex, Skeleton } from '@mantine/core'
 
 export default function Loading() {
 	return (
-		<Container className='box-border flex flex-col'>
+		<Container p={0} className='box-border flex flex-col'>
 			<Flex direction={'column'} className='gap-y-4'>
 				<Card
 					className='flex flex-row justify-between items-center !bg-[#1f2124] border border-[rgb(66,66,66)]'

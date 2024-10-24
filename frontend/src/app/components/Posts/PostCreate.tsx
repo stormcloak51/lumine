@@ -94,6 +94,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 		if (postContent) {
 			try {
 				await createPost({ content: postContent, User: user })
+				editor?.commands.clearContent()
 			} catch (err) {
 				console.log(err)
 			}
@@ -102,102 +103,8 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 
 	if (!editor) return null
 
-	if (!isGrid) {
-		return (
-			<motion.div
-				onClick={() => {
-					handleFocus()
-				}}
-				initial={{ height: 'auto' }}
-				animate={{
-					height: styled ? `${contentHeight + 40}px` : 'auto',
-				}}
-				transition={{ duration: 0.2 }}
-				ref={ref}
-				className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'
-			>
-				<div
-					className={`relative w-full h-full ${
-						!styled ? 'flex items-center' : ''
-					}`}
-				>
-					<LumineAvatar hasStories={true} className='left-2 top-[9px]' position='absolute' url={user.userAvatar} username={user.username} size={36} />
-					<EditorContent
-						className={`ml-12 overflow-y-auto p-[16px] w-full !outline-none !border-none ${
-							styled ? 'max-h-[500px]' : 'h-full'
-						}`}
-						editor={editor}
-						color='white'
-					/>
 
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: styled ? 1 : 0 }}
-						className={`ml-10 ${
-							!styled ? 'hidden' : 'flex'
-						} absolute bottom-0 left-0 p-4 gap-x-4`}
-					>
-						<HeadingButton editor={editor} level={1} />
-						<HeadingButton editor={editor} level={2} />
-						<HeadingButton editor={editor} level={3} />
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleBold().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}
-						>
-							<BoldButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleItalic().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}
-						>
-							<ItalicButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleUnderline().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}
-						>
-							<UnderlineButton size={14} strokeWidth={3} />
-						</ActionIcon>
-						<ActionIcon
-							onClick={() => editor.chain().focus().toggleStrike().run()}
-							ref={rightSectionRef}
-							className='h-auto transition-all'
-							color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
-							variant={'outline'}
-						>
-							<StrikeButton size={14} strokeWidth={3} />
-						</ActionIcon>
-					</motion.div>
-					<Group className='absolute bottom-0 right-0 p-4'>
-						<ActionIcon
-							disabled={
-								typeof textRefLen !== 'undefined' && textRefLen > 0
-									? false
-									: true
-							}
-							className='transition-all'
-							variant='transparent'
-							color=''
-							onClick={() => handleSend()}
-						>
-							<SendHorizontal size={22} />
-						</ActionIcon>
-					</Group>
-				</div>
-			</motion.div>
-		)
-	}
 	return (
-		// <Grid.Col span={7.5} className='px-0 pt-4'>
 		<motion.div
 			onClick={() => {
 				handleFocus()

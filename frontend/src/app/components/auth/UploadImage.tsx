@@ -20,7 +20,7 @@ import ReactCrop, {
 } from 'react-image-crop'
 import { SyntheticEvent, useRef, useState } from 'react'
 import 'react-image-crop/src/ReactCrop.scss'
-import { Paperclip, Loader } from 'lucide-react'
+import { Paperclip } from 'lucide-react'
 import { setCanvasPreview } from '@/lib/utils/setCanvasPreview'
 
 interface UploadImageProps {

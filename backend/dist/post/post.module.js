@@ -11,14 +11,13 @@ const common_1 = require("@nestjs/common");
 const post_controller_1 = require("./post.controller");
 const post_service_1 = require("./post.service");
 const prisma_service_1 = require("../prisma.service");
-const post_gateway_1 = require("./post.gateway");
 let PostModule = class PostModule {
 };
 exports.PostModule = PostModule;
 exports.PostModule = PostModule = __decorate([
     (0, common_1.Module)({
         controllers: [post_controller_1.PostController],
-        providers: [post_service_1.PostService, prisma_service_1.PrismaService, post_gateway_1.PostsGateway],
+        providers: [post_service_1.PostService, prisma_service_1.PrismaService],
     })
 ], PostModule);
 //# sourceMappingURL=post.module.js.map

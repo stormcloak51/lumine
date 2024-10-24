@@ -14,8 +14,6 @@ interface IWrapper {
 export const Wrapper: FC<IWrapper & IPostList> = ({ currId, title = 'Posts', posts, isGrid = false }) => {
 	const { user } = useAuth()
 
-	console.log(user, 'USEER')
-
 	if (user.id !== currId) {
 		return (
 			<Grid.Col span={7.5} className='pt-4'>

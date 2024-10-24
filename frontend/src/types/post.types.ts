@@ -6,7 +6,8 @@ export interface IPostData {
 }
 
 export type TPostLikes = {
-	user: IUserCredentials
+	userId: string
+	postId: number
 }
 export type TPost = {
 	id: number
@@ -14,6 +15,6 @@ export type TPost = {
 	created_at: string
 	updated_at: string
 	User: IUserCredentials
+	UserLike: TPostLikes[]
 	likes: number
-	UserLikes: TPostLikes[]
 }

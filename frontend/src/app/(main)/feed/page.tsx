@@ -21,7 +21,7 @@ export default async function Feed() {
 	// const posts = await postService.findAll()
 	return (
 		<Suspense fallback={<Loading />}>
-			<Container className='box-border flex flex-col'>
+			<Container p={0} className='box-border flex flex-col'>
 				<PostCreate isGrid={false} />
 				<PostList posts={await postService.findSortedByLikes()} title='Recommended' />
 			</Container>

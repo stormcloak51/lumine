@@ -30,7 +30,7 @@ let PostController = class PostController {
         return this.postService.createPost(data);
     }
     findByUsername(username) {
-        return this.postService.findByUsername(username);
+        return this.postService.findAllByUsername(username);
     }
     likePost(data) {
         return this.postService.likePost(data);
@@ -67,14 +67,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findByUsername", null);
 __decorate([
-    (0, common_1.Post)('like'),
+    (0, common_1.Patch)('like'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "likePost", null);
 __decorate([
-    (0, common_1.Post)('unlike'),
+    (0, common_1.Patch)('unlike'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [post_dto_1.LikePostDto]),

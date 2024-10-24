@@ -6,15 +6,23 @@ import { IUserCredentials } from '@/types/user.types'
 import { revalidateTag } from 'next/cache'
 
 
-export const updatePost = async (data: {postId: TPost['id'], user: IUserCredentials}) => {
+export const likePost = async (data: {postId: TPost['id'], user: IUserCredentials}) => {
 	try {
-		const result = await postService.like(data)
-		revalidateTag('posts')
-		return result.data
+		await postService.like(data)
+		// revalidateTag('posts')
+		// return result.data
 
 	} catch(err: unknown) {
 		return {error: err}
 	}
+}
 
-
+export const unlikePost = async (data: {postId: TPost['id'], user: IUserCredentials}) => {
+	try {
+		await postService.unlike(data)
+		// revalidateTag('posts')
+		// return true
+	} catch (err: unknown) {
+		return {error: err}
+	}
 }

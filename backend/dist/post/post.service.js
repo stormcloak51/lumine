@@ -17,37 +17,29 @@ let PostService = class PostService {
         this.prisma = prisma;
     }
     findAll() {
-        return this.prisma.postModel.findMany({
-            include: {
-                User: {
-                    select: {
-                        name: true,
-                        surname: true,
-                        username: true,
-                        bio: true,
-                        userAvatar: true,
-                    },
+        return this.prisma.postModel.findMany();
+    }
+    async findAllSortedByLikes() {
+        const posts = await this.prisma.postModel.findMany({
+            orderBy: {
+                UserLike: {
+                    _count: 'desc',
                 },
             },
-        });
-    }
-    findAllSortedByLikes() {
-        return this.prisma.postModel.findMany({
-            orderBy: {
-                likes: 'desc',
-            },
             include: {
-                User: {
+                User: true,
+                UserLike: {
                     select: {
-                        name: true,
-                        surname: true,
-                        username: true,
-                        bio: true,
-                        userAvatar: true,
-                    }
-                }
+                        userId: true,
+                        postId: true,
+                    },
+                },
             }
         });
+        return posts.map((post) => ({
+            ...post,
+            likes: post.UserLike.length,
+        }));
     }
     createPost(data) {
         return this.prisma.postModel.create({
@@ -60,17 +52,6 @@ let PostService = class PostService {
                     },
                 },
             },
-            include: {
-                User: {
-                    select: {
-                        name: true,
-                        surname: true,
-                        username: true,
-                        bio: true,
-                        userAvatar: true,
-                    },
-                },
-            },
         });
     }
     likePost(data) {
@@ -79,9 +60,6 @@ let PostService = class PostService {
                 id: data.postId,
             },
             data: {
-                likes: {
-                    increment: 1,
-                },
                 UserLike: {
                     create: {
                         user: {
@@ -91,7 +69,7 @@ let PostService = class PostService {
                             },
                         },
                     },
-                }
+                },
             },
         });
     }
@@ -101,39 +79,36 @@ let PostService = class PostService {
                 id: data.postId,
             },
             data: {
-                likes: {
-                    decrement: 1,
-                },
                 UserLike: {
                     delete: {
                         userId_postId: {
                             userId: data.user.id,
                             postId: data.postId,
-                        }
+                        },
                     },
-                }
+                },
             },
         });
     }
-    findByUsername(username) {
-        return this.prisma.postModel.findMany({
+    async findAllByUsername(username) {
+        const posts = await this.prisma.postModel.findMany({
             where: {
                 User: {
                     username: username,
                 },
             },
+            orderBy: {
+                created_at: 'desc',
+            },
             include: {
-                User: {
-                    select: {
-                        name: true,
-                        surname: true,
-                        username: true,
-                        bio: true,
-                        userAvatar: true,
-                    },
-                },
+                User: true,
+                UserLike: true,
             },
         });
+        return posts.map((post) => ({
+            ...post,
+            likes: post.UserLike.length,
+        }));
     }
 };
 exports.PostService = PostService;

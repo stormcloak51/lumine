@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
 import { PostModel } from '@prisma/client';
 import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
@@ -28,17 +28,17 @@ export class PostController {
 
   @Get('findByUsername')
   findByUsername(@Query('username') username: string): Promise<PostModel[]> {
-    return this.postService.findByUsername(username);
+    return this.postService.findAllByUsername(username);
   }
 
-  @Post('like')
+  @Patch('like')
   likePost(
     @Body()
     data: LikePostDto,
   ) {
     return this.postService.likePost(data);
   }
-  @Post('unlike')
+  @Patch('unlike')
   unlikePost(
     @Body()
     data: LikePostDto,

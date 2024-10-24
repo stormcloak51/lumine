@@ -49,6 +49,7 @@ export class UserService {
 				userAvatar: true,
 				created_at: true,
 				role: true,
+				likedPosts: true
 			}
 		})
 	}

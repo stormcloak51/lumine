@@ -26,7 +26,7 @@ const SideNav = () => {
 	const pathname = usePathname().substring(1)
 	const [index, setIndex] = useState<string>('feed')
 	useEffect(() => {
-		setIndex(pathname)
+		setIndex(pathname.split('/')[0])
 	}, [pathname])
 
 	return (
@@ -66,7 +66,7 @@ const SideNav = () => {
 					href={`/profile/${username}`}
 					Icon={CircleUserRound}
 					onClickEvent={() => setIndex(`profile`)}
-					isActive={index.startsWith('profile') || index === 'profile'}
+					isActive={index === 'profile'}
 				/>
 				<SideNavItem
 					title='Feed'

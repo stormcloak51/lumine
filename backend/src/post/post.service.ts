@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { PostModel, User } from '@prisma/client';
 import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
 import { PrismaService } from '../prisma.service';
 
@@ -8,38 +8,30 @@ export class PostService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.postModel.findMany({
-      include: {
-        User: {
-          select: {
-            name: true,
-            surname: true,
-            username: true,
-            bio: true,
-            userAvatar: true,
-          },
-        },
-      },
-    });
+    return this.prisma.postModel.findMany();
   }
 
-  findAllSortedByLikes() {
-    return this.prisma.postModel.findMany({
+  async findAllSortedByLikes(): Promise<PostModel[]> {
+    const posts = await this.prisma.postModel.findMany({
       orderBy: {
-        likes: 'desc',
+        UserLike: {
+          _count: 'desc',
+        },
       },
       include: {
-        User: {
+        User: true,
+        UserLike: {
           select: {
-            name: true,
-            surname: true,
-            username: true,
-            bio: true,
-            userAvatar: true,
-          }
-        }
+            userId: true,
+            postId: true,
+          },
+        },
       }
-    })
+    });
+    return posts.map((post) => ({
+      ...post,
+      likes: post.UserLike.length,
+    }));
   }
 
   createPost(data: CreatePostDto) {
@@ -53,17 +45,6 @@ export class PostService {
           },
         },
       },
-      include: {
-        User: {
-          select: {
-            name: true,
-            surname: true,
-            username: true,
-            bio: true,
-            userAvatar: true,
-          },
-        },
-      },
     });
   }
 
@@ -73,9 +54,6 @@ export class PostService {
         id: data.postId,
       },
       data: {
-        likes: {
-          increment: 1,
-        },
         UserLike: {
           create: {
             user: {
@@ -85,7 +63,7 @@ export class PostService {
               },
             },
           },
-        }
+        },
       },
     });
   }
@@ -96,39 +74,37 @@ export class PostService {
         id: data.postId,
       },
       data: {
-        likes: {
-          decrement: 1,
-        },
         UserLike: {
           delete: {
             userId_postId: {
               userId: data.user.id,
               postId: data.postId,
-            }
+            },
           },
-        }
+        },
       },
     });
   }
 
-  findByUsername(username: string) {
-    return this.prisma.postModel.findMany({
+  async findAllByUsername(username: string) {
+    const posts = await this.prisma.postModel.findMany({
       where: {
         User: {
           username: username,
         },
       },
+      orderBy: {
+        created_at: 'desc',
+      },
       include: {
-        User: {
-          select: {
-            name: true,
-            surname: true,
-            username: true,
-            bio: true,
-            userAvatar: true,
-          },
-        },
+        User: true,
+        UserLike: true,
       },
     });
+
+    return posts.map((post) => ({
+      ...post,
+      likes: post.UserLike.length,
+    }));
   }
 }
