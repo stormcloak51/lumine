@@ -15,11 +15,16 @@ import LumineAvatar from '../LumineAvatar'
 import purify from 'dompurify'
 import { timeAgo } from '@/lib/utils/timeAgo'
 import { DMSans } from '@/fonts/fonts'
-import { Circle, Heart, MessagesSquare, Quote, UserPlus } from 'lucide-react'
+import { Circle, Forward, Heart, MessageCircle, MessagesSquare, Quote, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import { postService } from '@/services/post.service'
+import { useAuth } from '@/lib/actions/state'
+import { updatePost } from '@/lib/actions/updatePost'
 
 export const PostItem: FC<TPost & { title: string }> = post => {
 	const theme = useMantineTheme()
+	const {user} = useAuth()
+
 	return (
 		<Card
 			className={`!bg-[#1f2124] shadow-lg rounded-lg border border-[rgb(66,66,66)] ${DMSans.className}`}
@@ -130,9 +135,33 @@ export const PostItem: FC<TPost & { title: string }> = post => {
 				dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
 			/>
 			<div className='mt-4 flex gap-x-3'>
-				<Button className='bg-[#2a2a2a] h-8 text-[16px] font-sans rounded-[35px] flex items-center gap-x-2'>
-					<Heart size={18} />
-					<span>123</span>
+				<Button onClick={async() => await updatePost({
+					postId: post.id,
+					user: user
+				})} leftSection={<Heart size={18} />} rightSection={post.likes} className='bg-[#2a2a2a] transition-all h-8 rounded-[35px] flex items-center hover:bg-[rgb(66,66,66)]' styles={{
+					section: {
+						margin: '0px',
+					},
+					inner: {
+						display: 'flex',
+						columnGap: '2px',
+					}
+				}} >
+					
+				</Button>
+				<Button leftSection={<MessageCircle size={18}/>} rightSection={12} className='bg-[#2a2a2a] transition-all h-8 rounded-[35px] flex items-center hover:bg-[rgb(66,66,66)]' styles={{
+					section: {
+						margin: '0px',
+					},
+					inner: {
+						display: 'flex',
+						columnGap: '2px',
+					}
+				}} >
+					
+				</Button>
+				<Button className='bg-[#2a2a2a] !px-3 transition-all h-8 rounded-[35px] flex items-center hover:bg-[rgb(66,66,66)]'>
+				<Forward size={18}/>
 				</Button>
 			</div>
 		</Card>

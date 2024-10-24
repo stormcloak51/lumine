@@ -14,8 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
+const post_dto_1 = require("../dtos/post.dto");
 const post_service_1 = require("./post.service");
-const post_dto_1 = require("./post.dto");
 let PostController = class PostController {
     constructor(postService) {
         this.postService = postService;
@@ -23,11 +23,20 @@ let PostController = class PostController {
     findAll() {
         return this.postService.findAll();
     }
+    findAllSortedByLikes() {
+        return this.postService.findAllSortedByLikes();
+    }
     createPost(data) {
         return this.postService.createPost(data);
     }
     findByUsername(username) {
         return this.postService.findByUsername(username);
+    }
+    likePost(data) {
+        return this.postService.likePost(data);
+    }
+    unlikePost(data) {
+        return this.postService.unLikePost(data);
     }
 };
 exports.PostController = PostController;
@@ -37,6 +46,12 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('sortedByLikes'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "findAllSortedByLikes", null);
 __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
@@ -51,6 +66,20 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findByUsername", null);
+__decorate([
+    (0, common_1.Post)('like'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "likePost", null);
+__decorate([
+    (0, common_1.Post)('unlike'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "unlikePost", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService])

@@ -9,13 +9,10 @@ import Loading from './loading'
 // import { useQueryClient } from '@tanstack/react-query'
 
 // export async function getServerSideProps() {
-// 	const posts = await postService.findAll()
-// 	const post1 = await fetch('http://localhost:1488/api/posts', {
-// 		next: {tags: ['posts']},
-// 	})
+// 	const posts: TPost[] = await postService.findAll()
 //   return {
 //     props: {
-//       post1,
+//       posts,
 //     },
 //   };
 // }
@@ -26,7 +23,7 @@ export default async function Feed() {
 		<Suspense fallback={<Loading />}>
 			<Container className='box-border flex flex-col'>
 				<PostCreate isGrid={false} />
-				<PostList posts={await postService.findAll()} title='Recommended' />
+				<PostList posts={await postService.findSortedByLikes()} title='Recommended' />
 			</Container>
 		</Suspense>
 		// <Loading/>

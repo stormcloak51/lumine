@@ -7,7 +7,6 @@ import { revalidateTag } from 'next/cache'
 
 
 export const createPost = async ({content, User}: IPostData) => {
-	console.log(1123)
 	try {
 		const result = await postService.create({content, User})
 		revalidateTag('posts')
@@ -15,6 +14,4 @@ export const createPost = async ({content, User}: IPostData) => {
 	} catch(err) {
 		console.error(err)
 	}
-
-	
 }

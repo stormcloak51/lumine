@@ -1,4 +1,4 @@
-import { IsObject, IsString, ValidateNested } from 'class-validator'
+import { IsNumber, IsObject, IsString, ValidateNested } from 'class-validator'
 import {Type} from 'class-transformer'
 class User {
 	@IsString()
@@ -28,4 +28,14 @@ export class CreatePostDto {
 	@ValidateNested()
 	@Type(() => User)
 	User: User
+}
+
+export class LikePostDto {
+	@IsNumber()
+	postId: number
+
+	@IsObject()
+	@ValidateNested()
+	@Type(() => User)
+	user: User
 }

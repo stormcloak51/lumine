@@ -25,7 +25,25 @@ let PostService = class PostService {
                         surname: true,
                         username: true,
                         bio: true,
-                        userAvatar: true
+                        userAvatar: true,
+                    },
+                },
+            },
+        });
+    }
+    findAllSortedByLikes() {
+        return this.prisma.postModel.findMany({
+            orderBy: {
+                likes: 'desc',
+            },
+            include: {
+                User: {
+                    select: {
+                        name: true,
+                        surname: true,
+                        username: true,
+                        bio: true,
+                        userAvatar: true,
                     }
                 }
             }
@@ -38,9 +56,9 @@ let PostService = class PostService {
                 User: {
                     connect: {
                         id: data.User.id,
-                        username: data.User.username
+                        username: data.User.username,
                     },
-                }
+                },
             },
             include: {
                 User: {
@@ -49,18 +67,60 @@ let PostService = class PostService {
                         surname: true,
                         username: true,
                         bio: true,
-                        userAvatar: true
-                    }
+                        userAvatar: true,
+                    },
+                },
+            },
+        });
+    }
+    likePost(data) {
+        return this.prisma.postModel.update({
+            where: {
+                id: data.postId,
+            },
+            data: {
+                likes: {
+                    increment: 1,
+                },
+                UserLike: {
+                    create: {
+                        user: {
+                            connect: {
+                                id: data.user.id,
+                                username: data.user.username,
+                            },
+                        },
+                    },
                 }
-            }
+            },
+        });
+    }
+    unLikePost(data) {
+        return this.prisma.postModel.update({
+            where: {
+                id: data.postId,
+            },
+            data: {
+                likes: {
+                    decrement: 1,
+                },
+                UserLike: {
+                    delete: {
+                        userId_postId: {
+                            userId: data.user.id,
+                            postId: data.postId,
+                        }
+                    },
+                }
+            },
         });
     }
     findByUsername(username) {
         return this.prisma.postModel.findMany({
             where: {
                 User: {
-                    username: username
-                }
+                    username: username,
+                },
             },
             include: {
                 User: {
@@ -69,10 +129,10 @@ let PostService = class PostService {
                         surname: true,
                         username: true,
                         bio: true,
-                        userAvatar: true
-                    }
-                }
-            }
+                        userAvatar: true,
+                    },
+                },
+            },
         });
     }
 };

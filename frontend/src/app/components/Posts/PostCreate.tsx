@@ -93,8 +93,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 		const postContent = editor?.getHTML()
 		if (postContent) {
 			try {
-				const data = await createPost({ content: postContent, User: user })
-				console.log('seccs', data)
+				await createPost({ content: postContent, User: user })
 			} catch (err) {
 				console.log(err)
 			}
