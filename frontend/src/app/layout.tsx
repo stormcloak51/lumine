@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 import '@mantine/core/styles.css'
-
 import {
 	ColorSchemeScript,
 	createTheme,
@@ -11,6 +10,7 @@ import {
 } from '@mantine/core'
 import * as font from '../fonts/fonts'
 import ClientProvider from './ClientProvider'
+import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
 	title: 'lumine',
@@ -42,6 +42,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+
 	return (
 		<html lang='en'>
 			<head>

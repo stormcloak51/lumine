@@ -1,6 +1,7 @@
 'use client';
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/store'
+import { getCookie } from 'cookies-next'
 
 
 
@@ -13,4 +14,8 @@ export const useAuth = () => {
 		isAuth: !!access_token,
 		user: userData.user
 	}
+}
+
+export const getAccessTokenServer = () => {
+	return getCookie('access_token')
 }

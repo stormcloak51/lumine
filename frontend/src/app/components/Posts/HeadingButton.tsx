@@ -1,3 +1,4 @@
+'use client'
 import { ActionIcon } from '@mantine/core'
 import { Editor } from '@tiptap/react'
 import { Heading1, Heading2, Heading3 } from 'lucide-react'

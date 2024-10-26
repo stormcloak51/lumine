@@ -43,15 +43,20 @@ let AuthService = class AuthService {
         };
     }
     async getNewTokens(refreshToken) {
-        const result = await this.jwtService.verifyAsync(refreshToken);
-        if (!result)
+        try {
+            const result = await this.jwtService.verifyAsync(refreshToken);
+            if (!result)
+                throw new common_1.UnauthorizedException('Invalid refresh token');
+            const user = await this.userService.findOne(result.id);
+            const tokens = this.issueTokens(user.id);
+            return {
+                user,
+                ...tokens
+            };
+        }
+        catch (error) {
             throw new common_1.UnauthorizedException('Invalid refresh token');
-        const user = await this.userService.findOne(result.id);
-        const tokens = this.issueTokens(user.id);
-        return {
-            user,
-            ...tokens
-        };
+        }
     }
     issueTokens(userId) {
         const data = { id: userId };
@@ -93,6 +98,8 @@ let AuthService = class AuthService {
             httpOnly: true,
             domain: 'localhost',
             expires: expiresIn,
+            secure: false,
+            sameSite: 'lax',
         });
     }
     removeRefreshTokenFromResponse(res) {
@@ -100,8 +107,8 @@ let AuthService = class AuthService {
             httpOnly: true,
             domain: 'localhost',
             expires: new Date(0),
-            secure: true,
-            sameSite: 'none',
+            secure: false,
+            sameSite: 'lax',
         });
     }
 };

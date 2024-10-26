@@ -30,6 +30,7 @@ class PostService {
 
 	async create(data: IPostData){
 		const response = await axiosWithAuth.post(this.BASE_URL + '/create', data)
+		console.log(response.data, 'RESPONSEDATA')
 		return JSON.parse(JSON.stringify(response.data))
 	}
 

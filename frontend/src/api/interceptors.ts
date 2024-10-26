@@ -25,9 +25,6 @@ axiosWithAuth.interceptors.request.use(
     }
 
     return config
-  },
-  error => {
-    return Promise.reject(error)
   }
 )
 
@@ -38,8 +35,8 @@ axiosWithAuth.interceptors.response.use(
 
     if (
       (error?.response?.status === 401 || 
-       errorCatch(error) === 'jwt expired' || 
-       errorCatch(error) === 'jwt must be provided') && 
+        errorCatch(error) === 'jwt expired' || 
+        errorCatch(error) === 'jwt must be provided') && 
       originalRequest && 
       !originalRequest._isRetry
     ) {
@@ -47,11 +44,7 @@ axiosWithAuth.interceptors.response.use(
 
       try {
         await authService.getNewTokens()
-        const newAccessToken = getAccessToken()
-        
-        if (newAccessToken && originalRequest.headers) {
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-        }
+        // const newAccessToken = getAccessToken()
 
         return axiosWithAuth(originalRequest)
       } catch (err) {

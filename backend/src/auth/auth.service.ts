@@ -50,16 +50,19 @@ export class AuthService {
   }
 
   async getNewTokens(refreshToken: string){
-    const result = await this.jwtService.verifyAsync(refreshToken)
-    if (!result) throw new UnauthorizedException('Invalid refresh token')
-
-    const user  = await this.userService.findOne(result.id)
-
-    const tokens = this.issueTokens(user.id)
-
-    return {
-      user,
-      ...tokens
+    try {
+      const result = await this.jwtService.verifyAsync(refreshToken);
+      if (!result) throw new UnauthorizedException('Invalid refresh token');
+  
+      const user = await this.userService.findOne(result.id);
+      const tokens = this.issueTokens(user.id);
+  
+      return {
+        user,
+        ...tokens
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
     }
   }
 
@@ -111,8 +114,8 @@ export class AuthService {
       httpOnly: true,
       domain: 'localhost',
       expires: expiresIn,
-      // secure: true,
-      // sameSite: 'none',
+      secure: false,
+      sameSite: 'lax',
     });
   }
 
@@ -121,8 +124,8 @@ export class AuthService {
       httpOnly: true,
       domain: 'localhost',
       expires: new Date(0),
-      secure: true,
-      sameSite: 'none',
+      secure: false,
+      sameSite: 'lax',
     });
   }
 }

@@ -23,6 +23,7 @@ import Text from '@tiptap/extension-text'
 import Underline from '@tiptap/extension-underline'
 import { EditorContent, useEditor } from '@tiptap/react'
 import debounce from 'lodash.debounce'
+import { setCookie, getCookie } from 'cookies-next'
 
 import { createPost } from '@/lib/actions/createPost'
 import { motion } from 'framer-motion'
@@ -101,6 +102,7 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		const postContent = editor?.getHTML()
 		if (postContent) {
 			try {
+				console.log('COOKA', getCookie('access_token'))
 				await createPost({ content: postContent, User: user })
 				editor?.commands.clearContent()
 			} catch (err) {

@@ -12,7 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto'
-import { Request, response, Response } from 'express'
+import { Request, Response } from 'express'
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +42,10 @@ export class AuthController {
   @HttpCode(200)
   @Post('login/access-token')
   async getNewTokens(@Req() req: Request, @Res({passthrough: true}) res: Response) {
-    const refreshTokenFromCookies = req.cookies[this.authService.REFRESH_TOKEN_NAME]
+    console.log('All cookies:', req.cookies);
+    console.log('Headers:', req.headers);
+    console.log('Cookie header:', req.headers.cookie);
+    const refreshTokenFromCookies = await req.cookies['refresh_token']
 
     if (!refreshTokenFromCookies) {
       this.authService.removeRefreshTokenFromResponse(res);

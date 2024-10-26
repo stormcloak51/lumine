@@ -14,6 +14,7 @@ export class PostController {
     return this.postService.findAll();
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get('sortedByLikes')
   findAllSortedByLikes() {
     return this.postService.findAllSortedByLikes();
@@ -28,13 +29,14 @@ export class PostController {
     return this.postService.createPost(data);
   }
 
-  
+  // @UseGuards(JwtAuthGuard)
   @Get('findByUsername')
   findByUsername(@Req() req: Request, @Query('username') username: string): Promise<PostModel[]> {
     console.log(req.headers);
     return this.postService.findAllByUsername(username);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Patch('like')
   likePost(
     @Body()
@@ -42,6 +44,9 @@ export class PostController {
   ) {
     return this.postService.likePost(data);
   }
+
+
+  // @UseGuards(JwtAuthGuard)
   @Patch('unlike')
   unlikePost(
     @Body()
@@ -50,11 +55,13 @@ export class PostController {
     return this.postService.unLikePost(data);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Delete('delete')
   delete(@Query('id', ParseIntPipe) id: number) {
     return this.postService.delete(id);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Patch('edit')
   edit(@Body() data: EditPostDto){
     return this.postService.edit(data.postId, data.content)
