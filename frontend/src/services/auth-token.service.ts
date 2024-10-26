@@ -1,4 +1,4 @@
-import { deleteCookie, getCookies, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, getCookies, setCookie } from 'cookies-next';
 import { getAccessTokenServer } from '@/lib/actions/state'
 
 export enum ETokens {
@@ -7,7 +7,7 @@ export enum ETokens {
 }
 
 export const getAccessToken = () => {
-	const access_token = getAccessTokenServer()
+	const access_token = getCookie(ETokens.ACCESS_TOKEN)
 	console.log(access_token, 'access_tokenasd')
 	return access_token
 

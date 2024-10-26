@@ -6,70 +6,70 @@ export declare class PostService {
     constructor(prisma: PrismaService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }[]>;
     findAllSortedByLikes(): Promise<PostModel[]>;
     createPost(data: CreatePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     likePost(data: LikePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     unLikePost(data: LikePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     findAllByUsername(username: string): Promise<{
         likes: number;
         User: {
+            username: string;
+            email: string;
+            userAvatar: string;
+            name: string;
+            surname: string;
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
-            username: string;
-            email: string;
             password: string;
-            surname: string;
             bio: string;
-            userAvatar: string;
             role: string;
         };
         UserLike: {
-            userId: string;
             postId: number;
+            userId: string;
         }[];
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }[]>;
     delete(id: number): Promise<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }>;
     edit(id: number, content: string): Promise<{
         id: number;
+        content: string;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
     }>;
 }
