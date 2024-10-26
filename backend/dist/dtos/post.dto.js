@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LikePostDto = exports.CreatePostDto = void 0;
+exports.EditPostDto = exports.LikePostDto = exports.CreatePostDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class User {
@@ -64,4 +64,15 @@ __decorate([
     (0, class_transformer_1.Type)(() => User),
     __metadata("design:type", User)
 ], LikePostDto.prototype, "user", void 0);
+class EditPostDto {
+}
+exports.EditPostDto = EditPostDto;
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], EditPostDto.prototype, "postId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], EditPostDto.prototype, "content", void 0);
 //# sourceMappingURL=post.dto.js.map

@@ -58,4 +58,18 @@ export declare class PostService {
         content: string;
         userId: string;
     }[]>;
+    delete(id: number): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
+    edit(id: number, content: string): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
 }

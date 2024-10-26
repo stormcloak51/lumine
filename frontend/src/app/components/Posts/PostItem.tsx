@@ -9,8 +9,6 @@ import {
 	Text,
 	Title,
 	useMantineTheme,
-	Menu,
-	Modal,
 } from '@mantine/core'
 import { FC, useState } from 'react'
 import LumineAvatar from '../LumineAvatar'
@@ -19,24 +17,19 @@ import { timeAgo } from '@/lib/utils/timeAgo'
 import { DMSans } from '@/fonts/fonts'
 import {
 	Circle,
-	Ellipsis,
 	Forward,
 	Heart,
 	MessageCircle,
 	MessagesSquare,
-	Pen,
 	Quote,
-	Trash,
 	UserPlus,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/actions/state'
+import { ManagePost } from './ManagePost'
 import { likePost, unlikePost } from '@/lib/actions/updatePost'
-import { useDisclosure } from '@mantine/hooks'
 
 export const PostItem: FC<TPost & { title: string }> = post => {
-	const [isDeletePostOpened, { open: openDeletePostModal, close: closeDeletePostModal }] =
-		useDisclosure(false)
 	const theme = useMantineTheme()
 	const { user } = useAuth()
 
@@ -140,42 +133,7 @@ export const PostItem: FC<TPost & { title: string }> = post => {
 					</Text>
 				</div>
 				{user?.id === post.User.id && (
-					<>
-						<Menu trigger='hover' openDelay={100} closeDelay={400}>
-							<Menu.Target>
-								<Ellipsis />
-							</Menu.Target>
-							<Menu.Dropdown className='rounded-xl'>
-								<Menu.Item className='rounded-xl' leftSection={<Pen size={16} />}>
-									Edit
-								</Menu.Item>
-								<Menu.Item
-									onClick={openDeletePostModal}
-									className='rounded-xl'
-									leftSection={<Trash size={16} />}>
-									Delete
-								</Menu.Item>
-							</Menu.Dropdown>
-						</Menu>
-						<Modal
-							opened={isDeletePostOpened}
-							onClose={closeDeletePostModal}
-							title='Are you sure?'
-							centered
-							classNames={{
-								title: '!text-2xl font-semibold',
-							}}
-							className={`${DMSans.className}`}
-							radius={'lg'}
-							overlayProps={{
-								backgroundOpacity: 0.55,
-								blur: 3,
-							}}>
-							<Text mb={10}>This action will delete your post and it cannot be undone</Text>
-							<Button mr={15} radius={'lg'} autoContrast color={theme.colors.myColor[4]} >Delete</Button>
-							<Button onClick={closeDeletePostModal} radius={'lg'} color={theme.colors.myColor[4]} variant='outline'>Cancel</Button>
-						</Modal>
-					</>
+					<ManagePost id={post.id} content={post.content} userId={post.User.id}/>
 				)}
 			</div>
 			<div

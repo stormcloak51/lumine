@@ -21,7 +21,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
         this.prisma = prisma;
         this.EXPIRE_DAY_REFRESH_TOKEN = 1;
-        this.REFRESH_TOKEN_NAME = 'refreshToken';
+        this.REFRESH_TOKEN_NAME = 'refresh_token';
     }
     async login(dto) {
         const { password, ...user } = await this.validateUser(dto);
@@ -93,8 +93,6 @@ let AuthService = class AuthService {
             httpOnly: true,
             domain: 'localhost',
             expires: expiresIn,
-            secure: true,
-            sameSite: 'none',
         });
     }
     removeRefreshTokenFromResponse(res) {

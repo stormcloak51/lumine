@@ -107,4 +107,23 @@ export class PostService {
       likes: post.UserLike.length,
     }));
   }
+
+  async delete(id: number) {
+    
+    return await this.prisma.postModel.delete({
+      where: {
+        id,
+      },
+    });
+  }
+  async edit(id: number, content: string) {
+    return await this.prisma.postModel.update({
+      where: {
+        id,
+      },
+      data: {
+        content,
+      }
+    })
+  }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import PostCreate from '@/app/components/Posts/PostCreate'
+import {PostCreate} from '@/app/components/Posts/PostCreate'
 import { ActionsSection } from '@/app/components/profile/ActionsSection'
 import { useAuth } from '@/lib/actions/state'
 import { Grid } from '@mantine/core'

@@ -1,6 +1,7 @@
 import { PostModel } from '@prisma/client';
-import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
+import { CreatePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
+import { Request } from 'express';
 export declare class PostController {
     private readonly postService;
     constructor(postService: PostService);
@@ -25,7 +26,7 @@ export declare class PostController {
         content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
-    findByUsername(username: string): Promise<PostModel[]>;
+    findByUsername(req: Request, username: string): Promise<PostModel[]>;
     likePost(data: LikePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
         created_at: Date;
@@ -40,4 +41,18 @@ export declare class PostController {
         content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    delete(id: number): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
+    edit(data: EditPostDto): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
 }

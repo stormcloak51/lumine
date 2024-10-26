@@ -1,6 +1,6 @@
 import { Container } from '@mantine/core'
 
-import PostCreate from '@/app/components/Posts/PostCreate'
+import {PostCreate} from '@/app/components/Posts/PostCreate'
 import PostList from '@/app/components/Posts/PostList'
 import { postService } from '@/services/post.service'
 import { Suspense } from 'react'

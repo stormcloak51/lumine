@@ -29,7 +29,8 @@ let PostController = class PostController {
     createPost(data) {
         return this.postService.createPost(data);
     }
-    findByUsername(username) {
+    findByUsername(req, username) {
+        console.log(req.headers);
         return this.postService.findAllByUsername(username);
     }
     likePost(data) {
@@ -37,6 +38,12 @@ let PostController = class PostController {
     }
     unlikePost(data) {
         return this.postService.unLikePost(data);
+    }
+    delete(id) {
+        return this.postService.delete(id);
+    }
+    edit(data) {
+        return this.postService.edit(data.postId, data.content);
     }
 };
 exports.PostController = PostController;
@@ -61,9 +68,10 @@ __decorate([
 ], PostController.prototype, "createPost", null);
 __decorate([
     (0, common_1.Get)('findByUsername'),
-    __param(0, (0, common_1.Query)('username')),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Query)('username')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findByUsername", null);
 __decorate([
@@ -80,6 +88,20 @@ __decorate([
     __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "unlikePost", null);
+__decorate([
+    (0, common_1.Delete)('delete'),
+    __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "delete", null);
+__decorate([
+    (0, common_1.Patch)('edit'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [post_dto_1.EditPostDto]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "edit", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService])

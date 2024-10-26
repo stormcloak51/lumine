@@ -1,4 +1,4 @@
-import { axiosClassic } from '@/api/interceptors'
+import { axiosClassic, axiosWithAuth } from '@/api/interceptors'
 import { removeFromStorage, saveToStorage } from './auth-token.service'
 import { TUser, TUserData, TUserLogin } from '@/types/user.types'
 

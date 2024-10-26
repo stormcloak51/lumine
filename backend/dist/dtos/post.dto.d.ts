@@ -14,4 +14,8 @@ export declare class LikePostDto {
     postId: number;
     user: User;
 }
+export declare class EditPostDto {
+    postId: number;
+    content: string;
+}
 export {};

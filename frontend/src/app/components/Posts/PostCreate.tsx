@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/lib/actions/state'
 import { ActionIcon, Group } from '@mantine/core'
-import { useClickOutside } from '@mantine/hooks'
+import { useClickOutside, useElementSize } from '@mantine/hooks'
 import {
 	Bold as BoldButton,
 	Italic as ItalicButton,
@@ -10,7 +10,7 @@ import {
 	Strikethrough as StrikeButton,
 	Underline as UnderlineButton,
 } from 'lucide-react'
-import { FC, useRef, useState } from 'react'
+import { FC, useCallback, useRef, useState } from 'react'
 // import Tiptap from '../Tiptap'
 import Bold from '@tiptap/extension-bold'
 import Document from '@tiptap/extension-document'
@@ -22,6 +22,7 @@ import Strike from '@tiptap/extension-strike'
 import Text from '@tiptap/extension-text'
 import Underline from '@tiptap/extension-underline'
 import { EditorContent, useEditor } from '@tiptap/react'
+import debounce from 'lodash.debounce'
 
 import { createPost } from '@/lib/actions/createPost'
 import { motion } from 'framer-motion'
@@ -29,10 +30,12 @@ import { HeadingButton } from './HeadingButton'
 import LumineAvatar from '../LumineAvatar'
 interface IPostCreate {
 	isGrid: boolean
+	content?: string
 }
 
-const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
+export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 	const { user } = useAuth()
+	const { ref: textAreRef, width, height } = useElementSize();
 
 	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
@@ -55,12 +58,16 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 				levels: [1, 2, 3],
 			}),
 		],
-		immediatelyRender: false,
+		content: content ? content : null,
+		immediatelyRender: true,
 		onUpdate: ({ editor }) => {
+			console.log(editor.options.element.scrollHeight);
 			const element = editor.options.element
-
-			if (element) {
-				setContentHeight(Math.max(100, element.scrollHeight))
+			if (element) setContentHeight(Math.max(element.clientHeight))
+		},
+		onFocus: ({ editor }) => {
+			if (editor) {
+				setContentHeight(editor.options.element.clientHeight)
 			}
 		},
 		editorProps: {
@@ -69,6 +76,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 			},
 		},
 	})
+
 
 	const textRefLen = editor?.getText().length
 
@@ -103,7 +111,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 
 	if (!editor) return null
 
-
+	// console.log(contentHeight);
 	return (
 		<motion.div
 			onClick={() => {
@@ -111,32 +119,25 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 			}}
 			initial={{ height: 'auto' }}
 			animate={{
-				height: styled ? `${contentHeight + 40}px` : 'auto',
+				height: styled ? `${contentHeight + 60}px` : 'auto',
 			}}
 			transition={{ duration: 0.2 }}
 			ref={ref}
-			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'
-		>
-			<div
-				className={`relative w-full h-full ${
-					!styled ? 'flex items-center' : ''
-				}`}
-			>
+			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
+			<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
 				<EditorContent
 					className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
-						styled ? 'max-h-[500px]' : 'h-full'
+						styled ? 'h-auto' : 'h-full'
 					}`}
 					editor={editor}
 					color='white'
+					ref={textAreRef}
 				/>
 
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: styled ? 1 : 0 }}
-					className={`${
-						!styled ? 'hidden' : 'flex'
-					} absolute bottom-0 left-0 p-4 gap-x-4`}
-				>
+					className={`${!styled ? 'hidden' : 'flex'} absolute bottom-0 left-0 p-4 gap-x-4`}>
 					<HeadingButton editor={editor} level={1} />
 					<HeadingButton editor={editor} level={2} />
 					<HeadingButton editor={editor} level={3} />
@@ -145,8 +146,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 						ref={rightSectionRef}
 						className='h-auto transition-all'
 						color={editor.isActive('bold') ? '#ffd37d' : '#A0A0A0'}
-						variant={'outline'}
-					>
+						variant={'outline'}>
 						<BoldButton size={14} strokeWidth={3} />
 					</ActionIcon>
 					<ActionIcon
@@ -154,8 +154,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 						ref={rightSectionRef}
 						className='h-auto transition-all'
 						color={editor.isActive('italic') ? '#ffd37d' : '#A0A0A0'}
-						variant={'outline'}
-					>
+						variant={'outline'}>
 						<ItalicButton size={14} strokeWidth={3} />
 					</ActionIcon>
 					<ActionIcon
@@ -163,8 +162,7 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 						ref={rightSectionRef}
 						className='h-auto transition-all'
 						color={editor.isActive('underline') ? '#ffd37d' : '#A0A0A0'}
-						variant={'outline'}
-					>
+						variant={'outline'}>
 						<UnderlineButton size={14} strokeWidth={3} />
 					</ActionIcon>
 					<ActionIcon
@@ -172,26 +170,23 @@ const PostCreate: FC<IPostCreate> = ({ isGrid }) => {
 						ref={rightSectionRef}
 						className='h-auto transition-all'
 						color={editor.isActive('strike') ? '#ffd37d' : '#A0A0A0'}
-						variant={'outline'}
-					>
+						variant={'outline'}>
 						<StrikeButton size={14} strokeWidth={3} />
 					</ActionIcon>
 				</motion.div>
-				<Group className='absolute bottom-0 right-0 p-4'>
-					<ActionIcon
-						disabled={
-							typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true
-						}
-						className='transition-all'
-						variant='transparent'
-						color=''
-						onClick={() => handleSend()}
-					>
-						<SendHorizontal size={22} />
-					</ActionIcon>
-				</Group>
+				{!content && (
+					<Group className='absolute bottom-0 right-0 p-4'>
+						<ActionIcon
+							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
+							className='transition-all'
+							variant='transparent'
+							color=''
+							onClick={() => handleSend()}>
+							<SendHorizontal size={22} />
+						</ActionIcon>
+					</Group>
+				)}
 			</div>
 		</motion.div>
 	)
 }
-export default PostCreate

@@ -110,6 +110,23 @@ let PostService = class PostService {
             likes: post.UserLike.length,
         }));
     }
+    async delete(id) {
+        return await this.prisma.postModel.delete({
+            where: {
+                id,
+            },
+        });
+    }
+    async edit(id, content) {
+        return await this.prisma.postModel.update({
+            where: {
+                id,
+            },
+            data: {
+                content,
+            }
+        });
+    }
 };
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([

@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { PostModel } from '@prisma/client';
-import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
+import { CreatePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
+import { Request } from 'express'
 
 @Controller('posts')
 export class PostController {
@@ -26,8 +28,10 @@ export class PostController {
     return this.postService.createPost(data);
   }
 
+  
   @Get('findByUsername')
-  findByUsername(@Query('username') username: string): Promise<PostModel[]> {
+  findByUsername(@Req() req: Request, @Query('username') username: string): Promise<PostModel[]> {
+    console.log(req.headers);
     return this.postService.findAllByUsername(username);
   }
 
@@ -44,5 +48,15 @@ export class PostController {
     data: LikePostDto,
   ) {
     return this.postService.unLikePost(data);
+  }
+
+  @Delete('delete')
+  delete(@Query('id', ParseIntPipe) id: number) {
+    return this.postService.delete(id);
+  }
+
+  @Patch('edit')
+  edit(@Body() data: EditPostDto){
+    return this.postService.edit(data.postId, data.content)
   }
 }

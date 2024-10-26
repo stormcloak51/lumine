@@ -15,7 +15,7 @@ import { Response } from 'express';
 @Injectable()
 export class AuthService {
   EXPIRE_DAY_REFRESH_TOKEN = 1;
-  REFRESH_TOKEN_NAME = 'refreshToken';
+  REFRESH_TOKEN_NAME = 'refresh_token';
 
   constructor(
     private userService: UserService,
@@ -111,8 +111,8 @@ export class AuthService {
       httpOnly: true,
       domain: 'localhost',
       expires: expiresIn,
-      secure: true,
-      sameSite: 'none',
+      // secure: true,
+      // sameSite: 'none',
     });
   }
 

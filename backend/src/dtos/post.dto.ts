@@ -39,3 +39,11 @@ export class LikePostDto {
 	@Type(() => User)
 	user: User
 }
+
+export class EditPostDto {
+	@IsNumber()
+	postId: number
+
+	@IsString()
+	content: string
+}
