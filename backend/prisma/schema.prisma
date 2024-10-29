@@ -23,7 +23,8 @@ model PostModel {
   User   User   @relation(fields: [userId], references: [id])
   userId String
 
-  UserLike   UserLike[]
+  Like    PostLike[]
+  Comment Comment[]
 
   @@map("posts")
 }
@@ -44,14 +45,27 @@ model User {
   updated_at DateTime    @updatedAt @map("updated_at")
   role       String      @default("USER")
 
-  Token Token[]
-
-  likedPosts UserLike[]
+  likedPosts    PostLike[]
+  comments      Comment[]
+  likedComments CommentLike[]
 
   @@map("users")
 }
 
-model UserLike {
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  post   PostModel @relation(fields: [postId], references: [id])
+  postId Int
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  Like CommentLike[]
+}
+
+model PostLike {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
@@ -59,16 +73,18 @@ model UserLike {
   postId Int
 
   @@id([userId, postId])
-  @@map("UserLikes")
+  @@map("PostLike")
 }
 
-model Token {
-  token  String   @unique
-  exp    DateTime
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
+model CommentLike {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
-  @@map("tokens")
+  comment   Comment @relation(fields: [commentId], references: [id])
+  commentId Int
+
+  @@id([userId, commentId])
+  @@map("CommentLike")
 }
 
 enum Role {

@@ -16,6 +16,7 @@ exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_dto_1 = require("../dtos/post.dto");
 const post_service_1 = require("./post.service");
+const jwt_guard_1 = require("../auth/guards/jwt.guard");
 let PostController = class PostController {
     constructor(postService) {
         this.postService = postService;
@@ -23,10 +24,13 @@ let PostController = class PostController {
     findAll() {
         return this.postService.findAll();
     }
-    findAllSortedByLikes() {
-        return this.postService.findAllSortedByLikes();
+    findAllSortedByLikes(page = 1, limit = 10) {
+        return this.postService.findAllSortedByLikes(page, limit);
     }
-    createPost(data) {
+    createPost(data, req) {
+        const refreshToken = req.cookies['refresh_token'];
+        const accessToken = req.cookies['access_token'];
+        console.log(refreshToken, accessToken, 'Tokens');
         return this.postService.createPost(data);
     }
     findByUsername(req, username) {
@@ -54,19 +58,25 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)('sortedByLikes'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAllSortedByLikes", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.CreatePostDto]),
+    __metadata("design:paramtypes", [post_dto_1.CreatePostDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "createPost", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)('findByUsername'),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Query)('username')),
@@ -75,6 +85,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "findByUsername", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Patch)('like'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

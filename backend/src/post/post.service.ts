@@ -11,28 +11,44 @@ export class PostService {
     return this.prisma.postModel.findMany();
   }
 
-  async findAllSortedByLikes(): Promise<PostModel[]> {
+  async findAllSortedByLikes(page: number = 1, limit: number = 10): Promise<{ data: PostModel[]; total: number }> {
+    const skip = (page - 1) * limit;
+    
     const posts = await this.prisma.postModel.findMany({
       orderBy: {
-        UserLike: {
+        Like: {
           _count: 'desc',
         },
       },
       include: {
         User: true,
-        UserLike: {
+        Like: {
           select: {
             userId: true,
             postId: true,
           },
         },
-      }
+        Comment: {
+          include: {
+            user: true,
+          }
+        }
+      },
+      skip,
+      take: Number(limit),
     });
-    return posts.map((post) => ({
-      ...post,
-      likes: post.UserLike.length,
-    }));
+  
+    const total = await this.prisma.postModel.count();
+  
+    return {
+      data: posts.map((post) => ({
+        ...post,
+        likes: post.Like.length,
+      })),
+      total,
+    };
   }
+  
 
   createPost(data: CreatePostDto) {
     return this.prisma.postModel.create({
@@ -54,7 +70,7 @@ export class PostService {
         id: data.postId,
       },
       data: {
-        UserLike: {
+        Like: {
           create: {
             user: {
               connect: {
@@ -74,7 +90,7 @@ export class PostService {
         id: data.postId,
       },
       data: {
-        UserLike: {
+        Like: {
           delete: {
             userId_postId: {
               userId: data.user.id,
@@ -98,13 +114,14 @@ export class PostService {
       },
       include: {
         User: true,
-        UserLike: true,
+        Like: true,
+        Comment: true,
       },
     });
 
     return posts.map((post) => ({
       ...post,
-      likes: post.UserLike.length,
+      likes: post.Like.length,
     }));
   }
 

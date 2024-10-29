@@ -7,12 +7,12 @@ import { Wrapper } from '@/app/components/profile/Wrapper'
 import { Suspense } from 'react'
 import Loading from './loading'
 
-export async function generateStaticParams() {
-	const users = await userService.getAllUsers()
-	return users.map(user => ({
-		slug: user.username,
-	}))
-}
+// export async function generateStaticParams() {
+// 	const users = await userService.getAllUsers()
+// 	return users.map(user => ({
+// 		slug: user.username,
+// 	}))
+// }
 
 export const Profile = async ({ params }: { params: { slug: string } }) => {
 	const user = await userService.getProfile(params.slug)

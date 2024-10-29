@@ -1,3 +1,4 @@
+import { TCommentResponse } from './comment.types'
 import { IUserCredentials } from './user.types'
 
 export interface IPostData {
@@ -16,5 +17,5 @@ export type TPost = {
 	updated_at: string
 	User: IUserCredentials
 	UserLike: TPostLikes[]
-	likes: number
+	Comment: TCommentResponse[]
 }

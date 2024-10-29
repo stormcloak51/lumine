@@ -9,7 +9,7 @@ class PostService {
 	private BASE_URL = '/posts'
 
 	async findAll(): Promise<TPost[]> {
-		const response: AxiosResponse<TPost[]> = await axiosWithAuth.patch(this.BASE_URL)
+		const response: AxiosResponse<TPost[]> = await axiosWithAuth.get(this.BASE_URL)
 
 		return JSON.parse(JSON.stringify(response.data))
 	}

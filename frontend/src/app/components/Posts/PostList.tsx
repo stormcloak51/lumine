@@ -9,14 +9,15 @@ export interface IPostList {
 	title: string
 	posts?: TPost[]
 	isGrid?: boolean
+	lastPostRef?: React.Ref<HTMLDivElement>
 }
 
-const PostList: FC<IPostList> = ({ title = 'Posts', posts, isGrid = false }) => {
+const PostList: FC<IPostList> = ({ title = 'Posts', posts, lastPostRef, isGrid = false }) => {
 	if (isGrid) {
 		return (
 			// <Grid.Col span={7.5} className='mt-3'>
 				<Flex direction={'column'} className='gap-y-4'>
-					{posts?.map(post => {
+					{posts?.map((post, index) => {
 						return <PostItem key={post.id} {...post} title={title} />
 					})}
 				</Flex>
@@ -24,8 +25,9 @@ const PostList: FC<IPostList> = ({ title = 'Posts', posts, isGrid = false }) => 
 	}
 	return (
 		<Flex direction={'column'} className='gap-y-4'>
-			{posts?.map((post) => {
-				return <PostItem key={post.id} {...post} title={title} />
+			{posts?.map((post, index) => {
+				const isLastPost = posts.length - 1 === index
+				return <PostItem lastPostRef={isLastPost ? lastPostRef : undefined} key={post.id} {...post} title={title} />
 			})}
 		</Flex>
 	)

@@ -9,13 +9,13 @@ export declare class JwtStrategy extends JwtStrategy_base {
         id: string;
     }): Promise<{
         id: string;
+        created_at: Date;
+        name: string;
         username: string;
         email: string;
-        name: string;
         surname: string;
         bio: string;
         userAvatar: string;
-        created_at: Date;
         role: string;
         likedPosts: {
             userId: string;

@@ -1,24 +1,17 @@
-import { deleteCookie, getCookie, getCookies, setCookie } from 'cookies-next';
-import { getAccessTokenServer } from '@/lib/actions/state'
+import { deleteCookie, getCookie, getCookies, setCookie } from 'cookies-next'
 
 export enum ETokens {
 	ACCESS_TOKEN = 'access_token',
 	REFRESH_TOKEN = 'refresh_token',
 }
 
-export const getAccessToken = () => {
-	const access_token = getCookie(ETokens.ACCESS_TOKEN)
-	console.log(access_token, 'access_tokenasd')
-	return access_token
-
+export const getAccessToken = async () => {
+	return await getCookie(ETokens.ACCESS_TOKEN) || null
 }
 
 export const saveToStorage = (accessToken: string) => {
-	setCookie(ETokens.ACCESS_TOKEN, accessToken, {
-			sameSite: 'lax',
-			expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-	});
-	console.log('Cookie установлен:', getCookies());
+	setCookie(ETokens.ACCESS_TOKEN, accessToken)
+	console.log('Cookie установлен:', getCookies())
 }
 
 export const removeFromStorage = () => {

@@ -1,10 +1,7 @@
-'use server';
-
+'use client'
 import { postService } from '@/services/post.service'
 import { TPost } from '@/types/post.types'
 import { IUserCredentials } from '@/types/user.types'
-import { revalidateTag } from 'next/cache'
-
 
 export const likePost = async (data: {postId: TPost['id'], user: IUserCredentials}) => {
 	try {
@@ -30,7 +27,6 @@ export const unlikePost = async (data: {postId: TPost['id'], user: IUserCredenti
 export const deletePost = async (id: number) => {
 	try {
 		await postService.delete(id)
-		revalidateTag('posts')
 	} catch (err: unknown) {
 		console.log({error: err})
 	}

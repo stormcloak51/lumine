@@ -10,8 +10,7 @@ import {
 	Strikethrough as StrikeButton,
 	Underline as UnderlineButton,
 } from 'lucide-react'
-import { FC, useCallback, useRef, useState } from 'react'
-// import Tiptap from '../Tiptap'
+import { FC, useRef, useState } from 'react'
 import Bold from '@tiptap/extension-bold'
 import Document from '@tiptap/extension-document'
 import Heading from '@tiptap/extension-heading'
@@ -22,13 +21,14 @@ import Strike from '@tiptap/extension-strike'
 import Text from '@tiptap/extension-text'
 import Underline from '@tiptap/extension-underline'
 import { EditorContent, useEditor } from '@tiptap/react'
-import debounce from 'lodash.debounce'
-import { setCookie, getCookie } from 'cookies-next'
+import { getCookie } from 'cookies-next'
 
-import { createPost } from '@/lib/actions/createPost'
 import { motion } from 'framer-motion'
 import { HeadingButton } from './HeadingButton'
-import LumineAvatar from '../LumineAvatar'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { IPostData } from '@/types/post.types'
+import { postService } from '@/services/post.service'
+import { randomPostPhrases } from '@/lib/utils/randomPhrases'
 interface IPostCreate {
 	isGrid: boolean
 	content?: string
@@ -36,11 +36,21 @@ interface IPostCreate {
 
 export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 	const { user } = useAuth()
-	const { ref: textAreRef, width, height } = useElementSize();
+	// const { ref: textAreRef, width, height } = useElementSize();
 
 	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
 	const rightSectionRef = useRef<HTMLButtonElement>(null)
+
+	const queryClient = useQueryClient()
+	const mutation = useMutation({
+		mutationFn: async (data: IPostData) => {
+			await postService.create(data)
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['posts'] })
+		}
+	})
 
 	const editor = useEditor({
 		extensions: [
@@ -52,7 +62,7 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 			Underline,
 			Strike,
 			Placeholder.configure({
-				placeholder: "What's news, bro?",
+				placeholder: randomPostPhrases(),
 				emptyEditorClass: 'is-editor-empty',
 			}),
 			Heading.configure({
@@ -62,7 +72,6 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		content: content ? content : null,
 		immediatelyRender: true,
 		onUpdate: ({ editor }) => {
-			console.log(editor.options.element.scrollHeight);
 			const element = editor.options.element
 			if (element) setContentHeight(Math.max(element.clientHeight))
 		},
@@ -102,8 +111,10 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		const postContent = editor?.getHTML()
 		if (postContent) {
 			try {
-				console.log('COOKA', getCookie('access_token'))
-				await createPost({ content: postContent, User: user })
+				await mutation.mutateAsync({
+					content: postContent,
+					User: user
+				})
 				editor?.commands.clearContent()
 			} catch (err) {
 				console.log(err)
@@ -128,12 +139,11 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
 			<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
 				<EditorContent
-					className={`overflow-y-auto p-[16px] w-full !outline-none !border-none ${
+					className={`overflow-y-auto p-[16px] pr-[50px] w-full !outline-none !border-none ${
 						styled ? 'h-auto' : 'h-full'
 					}`}
 					editor={editor}
 					color='white'
-					ref={textAreRef}
 				/>
 
 				<motion.div

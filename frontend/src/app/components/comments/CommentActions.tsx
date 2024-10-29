@@ -1,0 +1,75 @@
+'use client'
+import { useAuth } from '@/lib/actions/state'
+import { TCommentResponse } from '@/types/comment.types'
+import { Button, useMantineTheme } from '@mantine/core'
+import { useState } from 'react'
+import { AiFillLike } from 'react-icons/ai'
+import { BiSolidMessageRoundedDots } from 'react-icons/bi'
+import { FaEllipsis } from "react-icons/fa6";
+
+interface ICommentActions {
+	comment: TCommentResponse
+}
+
+export const CommentActions = ({ comment }: ICommentActions) => {
+	const {
+		user: { id },
+	} = useAuth()
+
+	const [isCommentLiked, setIsCommentLiked] = useState(
+		comment?.Like?.find(u => u.userId === id) !== undefined
+	)
+
+	console.log(comment)
+	const [localLikes, setLocalLikes] = useState(comment?.Like.length)
+
+	console.log(localLikes)
+
+	const theme = useMantineTheme()
+
+	return (
+		<div className='flex flex-row gap-x-4'>
+			<Button
+				p={0}
+				color={
+					isCommentLiked ? theme.colors.myColor[5] : theme.colors.myColor[2]
+				}
+				className='flex items-center'
+				onClick={() => {
+					if (isCommentLiked) {
+						setLocalLikes(prev => prev - 1)
+						setIsCommentLiked(false)
+					} else {
+						setLocalLikes(prev => prev + 1)
+						setIsCommentLiked(true)
+					}
+				}}
+				variant='transparent'
+			>
+				<AiFillLike />
+				<span className='ml-1'>{localLikes}</span>
+			</Button>
+			<Button
+				p={0}
+				color={theme.colors.myColor[2]}
+				rightSection={4}
+				classNames={{
+					section: 'ml-1',
+				}}
+				variant='transparent'
+			>
+				<BiSolidMessageRoundedDots />
+			</Button>
+			<Button
+				p={0}
+				color={theme.colors.myColor[2]}
+				classNames={{
+					section: 'ml-1',
+				}}
+				variant='transparent'
+			>
+				<FaEllipsis />
+			</Button>
+		</div>
+	)
+}

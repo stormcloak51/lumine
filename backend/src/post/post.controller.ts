@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, Request as RequestNest, UseGuards } from '@nestjs/common';
 import { PostModel } from '@prisma/client';
 import { CreatePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 import { Request } from 'express'
+import * as cookie from 'cookie'
 
 @Controller('posts')
 export class PostController {
@@ -14,29 +15,34 @@ export class PostController {
     return this.postService.findAll();
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('sortedByLikes')
-  findAllSortedByLikes() {
-    return this.postService.findAllSortedByLikes();
+  findAllSortedByLikes(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.postService.findAllSortedByLikes(page, limit);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('create')
   createPost(
     @Body()
     data: CreatePostDto,
+    @RequestNest() req: Request
   ) {
+    const refreshToken = req.cookies['refresh_token'];
+    const accessToken = req.cookies['access_token'];
+    
+    console.log(refreshToken, accessToken, 'Tokens');
     return this.postService.createPost(data);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('findByUsername')
   findByUsername(@Req() req: Request, @Query('username') username: string): Promise<PostModel[]> {
     console.log(req.headers);
     return this.postService.findAllByUsername(username);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('like')
   likePost(
     @Body()

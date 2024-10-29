@@ -19,27 +19,39 @@ let PostService = class PostService {
     findAll() {
         return this.prisma.postModel.findMany();
     }
-    async findAllSortedByLikes() {
+    async findAllSortedByLikes(page = 1, limit = 10) {
+        const skip = (page - 1) * limit;
         const posts = await this.prisma.postModel.findMany({
             orderBy: {
-                UserLike: {
+                Like: {
                     _count: 'desc',
                 },
             },
             include: {
                 User: true,
-                UserLike: {
+                Like: {
                     select: {
                         userId: true,
                         postId: true,
                     },
                 },
-            }
+                Comment: {
+                    include: {
+                        user: true,
+                    }
+                }
+            },
+            skip,
+            take: Number(limit),
         });
-        return posts.map((post) => ({
-            ...post,
-            likes: post.UserLike.length,
-        }));
+        const total = await this.prisma.postModel.count();
+        return {
+            data: posts.map((post) => ({
+                ...post,
+                likes: post.Like.length,
+            })),
+            total,
+        };
     }
     createPost(data) {
         return this.prisma.postModel.create({
@@ -60,7 +72,7 @@ let PostService = class PostService {
                 id: data.postId,
             },
             data: {
-                UserLike: {
+                Like: {
                     create: {
                         user: {
                             connect: {
@@ -79,7 +91,7 @@ let PostService = class PostService {
                 id: data.postId,
             },
             data: {
-                UserLike: {
+                Like: {
                     delete: {
                         userId_postId: {
                             userId: data.user.id,
@@ -102,12 +114,13 @@ let PostService = class PostService {
             },
             include: {
                 User: true,
-                UserLike: true,
+                Like: true,
+                Comment: true,
             },
         });
         return posts.map((post) => ({
             ...post,
-            likes: post.UserLike.length,
+            likes: post.Like.length,
         }));
     }
     async delete(id) {

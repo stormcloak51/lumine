@@ -2,16 +2,29 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(req: NextRequest) {
 	const token = req.cookies.get('refresh_token')?.value
+	const isAuthPage = req.nextUrl.pathname.startsWith('/auth')
 
-	if (token) {
+	if (isAuthPage) {
+		if (token) {
+			const url = req.nextUrl.clone()
+			url.pathname = '/feed'
+			return NextResponse.redirect(url)
+		}
+
 		return NextResponse.next()
 	}
 
-	const url = req.nextUrl.clone()
-  url.pathname = '/auth/login'
-  return NextResponse.redirect(url)
+	if (!token && req.nextUrl.pathname !== '/') {
+		const url = req.nextUrl.clone()
+		url.pathname = '/auth/login'
+		return NextResponse.redirect(url)
+	}
+
+	return NextResponse.next()
 }
 
 export const config = {
-	matcher: '/feed'
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ]
 }
