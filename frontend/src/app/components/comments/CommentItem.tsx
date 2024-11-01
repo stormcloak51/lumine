@@ -9,6 +9,7 @@ import { useState } from 'react'
 
 export const CommentItem = (comment: TCommentResponse) => {
 
+	console.log(comment, 'COMMENNT')
 	return (
 		<div className='flex flex-row gap-x-2'>
 			<LumineAvatar

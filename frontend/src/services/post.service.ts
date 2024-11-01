@@ -14,14 +14,19 @@ class PostService {
 		return JSON.parse(JSON.stringify(response.data))
 	}
 
-	async findSortedByLikes(): Promise<TPost[]> {
-		const response: AxiosResponse<TPost[]> = await axiosWithAuth.get(this.BASE_URL + '/sortedByLikes')
+	async findSortedByLikes(page: number = 1, limit: number = 10): Promise<TPost[]> {
+		const response: AxiosResponse<TPost[]> = await axiosWithAuth.get(this.BASE_URL + `/sortedByLikes?page=${page}&limit=${limit}`)
 		return JSON.parse(JSON.stringify(response.data))
 	}
 
-	async findByUsername(username: string){
+	async findAllSortedByDate(page: number = 1, limit: number = 10): Promise<TPost[]> {
+		const response: AxiosResponse<TPost[]> = await axiosWithAuth.get(this.BASE_URL + `/sortedByDate?page=${page}&limit=${limit}`)
+		return JSON.parse(JSON.stringify(response.data))
+	}
+
+	async findByUsername(username: string, page: number = 1, limit: number = 10) {
 		try {
-			const response = await axiosWithAuth.get(this.BASE_URL + `/findByUsername?username=${username}`)
+			const response = await axiosWithAuth.get(this.BASE_URL + `/findByUsername?username=${username}&page=${page}&limit=${limit}`)
 			return JSON.parse(JSON.stringify(response.data))
 		} catch (error) {
 			console.log(error)
@@ -30,7 +35,6 @@ class PostService {
 
 	async create(data: IPostData){
 		const response = await axiosWithAuth.post(this.BASE_URL + '/create', data)
-		console.log(response.data, 'RESPONSEDATA')
 		return JSON.parse(JSON.stringify(response.data))
 	}
 

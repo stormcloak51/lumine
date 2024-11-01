@@ -4,14 +4,20 @@ import { Modal, Button, Text, Menu, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Edit, Ellipsis, Trash } from 'lucide-react'
 import { PostCreate } from './PostCreate'
+import { useMutation } from '@tanstack/react-query'
+import { IUserCredentials } from '@/types/user.types'
+import { postService } from '@/services/post.service'
+import { TPost } from '@/types/post.types'
+import { usePost } from '@/hooks/usePost'
 
 interface IManagePost {
+	post: TPost
 	id: number
 	content: string
 	userId: string
 }
 
-export const ManagePost = ({ id, content, userId }: IManagePost) => {
+export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 	const [isDeletePostOpened, { open: openDeletePostModal, close: closeDeletePostModal }] =
 		useDisclosure(false)
 	const [isEditPostOpened, { open: openEditPostModal, close: closeEditPostModal }] =
@@ -19,13 +25,35 @@ export const ManagePost = ({ id, content, userId }: IManagePost) => {
 
 	const theme = useMantineTheme()
 
+	const {updatePostInCache} = usePost()
+
+	const editPostMutation = useMutation({
+    mutationFn: (content: string) => 
+      postService.edit(id, content),
+    onMutate: async (content) => {
+      const optimisticPost = {
+        ...post,
+        content,
+      };
+
+      updatePostInCache(optimisticPost);
+
+      return { previousPost: post };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousPost) {
+        updatePostInCache(context.previousPost);
+      }
+    }
+  });
+
 	const handleDelete = async () => {
 		await deletePost(id)
 		closeDeletePostModal()
 	}
 
 	const handleEdit = async () => {
-		console.log(content)
+		editPostMutation.mutate(content)
 		closeEditPostModal()
 	}
 

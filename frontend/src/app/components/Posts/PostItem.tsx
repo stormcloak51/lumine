@@ -15,7 +15,13 @@ import LumineAvatar from '../LumineAvatar'
 import purify from 'dompurify'
 import { timeAgo } from '@/lib/utils/timeAgo'
 import { DMSans } from '@/fonts/fonts'
-import { Circle, Loader, MessagesSquare, Quote, UserPlus } from 'lucide-react'
+import {
+	Circle,
+	LoaderCircle,
+	MessagesSquare,
+	Quote,
+	UserPlus,
+} from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/lib/actions/state'
 import { ManagePost } from './ManagePost'
@@ -38,7 +44,10 @@ export const PostItem: FC<
 		createComment,
 		toggleCommentsVisibility,
 		isCommentsVisible,
+		hasNextPage,
+		fetchNextPage,
 	} = useComments(post.id)
+
 
 	return (
 		<Card
@@ -140,6 +149,7 @@ export const PostItem: FC<
 				</div>
 				{user?.id === post.User.id && (
 					<ManagePost
+						post={post}
 						id={post.id}
 						content={post.content}
 						userId={post.User.id}
@@ -161,18 +171,24 @@ export const PostItem: FC<
 				dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
 			/>
 			<div className='mt-4 flex gap-x-3'>
-				<PostActions commentsCount={commentLength!} onClickComment={toggleCommentsVisibility} post={post} />
+				<PostActions post={post} onClickComment={toggleCommentsVisibility} commentsCount={commentLength} />
 			</div>
 			<Divider
 				className='!w-[calc(100%+var(--mantine-spacing-md)*2)] -mx-[var(--mantine-spacing-md)]'
 				my={'sm'}
 			/>
-			{isLoading && <Loader size='md' />}
-			{isCommentsVisible && !isLoading && <CommentList comments={comments!} />}
-			<CommentCreate onSubmit={(data) => {
-				setCommentLength(prev => prev + 1)
-				createComment(data)
-			}} postId={post.id} />
+			{isLoading && (
+				<LoaderCircle className='animate-spin w-full mx-auto mb-5' size={34} />
+			)}
+			{isCommentsVisible && comments && comments?.length > 0 && !isLoading && <CommentList hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} comments={comments!} />}
+			<CommentCreate
+				onSubmit={data => {
+					setCommentLength(prev => prev + 1)
+					createComment(data)
+					if (!isCommentsVisible) toggleCommentsVisibility()
+				}}
+				postId={post.id}
+			/>
 		</Card>
 	)
 }

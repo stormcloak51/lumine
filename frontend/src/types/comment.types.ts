@@ -21,6 +21,13 @@ export type TCommentResponse = {
 	user: IUserCredentials
 	// UserLike: TCommentLikes[]
 	Like: TCommentLikes[]
+	likes: number
+}
+
+export type TCommentLike = {
+	commentId: number
+	postId: number
+	userId: string
 }
 
 export type TCommentDelete = {

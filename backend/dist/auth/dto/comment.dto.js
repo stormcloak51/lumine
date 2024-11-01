@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EditCommentDto = exports.DeleteCommentDto = exports.CreateCommentDto = exports.GetCommentsDto = void 0;
+exports.LikeCommentDto = exports.EditCommentDto = exports.DeleteCommentDto = exports.CreateCommentDto = exports.GetCommentsDto = void 0;
 const class_validator_1 = require("class-validator");
 class GetCommentsDto {
 }
@@ -18,6 +18,10 @@ __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], GetCommentsDto.prototype, "postId", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], GetCommentsDto.prototype, "page", void 0);
 class CreateCommentDto {
 }
 exports.CreateCommentDto = CreateCommentDto;
@@ -59,4 +63,19 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], EditCommentDto.prototype, "content", void 0);
+class LikeCommentDto {
+}
+exports.LikeCommentDto = LikeCommentDto;
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], LikeCommentDto.prototype, "commentId", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], LikeCommentDto.prototype, "postId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], LikeCommentDto.prototype, "userId", void 0);
 //# sourceMappingURL=comment.dto.js.map

@@ -4,6 +4,9 @@ import { IsNumber, IsString } from 'class-validator'
 export class GetCommentsDto {
 	@IsNumber()
 	postId: number
+
+	@IsNumber()
+	page: number
 }
 
 export class CreateCommentDto {
@@ -34,4 +37,15 @@ export class EditCommentDto {
 
 	@IsString()
 	content: string
+}
+
+export class LikeCommentDto {
+	@IsNumber()
+	commentId: number
+
+	@IsNumber()
+	postId: number
+
+	@IsString()
+	userId: string
 }

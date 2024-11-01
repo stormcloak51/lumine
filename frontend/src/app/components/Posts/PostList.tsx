@@ -1,35 +1,74 @@
 'use client'
 import { TPost } from '@/types/post.types'
-import { Flex} from '@mantine/core'
-import { FC } from 'react'
+import { Flex } from '@mantine/core'
+import { FC, Suspense, useCallback, useEffect, useRef } from 'react'
 import { PostItem } from './PostItem'
+import { QueryClient, useInfiniteQuery } from '@tanstack/react-query'
+import { axiosWithAuth } from '@/api/interceptors'
+import { postService } from '@/services/post.service'
+import Loading from '@/app/(main)/feed/loading'
 
 export interface IPostList {
-	// queryKey?: string
+	feed: boolean
 	title: string
-	posts?: TPost[]
-	isGrid?: boolean
-	lastPostRef?: React.Ref<HTMLDivElement>
+	username?: string
 }
 
-const PostList: FC<IPostList> = ({ title = 'Posts', posts, lastPostRef, isGrid = false }) => {
-	if (isGrid) {
-		return (
-			// <Grid.Col span={7.5} className='mt-3'>
-				<Flex direction={'column'} className='gap-y-4'>
-					{posts?.map((post, index) => {
-						return <PostItem key={post.id} {...post} title={title} />
-					})}
-				</Flex>
+const PostList: FC<IPostList> = ({ username, feed, title = 'Posts' }) => {
+
+	const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+		useInfiniteQuery({
+			queryKey: ['posts'],
+			queryFn: ({ pageParam = 1 }) => {
+				if (feed) {
+					return postService.findAllSortedByDate(pageParam, 10)
+				}
+				return postService.findByUsername(username!, pageParam, 10)
+			},
+			getNextPageParam: (lastPage, pages) => {
+				const hasMore = lastPage.data.length === 10
+				return hasMore ? pages.length + 1 : undefined
+			},
+			initialPageParam: 1,
+		
+		})
+	const allPosts = data?.pages
+		.flatMap(page => page.data)
+		.filter(
+			(post, index, self) => index === self.findIndex(p => p.id === post.id)
 		)
-	}
+
+	const observerRef = useRef<IntersectionObserver | null>(null)
+	const lastPostRef = useCallback(
+		(node: HTMLDivElement) => {
+			if (isLoading || isFetchingNextPage) return
+			if (observerRef.current) observerRef.current.disconnect()
+			observerRef.current = new IntersectionObserver(entries => {
+				if (entries[0].isIntersecting && hasNextPage) {
+					fetchNextPage()
+				}
+			})
+			if (node) observerRef.current.observe(node)
+		},
+		[isLoading, isFetchingNextPage, hasNextPage, fetchNextPage]
+	)
+
 	return (
-		<Flex direction={'column'} className='gap-y-4'>
-			{posts?.map((post, index) => {
-				const isLastPost = posts.length - 1 === index
-				return <PostItem lastPostRef={isLastPost ? lastPostRef : undefined} key={post.id} {...post} title={title} />
-			})}
-		</Flex>
+		<Suspense fallback={<Loading />}>
+			<Flex direction={'column'} className='gap-y-4'>
+				{allPosts?.map((post, index) => {
+					const isLastPost = allPosts.length - 1 === index
+					return (
+						<PostItem
+							lastPostRef={isLastPost ? lastPostRef : undefined}
+							key={post.id}
+							{...post}
+							title={title}
+						/>
+					)
+				})}
+			</Flex>
+		</Suspense>
 	)
 }
 

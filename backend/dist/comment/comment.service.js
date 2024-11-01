@@ -17,9 +17,12 @@ let CommentService = class CommentService {
         this.prisma = prisma;
     }
     async getById(dto) {
-        return await this.prisma.comment.findMany({
+        const comments = await this.prisma.comment.findMany({
             where: {
                 postId: dto.postId
+            },
+            orderBy: {
+                created_at: 'desc'
             },
             include: {
                 user: {
@@ -32,8 +35,22 @@ let CommentService = class CommentService {
                     }
                 },
                 Like: true
+            },
+            skip: (dto.page - 1) * 5,
+            take: 5
+        });
+        const total = await this.prisma.comment.count({
+            where: {
+                postId: dto.postId
             }
         });
+        return {
+            data: comments.map((comment) => ({
+                ...comment,
+                likes: comment.Like.length
+            })),
+            total,
+        };
     }
     async create(dto, postId) {
         return await this.prisma.comment.create({
@@ -51,10 +68,92 @@ let CommentService = class CommentService {
                 content: dto.content
             },
             include: {
-                user: true,
+                user: {
+                    select: {
+                        id: true,
+                        likedComments: true,
+                        username: true,
+                        userAvatar: true,
+                        name: true,
+                    }
+                },
                 Like: true,
             }
         });
+    }
+    async likeComment(dto) {
+        const comment = await this.prisma.comment.findUnique({
+            where: {
+                id: dto.commentId,
+            },
+            include: {
+                Like: true
+            }
+        });
+        if (!comment) {
+            throw new common_1.BadRequestException('Comment not found');
+        }
+        const existingLike = await this.prisma.$transaction(async (prisma) => {
+            const like = await prisma.commentLike.findFirst({
+                where: {
+                    AND: [
+                        { userId: dto.userId },
+                        { commentId: dto.commentId }
+                    ]
+                }
+            });
+            if (like) {
+                await prisma.commentLike.deleteMany({
+                    where: {
+                        AND: [
+                            { userId: dto.userId },
+                            { commentId: dto.commentId }
+                        ]
+                    }
+                });
+                return like;
+            }
+            else {
+                return await prisma.commentLike.create({
+                    data: {
+                        userId: dto.userId,
+                        commentId: dto.commentId
+                    }
+                });
+            }
+        });
+        const updatedComment = await this.prisma.comment.findUnique({
+            where: {
+                id: dto.commentId,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        likedComments: true,
+                        username: true,
+                        userAvatar: true,
+                        name: true,
+                    }
+                },
+                Like: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        if (!updatedComment) {
+            throw new common_1.BadRequestException('Failed to update comment');
+        }
+        return {
+            ...updatedComment,
+            likes: updatedComment.Like.length
+        };
     }
     async delete(dto) {
         return await this.prisma.comment.delete({

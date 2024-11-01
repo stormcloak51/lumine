@@ -36,8 +36,7 @@ interface IPostCreate {
 
 export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 	const { user } = useAuth()
-	// const { ref: textAreRef, width, height } = useElementSize();
-
+	
 	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
 	const rightSectionRef = useRef<HTMLButtonElement>(null)

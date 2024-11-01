@@ -7,10 +7,10 @@ export declare class UserService {
         id: string;
         created_at: Date;
         updated_at: Date;
-        name: string;
         username: string;
         email: string;
         password: string;
+        name: string;
         surname: string;
         bio: string;
         userAvatar: string;
@@ -19,26 +19,26 @@ export declare class UserService {
     findOne(idOrEmailOrUsername: string): import(".prisma/client").Prisma.Prisma__UserClient<{
         id: string;
         created_at: Date;
-        name: string;
         username: string;
         email: string;
+        name: string;
         surname: string;
         bio: string;
         userAvatar: string;
         role: string;
         likedPosts: {
-            userId: string;
             postId: number;
+            userId: string;
         }[];
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: string;
         created_at: Date;
         updated_at: Date;
-        name: string;
         username: string;
         email: string;
         password: string;
+        name: string;
         surname: string;
         bio: string;
         userAvatar: string;
@@ -48,10 +48,10 @@ export declare class UserService {
         id: string;
         created_at: Date;
         updated_at: Date;
-        name: string;
         username: string;
         email: string;
         password: string;
+        name: string;
         surname: string;
         bio: string;
         userAvatar: string;

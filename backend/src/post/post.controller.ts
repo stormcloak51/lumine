@@ -22,6 +22,12 @@ export class PostController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('sortedByDate')
+  findAllSortedByDate(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
+    return this.postService.findAllSortedByDate(page, limit);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('create')
   createPost(
     @Body()
@@ -35,11 +41,18 @@ export class PostController {
     return this.postService.createPost(data);
   }
 
+
+  @UseGuards(JwtAuthGuard)
+  @Get('findById')
+  findById(@Query('id', ParseIntPipe) id: number) {
+    return this.postService.findById(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('findByUsername')
-  findByUsername(@Req() req: Request, @Query('username') username: string): Promise<PostModel[]> {
-    console.log(req.headers);
-    return this.postService.findAllByUsername(username);
+  findByUsername(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('username') username: string){
+    
+    return this.postService.findAllByUsername(page, limit, username);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -52,7 +65,7 @@ export class PostController {
   }
 
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('unlike')
   unlikePost(
     @Body()
@@ -61,13 +74,13 @@ export class PostController {
     return this.postService.unLikePost(data);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete('delete')
   delete(@Query('id', ParseIntPipe) id: number) {
     return this.postService.delete(id);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('edit')
   edit(@Body() data: EditPostDto){
     return this.postService.edit(data.postId, data.content)

@@ -16,6 +16,7 @@ export type TPost = {
 	created_at: string
 	updated_at: string
 	User: IUserCredentials
-	UserLike: TPostLikes[]
+	Like: TPostLikes[]
 	Comment: TCommentResponse[]
+	likes: number
 }

@@ -1,8 +1,9 @@
 'use client'
+import { useComments } from '@/hooks/useComments'
 import { useAuth } from '@/lib/actions/state'
 import { TCommentResponse } from '@/types/comment.types'
 import { Button, useMantineTheme } from '@mantine/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AiFillLike } from 'react-icons/ai'
 import { BiSolidMessageRoundedDots } from 'react-icons/bi'
 import { FaEllipsis } from "react-icons/fa6";
@@ -16,12 +17,18 @@ export const CommentActions = ({ comment }: ICommentActions) => {
 		user: { id },
 	} = useAuth()
 
+	const {likeComment} = useComments(comment.postId)
+
 	const [isCommentLiked, setIsCommentLiked] = useState(
 		comment?.Like?.find(u => u.userId === id) !== undefined
 	)
-
-	console.log(comment)
+	
 	const [localLikes, setLocalLikes] = useState(comment?.Like.length)
+
+	useEffect(() => {
+		setLocalLikes(comment?.Like.length)
+		setIsCommentLiked(comment?.Like?.find(u => u.userId === id) !== undefined)
+	}, [comment, id])
 
 	console.log(localLikes)
 
@@ -37,9 +44,11 @@ export const CommentActions = ({ comment }: ICommentActions) => {
 				className='flex items-center'
 				onClick={() => {
 					if (isCommentLiked) {
+						likeComment({postId: comment.postId, userId: id, commentId: comment.id})
 						setLocalLikes(prev => prev - 1)
 						setIsCommentLiked(false)
 					} else {
+						likeComment({postId: comment.postId, userId: id, commentId: comment.id})
 						setLocalLikes(prev => prev + 1)
 						setIsCommentLiked(true)
 					}

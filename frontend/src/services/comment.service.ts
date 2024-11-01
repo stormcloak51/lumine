@@ -1,5 +1,5 @@
 import { axiosWithAuth } from '@/api/interceptors'
-import { TComment, TCommentDelete, TCommentEdit, TCommentResponse } from '@/types/comment.types'
+import { TComment, TCommentDelete, TCommentEdit, TCommentLike, TCommentResponse } from '@/types/comment.types'
 import { AxiosResponse } from 'axios'
 
 
@@ -7,15 +7,20 @@ import { AxiosResponse } from 'axios'
 export class CommentService {
 	private BASE_URL = '/comment'
 
-	async getById(postId: number): Promise<TCommentResponse[]> {
-		const response = await axiosWithAuth.get(this.BASE_URL + `/getById?postId=${postId}`)
-		console.log(response.data, 'ALL COMMENTS')
-		return JSON.parse(JSON.stringify(response.data))
+	async getById(postId: number, page: number): Promise<TCommentResponse[]> {
+		const response = await axiosWithAuth.get(this.BASE_URL + `/getById?postId=${postId}&page=${page}`)
+		return JSON.parse(JSON.stringify(response.data.data))
 	}
 
 	async create(data: TComment){
 		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/create', data)
 		console.log(response.data, 'CREATED COMMENT')
+		return JSON.parse(JSON.stringify(response.data))
+	}
+
+	async like(data: TCommentLike) {
+		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/like', data)
+
 		return JSON.parse(JSON.stringify(response.data))
 	}
 

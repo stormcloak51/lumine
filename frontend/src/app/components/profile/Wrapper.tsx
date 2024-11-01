@@ -9,23 +9,24 @@ import PostList, { IPostList } from '../Posts/PostList'
 
 interface IWrapper {
 	currId: string
+	username: string
 }
 
-export const Wrapper: FC<IWrapper & IPostList> = ({ currId, title = 'Posts', posts, isGrid = false }) => {
+export const Wrapper: FC<IWrapper & Omit<IPostList, 'feed'>> = ({ username, currId, title = 'Posts' }) => {
 	const { user } = useAuth()
 
 	if (user.id !== currId) {
 		return (
 			<Grid.Col span={7.5} className='pt-4'>
 				<ActionsSection />
-				<PostList title={`${user?.name}'s Posts`} posts={posts} isGrid={true} />
+				<PostList title={`${user?.name}'s Posts`} feed={false} username={username} />
 			</Grid.Col>
 		)
 	}
 	return (
 		<Grid.Col span={7.5} className='pt-4'>
 			<PostCreate isGrid={true} />
-			<PostList title={`${user?.name}'s Posts`} posts={posts} isGrid={true} />
+			<PostList title={`${user?.name}'s Posts`} feed={false} username={username}/>
 		</Grid.Col>
 	)
 }

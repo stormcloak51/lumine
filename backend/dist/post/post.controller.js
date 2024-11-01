@@ -27,15 +27,20 @@ let PostController = class PostController {
     findAllSortedByLikes(page = 1, limit = 10) {
         return this.postService.findAllSortedByLikes(page, limit);
     }
+    findAllSortedByDate(page = 1, limit = 10) {
+        return this.postService.findAllSortedByDate(page, limit);
+    }
     createPost(data, req) {
         const refreshToken = req.cookies['refresh_token'];
         const accessToken = req.cookies['access_token'];
         console.log(refreshToken, accessToken, 'Tokens');
         return this.postService.createPost(data);
     }
-    findByUsername(req, username) {
-        console.log(req.headers);
-        return this.postService.findAllByUsername(username);
+    findById(id) {
+        return this.postService.findById(id);
+    }
+    findByUsername(page = 1, limit = 10, username) {
+        return this.postService.findAllByUsername(page, limit, username);
     }
     likePost(data) {
         return this.postService.likePost(data);
@@ -68,6 +73,15 @@ __decorate([
 ], PostController.prototype, "findAllSortedByLikes", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('sortedByDate'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "findAllSortedByDate", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Request)()),
@@ -77,12 +91,21 @@ __decorate([
 ], PostController.prototype, "createPost", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
-    (0, common_1.Get)('findByUsername'),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Query)('username')),
+    (0, common_1.Get)('findById'),
+    __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, String]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "findById", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('findByUsername'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Query)('username')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, String]),
+    __metadata("design:returntype", void 0)
 ], PostController.prototype, "findByUsername", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
@@ -93,6 +116,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "likePost", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Patch)('unlike'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -100,6 +124,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "unlikePost", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Delete)('delete'),
     __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -107,6 +132,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Patch)('edit'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

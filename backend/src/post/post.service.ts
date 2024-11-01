@@ -49,6 +49,69 @@ export class PostService {
     };
   }
   
+  async findAllByUsername(page: number = 1, limit: number = 10, username: string) {
+    const skip = (page - 1) * limit;
+
+    const posts = await this.prisma.postModel.findMany({
+      where: {
+        User: {
+          username: username,
+        },
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+      include: {
+        User: true,
+        Like: true,
+        Comment: true,
+      },
+      skip,
+      take: Number(limit),
+    });
+
+    const total = await this.prisma.postModel.count({
+      where: {
+        User: {
+          username: username,
+        },
+      },
+    });
+
+    return {
+      data: posts.map((post) => ({
+        ...post,
+        likes: post.Like.length,
+      })),
+      total,
+    }
+  }
+
+  async findAllSortedByDate(page: number = 1, limit: number = 10) {
+    const posts = await this.prisma.postModel.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
+      include: {
+        User: true,
+        Like: true,
+        Comment: true,
+      },
+      skip: (page - 1) * limit,
+      take: Number(limit),
+    });
+
+    const total = await this.prisma.postModel.count()
+    ;
+
+    return {
+      data: posts.map((post) => ({
+        ...post,
+        likes: post.Like.length,
+      })),
+      total,
+    }
+  }
 
   createPost(data: CreatePostDto) {
     return this.prisma.postModel.create({
@@ -64,8 +127,8 @@ export class PostService {
     });
   }
 
-  likePost(data: LikePostDto) {
-    return this.prisma.postModel.update({
+  async likePost(data: LikePostDto) {
+    const post = await this.prisma.postModel.update({
       where: {
         id: data.postId,
       },
@@ -81,11 +144,19 @@ export class PostService {
           },
         },
       },
+      include: {
+        Like: true,
+      },
     });
+
+    return {
+      ...post,
+      likes: post.Like.length,
+    }
   }
 
-  unLikePost(data: LikePostDto) {
-    return this.prisma.postModel.update({
+  async unLikePost(data: LikePostDto) {
+    const post = await this.prisma.postModel.update({
       where: {
         id: data.postId,
       },
@@ -99,30 +170,42 @@ export class PostService {
           },
         },
       },
+      include: {
+        Like: true,
+      }
     });
+
+    return {
+      ...post,
+      likes: post.Like.length,
+    }
   }
 
-  async findAllByUsername(username: string) {
-    const posts = await this.prisma.postModel.findMany({
+  async findById(id: number) {
+    const post = await this.prisma.postModel.findUnique({
       where: {
-        User: {
-          username: username,
-        },
-      },
-      orderBy: {
-        created_at: 'desc',
+        id
       },
       include: {
         User: true,
-        Like: true,
-        Comment: true,
+        Like: {
+          select: {
+            userId: true,
+            postId: true,
+          },
+        },
+        Comment: {
+          include: {
+            user: true,
+          }
+        }
       },
-    });
+    })
 
-    return posts.map((post) => ({
+    return {
       ...post,
       likes: post.Like.length,
-    }));
+    }
   }
 
   async delete(id: number) {

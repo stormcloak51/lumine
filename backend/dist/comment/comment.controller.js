@@ -20,11 +20,14 @@ let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
     }
-    async get(postId) {
-        return await this.commentService.getById({ postId });
+    async get(postId, page = 1) {
+        return await this.commentService.getById({ postId, page });
     }
     async create(dto, postId) {
         return await this.commentService.create(dto, postId);
+    }
+    async like(dto) {
+        return this.commentService.likeComment(dto);
     }
     async delete(dto) {
         this.commentService.delete(dto);
@@ -37,8 +40,9 @@ exports.CommentController = CommentController;
 __decorate([
     (0, common_1.Get)('getById'),
     __param(0, (0, common_1.Query)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('page', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "get", null);
 __decorate([
@@ -49,6 +53,13 @@ __decorate([
     __metadata("design:paramtypes", [comment_dto_1.CreateCommentDto, Number]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "create", null);
+__decorate([
+    (0, common_1.Post)('like'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [comment_dto_1.LikeCommentDto]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "like", null);
 __decorate([
     (0, common_1.Delete)('delete'),
     __param(0, (0, common_1.Body)()),

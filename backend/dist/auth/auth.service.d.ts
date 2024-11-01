@@ -18,9 +18,9 @@ export declare class AuthService {
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
             username: string;
             email: string;
+            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
@@ -34,9 +34,9 @@ export declare class AuthService {
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
             username: string;
             email: string;
+            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
@@ -49,16 +49,16 @@ export declare class AuthService {
         user: {
             id: string;
             created_at: Date;
-            name: string;
             username: string;
             email: string;
+            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
             role: string;
             likedPosts: {
-                userId: string;
                 postId: number;
+                userId: string;
             }[];
         };
     }>;
