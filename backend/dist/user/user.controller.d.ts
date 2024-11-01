@@ -3,27 +3,27 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
+        username: string;
+        email: string;
+        userAvatar: string;
+        name: string;
+        surname: string;
         id: string;
         created_at: Date;
         updated_at: Date;
-        username: string;
-        email: string;
         password: string;
-        name: string;
-        surname: string;
         bio: string;
-        userAvatar: string;
         role: string;
     }[]>;
     findOne(idOrEmailOrUsername: string): Promise<{
-        id: string;
-        created_at: Date;
         username: string;
         email: string;
+        userAvatar: string;
         name: string;
         surname: string;
+        id: string;
+        created_at: Date;
         bio: string;
-        userAvatar: string;
         role: string;
         likedPosts: {
             postId: number;

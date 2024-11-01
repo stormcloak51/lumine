@@ -7,14 +7,16 @@ import { AxiosResponse } from 'axios'
 export class CommentService {
 	private BASE_URL = '/comment'
 
-	async getById(postId: number, page: number): Promise<TCommentResponse[]> {
+	async getById(postId: number, page: number) {
 		const response = await axiosWithAuth.get(this.BASE_URL + `/getById?postId=${postId}&page=${page}`)
-		return JSON.parse(JSON.stringify(response.data.data))
+		return {
+			data: JSON.parse(JSON.stringify(response.data.data)),
+			total: JSON.parse(JSON.stringify(response.data.total)),
+		}
 	}
 
 	async create(data: TComment){
 		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/create', data)
-		console.log(response.data, 'CREATED COMMENT')
 		return JSON.parse(JSON.stringify(response.data))
 	}
 

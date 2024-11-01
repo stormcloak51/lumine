@@ -37,7 +37,6 @@ export class PostController {
     const refreshToken = req.cookies['refresh_token'];
     const accessToken = req.cookies['access_token'];
     
-    console.log(refreshToken, accessToken, 'Tokens');
     return this.postService.createPost(data);
   }
 

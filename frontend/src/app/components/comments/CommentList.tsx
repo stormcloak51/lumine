@@ -2,12 +2,17 @@
 
 import { TCommentResponse } from '@/types/comment.types'
 import { CommentItem } from './CommentItem'
-import {Button, Text, Title} from '@mantine/core'
+import {Button} from '@mantine/core'
 import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query'
+import { TPaginatedResponse } from '@/types/general.types'
 
-export const CommentList = ({comments, hasNextPage, fetchNextPage}: {comments: TCommentResponse[], hasNextPage: boolean, fetchNextPage: (options?: FetchNextPageOptions) => Promise<InfiniteQueryObserverResult<InfiniteData<TCommentResponse[], unknown>, Error>>}) => {
+interface ICommmentList {
+	comments: TCommentResponse[],
+	hasNextPage: boolean,
+	fetchNextPage: (options?: FetchNextPageOptions | undefined) => Promise<InfiniteQueryObserverResult<InfiniteData<TPaginatedResponse<TCommentResponse>>, unknown>>
+}
 
-	console.log(comments, 'COOMMENTS')
+export const CommentList = ({comments, hasNextPage, fetchNextPage}: ICommmentList) => {
 
 	return (
 		<div className='flex flex-col gap-y-4 mb-5'>

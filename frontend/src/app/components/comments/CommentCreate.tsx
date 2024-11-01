@@ -84,7 +84,7 @@ export const CommentCreate = ({
 				editor={editor}
 				color='white'
 			/>
-			<button
+		<button
 				onClick={() => {
 					onSubmit({
 						content: editor.getHTML(),

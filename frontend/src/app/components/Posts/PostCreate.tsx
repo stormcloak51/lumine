@@ -1,16 +1,8 @@
 'use client'
 
 import { useAuth } from '@/lib/actions/state'
-import { ActionIcon, Group } from '@mantine/core'
-import { useClickOutside, useElementSize } from '@mantine/hooks'
-import {
-	Bold as BoldButton,
-	Italic as ItalicButton,
-	SendHorizontal,
-	Strikethrough as StrikeButton,
-	Underline as UnderlineButton,
-} from 'lucide-react'
-import { FC, useRef, useState } from 'react'
+import { ActionIcon, Group, Kbd, Tooltip } from '@mantine/core'
+import { useClickOutside, useOs } from '@mantine/hooks'
 import Bold from '@tiptap/extension-bold'
 import Document from '@tiptap/extension-document'
 import Heading from '@tiptap/extension-heading'
@@ -21,22 +13,31 @@ import Strike from '@tiptap/extension-strike'
 import Text from '@tiptap/extension-text'
 import Underline from '@tiptap/extension-underline'
 import { EditorContent, useEditor } from '@tiptap/react'
-import { getCookie } from 'cookies-next'
+import {
+	Bold as BoldButton,
+	Italic as ItalicButton,
+	SendHorizontal,
+	Strikethrough as StrikeButton,
+	Underline as UnderlineButton,
+} from 'lucide-react'
+import { FC, useRef, useState } from 'react'
 
+import { randomPostPhrases } from '@/lib/utils/randomPhrases'
+import { postService } from '@/services/post.service'
+import { IPostData } from '@/types/post.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { HeadingButton } from './HeadingButton'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { IPostData } from '@/types/post.types'
-import { postService } from '@/services/post.service'
-import { randomPostPhrases } from '@/lib/utils/randomPhrases'
+import { getHotkeyHandler } from '@mantine/hooks'
+
 interface IPostCreate {
-	isGrid: boolean
 	content?: string
 }
 
-export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
+export const PostCreate: FC<IPostCreate> = ({ content }) => {
 	const { user } = useAuth()
-	
+
+	const os = useOs()
 	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
 	const rightSectionRef = useRef<HTMLButtonElement>(null)
@@ -48,7 +49,7 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['posts'] })
-		}
+		},
 	})
 
 	const editor = useEditor({
@@ -70,6 +71,9 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		],
 		content: content ? content : null,
 		immediatelyRender: true,
+		onCreate: () => {
+			if (content) handleFocus()
+		},
 		onUpdate: ({ editor }) => {
 			const element = editor.options.element
 			if (element) setContentHeight(Math.max(element.clientHeight))
@@ -85,7 +89,6 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 			},
 		},
 	})
-
 
 	const textRefLen = editor?.getText().length
 
@@ -110,9 +113,9 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 		const postContent = editor?.getHTML()
 		if (postContent) {
 			try {
-				await mutation.mutateAsync({
+				mutation.mutate({
 					content: postContent,
-					User: user
+					User: user,
 				})
 				editor?.commands.clearContent()
 			} catch (err) {
@@ -123,9 +126,9 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 
 	if (!editor) return null
 
-	// console.log(contentHeight);
 	return (
 		<motion.div
+			onKeyDown={getHotkeyHandler([['mod+Enter', handleSend]])}
 			onClick={() => {
 				handleFocus()
 			}}
@@ -187,14 +190,37 @@ export const PostCreate: FC<IPostCreate> = ({ isGrid, content }) => {
 				</motion.div>
 				{!content && (
 					<Group className='absolute bottom-0 right-0 p-4'>
-						<ActionIcon
-							disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}
-							className='transition-all'
-							variant='transparent'
-							color=''
-							onClick={() => handleSend()}>
-							<SendHorizontal size={22} />
-						</ActionIcon>
+						<Tooltip
+							openDelay={200}
+							transitionProps={{ transition: 'rotate-left', duration: 300 }}
+							color='#1f2124'
+							className='text-white'
+							label={
+								os === 'macos' ? (
+									<>
+										<Kbd>⌘</Kbd> + <Kbd>Enter</Kbd> - to send a post
+									</>
+								) : os === 'windows' ?(
+									<>
+										<Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd> - to send a post
+									</>
+								) : (
+									''
+								)
+							}>
+							<button
+								onClick={handleSend}
+								disabled={typeof textRefLen !== 'undefined' && textRefLen > 0 ? false : true}>
+								<SendHorizontal
+									className={`transition-all ${
+										typeof textRefLen !== 'undefined' && textRefLen > 0
+											? `text-[#ffd37d] animate-pulse`
+											: `text-[rgb(66,66,66)] animate-none`
+									}`}
+									size={22}
+								/>
+							</button>
+						</Tooltip>
 					</Group>
 				)}
 			</div>

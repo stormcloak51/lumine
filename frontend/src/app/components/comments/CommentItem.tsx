@@ -1,3 +1,4 @@
+'use client'
 import { TCommentResponse } from '@/types/comment.types'
 import LumineAvatar from '../LumineAvatar'
 import purify from 'dompurify'
@@ -6,6 +7,7 @@ import { Circle } from 'lucide-react'
 import Link from 'next/link'
 import { CommentActions } from './CommentActions'
 import { useState } from 'react'
+import { timeAgo } from '@/lib/utils/timeAgo'
 
 export const CommentItem = (comment: TCommentResponse) => {
 
@@ -17,16 +19,16 @@ export const CommentItem = (comment: TCommentResponse) => {
 				url={comment.user.userAvatar}
 				username={comment.user.username}
 			/>
-			<div className='w-full border-b border-[rgb(66,66,66)]'>
+			<div className='w-full border-b border-[rgb(0,0,0)]'>
 				<Link
 					href={`/profile/${comment.user.username}`}
-					className='flex items-center gap-x-3'
+					className='flex items-center justify-between'
 				>
 					<Text size='md' fw={700}>
 						{comment.user.name}
 					</Text>
-					<Circle fill='#ffdd9a' size={8} stroke='#ffdd9a' />
-					<Text c={'dimmed'}>1h ago</Text>
+					{/* <Circle fill='#ffdd9a' size={8} stroke='#ffdd9a' /> */}
+					<Text c={'dimmed'}>{timeAgo(comment.created_at.toString())}</Text>
 				</Link>
 				<Text
 					mt='sm'

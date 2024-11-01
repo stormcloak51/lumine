@@ -11,7 +11,6 @@ export const getAccessToken = async () => {
 
 export const saveToStorage = (accessToken: string) => {
 	setCookie(ETokens.ACCESS_TOKEN, accessToken)
-	console.log('Cookie установлен:', getCookies())
 }
 
 export const removeFromStorage = () => {

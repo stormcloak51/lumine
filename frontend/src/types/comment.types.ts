@@ -22,6 +22,8 @@ export type TCommentResponse = {
 	// UserLike: TCommentLikes[]
 	Like: TCommentLikes[]
 	likes: number
+	created_at: Date
+	updated_at: Date
 }
 
 export type TCommentLike = {

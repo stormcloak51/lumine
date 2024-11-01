@@ -19,6 +19,19 @@ export declare class PostController {
     findAllSortedByDate(page?: number, limit?: number): Promise<{
         data: {
             likes: number;
+            User: {
+                username: string;
+                email: string;
+                userAvatar: string;
+                name: string;
+                surname: string;
+                id: string;
+                created_at: Date;
+                updated_at: Date;
+                password: string;
+                bio: string;
+                role: string;
+            };
             Like: {
                 postId: number;
                 userId: string;
@@ -26,24 +39,11 @@ export declare class PostController {
             Comment: {
                 id: number;
                 content: string;
+                postId: number;
                 created_at: Date;
                 updated_at: Date;
-                postId: number;
                 userId: string;
             }[];
-            User: {
-                id: string;
-                created_at: Date;
-                updated_at: Date;
-                username: string;
-                email: string;
-                password: string;
-                name: string;
-                surname: string;
-                bio: string;
-                userAvatar: string;
-                role: string;
-            };
             id: number;
             content: string;
             created_at: Date;
@@ -61,45 +61,45 @@ export declare class PostController {
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     findById(id: number): Promise<{
         likes: number;
+        User: {
+            username: string;
+            email: string;
+            userAvatar: string;
+            name: string;
+            surname: string;
+            id: string;
+            created_at: Date;
+            updated_at: Date;
+            password: string;
+            bio: string;
+            role: string;
+        };
         Like: {
             postId: number;
             userId: string;
         }[];
         Comment: ({
             user: {
+                username: string;
+                email: string;
+                userAvatar: string;
+                name: string;
+                surname: string;
                 id: string;
                 created_at: Date;
                 updated_at: Date;
-                username: string;
-                email: string;
                 password: string;
-                name: string;
-                surname: string;
                 bio: string;
-                userAvatar: string;
                 role: string;
             };
         } & {
             id: number;
             content: string;
+            postId: number;
             created_at: Date;
             updated_at: Date;
-            postId: number;
             userId: string;
         })[];
-        User: {
-            id: string;
-            created_at: Date;
-            updated_at: Date;
-            username: string;
-            email: string;
-            password: string;
-            name: string;
-            surname: string;
-            bio: string;
-            userAvatar: string;
-            role: string;
-        };
         id: number;
         content: string;
         created_at: Date;
@@ -109,6 +109,19 @@ export declare class PostController {
     findByUsername(page: number, limit: number, username: string): Promise<{
         data: {
             likes: number;
+            User: {
+                username: string;
+                email: string;
+                userAvatar: string;
+                name: string;
+                surname: string;
+                id: string;
+                created_at: Date;
+                updated_at: Date;
+                password: string;
+                bio: string;
+                role: string;
+            };
             Like: {
                 postId: number;
                 userId: string;
@@ -116,24 +129,11 @@ export declare class PostController {
             Comment: {
                 id: number;
                 content: string;
+                postId: number;
                 created_at: Date;
                 updated_at: Date;
-                postId: number;
                 userId: string;
             }[];
-            User: {
-                id: string;
-                created_at: Date;
-                updated_at: Date;
-                username: string;
-                email: string;
-                password: string;
-                name: string;
-                surname: string;
-                bio: string;
-                userAvatar: string;
-                role: string;
-            };
             id: number;
             content: string;
             created_at: Date;

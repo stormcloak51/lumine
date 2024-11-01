@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/actions/state';
 import { postService } from '@/services/post.service';
@@ -6,23 +7,30 @@ import { IUserCredentials } from '@/types/user.types';
 import { Button } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { Forward, Heart, MessageCircle } from 'lucide-react';
+import { TCommentResponse } from '@/types/comment.types'
 
 interface IPostActions {
   post: TPost
   onClickComment: () => void
   commentsCount: number
+  comments: TCommentResponse[] | undefined
 }
 
-export const PostActions = ({ post, onClickComment, commentsCount }: IPostActions) => {
+export const PostActions = ({ comments, post, onClickComment, commentsCount }: IPostActions) => {
   const { user } = useAuth();
   const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount);
 	const [localLikes, setLocalLikes] = useState(post.likes)
   const [isInitiallyLiked, setIsInitiallyLiked] = useState(post?.Like?.some(like => like.userId === user?.id) ?? false);
 
+  
+
 	useEffect(() => {
     setLocalCommentsCount(commentsCount)
 		setLocalLikes(post.likes)
 		setIsInitiallyLiked(post?.Like?.some(like => like.userId === user?.id) ?? false)
+    return (
+      setLocalCommentsCount(commentsCount)
+    )
 	}, [post, user?.id, post?.Like, commentsCount])
 
 

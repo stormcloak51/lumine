@@ -53,7 +53,7 @@ let CommentService = class CommentService {
         };
     }
     async create(dto, postId) {
-        return await this.prisma.comment.create({
+        const comment = await this.prisma.comment.create({
             data: {
                 post: {
                     connect: {
@@ -80,6 +80,10 @@ let CommentService = class CommentService {
                 Like: true,
             }
         });
+        return {
+            ...comment,
+            likes: comment.Like.length
+        };
     }
     async likeComment(dto) {
         const comment = await this.prisma.comment.findUnique({

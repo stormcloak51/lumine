@@ -9,6 +9,7 @@ import { IUserCredentials } from '@/types/user.types'
 import { postService } from '@/services/post.service'
 import { TPost } from '@/types/post.types'
 import { usePost } from '@/hooks/usePost'
+import Link from 'next/link'
 
 interface IManagePost {
 	post: TPost
@@ -87,7 +88,8 @@ export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 					backgroundOpacity: 0.55,
 					blur: 3,
 				}}>
-				<Text mb={10}>This action will delete your post and it cannot be undone</Text>
+				<Text mb={10}>This action will delete your post and it cannot be undone.</Text>
+				<Text c={'dimmed'} mb={15}>By the way, You can disable onDelete warnings in <Link className={`text-[${theme.colors.myColor[0]}] underline underline-offset-2`} href={'/settings/misc'}>settings</Link></Text>
 				<Button
 					onClick={handleDelete}
 					mr={15}
@@ -121,7 +123,7 @@ export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 					blur: 3,
 				}}>
 				<Text c={'dimmed'} mb={10}>This action will edit your post</Text>
-				<PostCreate isGrid={false} content={content} />
+				<PostCreate content={content} />
 				<Button
 					onClick={handleEdit}
 					mr={15}

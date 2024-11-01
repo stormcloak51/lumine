@@ -46,7 +46,7 @@ export class CommentService {
 	}
 
 	async create(dto: CreateCommentDto, postId: number) {
-		return await this.prisma.comment.create({
+		const comment = await this.prisma.comment.create({
 			data: {
 				post: {
 					connect: {
@@ -73,6 +73,11 @@ export class CommentService {
 				Like: true,
 			}
 		})
+
+		return {
+			...comment,
+			likes: comment.Like.length
+		}
 	}
 
 	async likeComment(dto: LikeCommentDto) {

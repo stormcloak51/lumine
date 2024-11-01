@@ -30,7 +30,6 @@ export const CommentActions = ({ comment }: ICommentActions) => {
 		setIsCommentLiked(comment?.Like?.find(u => u.userId === id) !== undefined)
 	}, [comment, id])
 
-	console.log(localLikes)
 
 	const theme = useMantineTheme()
 

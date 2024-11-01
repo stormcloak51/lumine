@@ -21,7 +21,6 @@ export async function createPost(data: IPostData): Promise<TPost | undefined> {
 }
 
 export const getPostByQuery = async (queryKey: string, token: string): Promise<TPost[] | undefined> => {
-	console.log('QUERY', queryKey)
 	try {
 		const data = await api.get(`posts/findByUsername?username=${queryKey}`, {
 			headers: {

@@ -29,12 +29,15 @@ import { PostActions } from './PostActions'
 import { CommentCreate } from '../comments/CommentCreate'
 import { CommentList } from '../comments/CommentList'
 import { useComments } from '@/hooks/useComments'
+import { CommentItem } from '../comments/CommentItem'
 
 export const PostItem: FC<
 	TPost & { title: string; lastPostRef?: React.Ref<HTMLDivElement> }
 > = post => {
 	const theme = useMantineTheme()
 	const { user } = useAuth()
+
+	const [postState, setPostState] = useState(post)
 
 	const [commentLength, setCommentLength] = useState(post?.Comment?.length)
 
@@ -46,8 +49,8 @@ export const PostItem: FC<
 		isCommentsVisible,
 		hasNextPage,
 		fetchNextPage,
+		createdComment
 	} = useComments(post.id)
-
 
 	return (
 		<Card
@@ -171,7 +174,7 @@ export const PostItem: FC<
 				dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
 			/>
 			<div className='mt-4 flex gap-x-3'>
-				<PostActions post={post} onClickComment={toggleCommentsVisibility} commentsCount={commentLength} />
+				<PostActions comments={comments && comments[0]?.data} post={post} onClickComment={toggleCommentsVisibility} commentsCount={commentLength} />
 			</div>
 			<Divider
 				className='!w-[calc(100%+var(--mantine-spacing-md)*2)] -mx-[var(--mantine-spacing-md)]'
@@ -180,7 +183,8 @@ export const PostItem: FC<
 			{isLoading && (
 				<LoaderCircle className='animate-spin w-full mx-auto mb-5' size={34} />
 			)}
-			{isCommentsVisible && comments && comments?.length > 0 && !isLoading && <CommentList hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} comments={comments!} />}
+			{createdComment && <CommentItem {...createdComment} key={createdComment.id} />}
+			{isCommentsVisible && comments && comments?.length > 0 && !isLoading && <CommentList hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} comments={comments && comments[0]?.data} />}
 			<CommentCreate
 				onSubmit={data => {
 					setCommentLength(prev => prev + 1)

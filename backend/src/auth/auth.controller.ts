@@ -42,9 +42,6 @@ export class AuthController {
   @HttpCode(200)
   @Post('login/access-token')
   async getNewTokens(@Req() req: Request, @Res({passthrough: true}) res: Response) {
-    console.log('All cookies:', req.cookies);
-    console.log('Headers:', req.headers);
-    console.log('Cookie header:', req.headers.cookie);
     const refreshTokenFromCookies = await req.cookies['refresh_token']
 
     if (!refreshTokenFromCookies) {

@@ -32,9 +32,6 @@ let AuthController = class AuthController {
         return response;
     }
     async getNewTokens(req, res) {
-        console.log('All cookies:', req.cookies);
-        console.log('Headers:', req.headers);
-        console.log('Cookie header:', req.headers.cookie);
         const refreshTokenFromCookies = await req.cookies['refresh_token'];
         if (!refreshTokenFromCookies) {
             this.authService.removeRefreshTokenFromResponse(res);
