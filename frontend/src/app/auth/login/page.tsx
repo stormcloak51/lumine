@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Card, Group } from '@mantine/core'
-import { LoginForm } from '@/app/components/auth/LoginForm'
+import { LoginForm } from '@/components/auth/LoginForm'
 
 const Auth = () => {
 	return (

@@ -7,10 +7,10 @@ export declare class CommentService {
         data: {
             likes: number;
             user: {
-                username: string;
-                userAvatar: string;
-                name: string;
                 id: string;
+                username: string;
+                name: string;
+                userAvatar: string;
                 likedComments: {
                     created_at: Date;
                     userId: string;
@@ -22,22 +22,30 @@ export declare class CommentService {
                 userId: string;
                 commentId: number;
             }[];
+            subComments: {
+                Like: {
+                    created_at: Date;
+                    userId: string;
+                    commentId: number;
+                }[];
+            }[];
             id: number;
             content: string;
-            postId: number;
             created_at: Date;
             updated_at: Date;
+            postId: number;
             userId: string;
+            parentId: number | null;
         }[];
         total: number;
     }>;
     create(dto: CreateCommentDto, postId: number): Promise<{
         likes: number;
         user: {
-            username: string;
-            userAvatar: string;
-            name: string;
             id: string;
+            username: string;
+            name: string;
+            userAvatar: string;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -51,18 +59,19 @@ export declare class CommentService {
         }[];
         id: number;
         content: string;
-        postId: number;
         created_at: Date;
         updated_at: Date;
+        postId: number;
         userId: string;
+        parentId: number | null;
     }>;
     likeComment(dto: LikeCommentDto): Promise<{
         likes: number;
         user: {
-            username: string;
-            userAvatar: string;
-            name: string;
             id: string;
+            username: string;
+            name: string;
+            userAvatar: string;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -80,25 +89,83 @@ export declare class CommentService {
         })[];
         id: number;
         content: string;
-        postId: number;
         created_at: Date;
         updated_at: Date;
+        postId: number;
         userId: string;
+        parentId: number | null;
     }>;
     delete(dto: DeleteCommentDto): Promise<{
         id: number;
         content: string;
-        postId: number;
         created_at: Date;
         updated_at: Date;
+        postId: number;
         userId: string;
+        parentId: number | null;
     }>;
     edit(dto: EditCommentDto): import(".prisma/client").Prisma.Prisma__CommentClient<{
         id: number;
         content: string;
-        postId: number;
         created_at: Date;
         updated_at: Date;
+        postId: number;
         userId: string;
+        parentId: number | null;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    getSubcomments(dto: GetCommentsDto): Promise<{
+        data: {
+            likes: number;
+            user: {
+                id: string;
+                username: string;
+                name: string;
+                userAvatar: string;
+                likedComments: {
+                    created_at: Date;
+                    userId: string;
+                    commentId: number;
+                }[];
+            };
+            Like: {
+                created_at: Date;
+                userId: string;
+                commentId: number;
+            }[];
+            id: number;
+            content: string;
+            created_at: Date;
+            updated_at: Date;
+            postId: number;
+            userId: string;
+            parentId: number | null;
+        }[];
+        total: number;
+    }>;
+    createSubcomment(dto: CreateCommentDto): Promise<{
+        likes: number;
+        user: {
+            id: string;
+            username: string;
+            name: string;
+            userAvatar: string;
+            likedComments: {
+                created_at: Date;
+                userId: string;
+                commentId: number;
+            }[];
+        };
+        Like: {
+            created_at: Date;
+            userId: string;
+            commentId: number;
+        }[];
+        id: number;
+        content: string;
+        created_at: Date;
+        updated_at: Date;
+        postId: number;
+        userId: string;
+        parentId: number | null;
+    }>;
 }

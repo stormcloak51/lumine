@@ -9,7 +9,8 @@ export class CommentService {
 	async getById(dto: GetCommentsDto){
 		const comments = await this.prisma.comment.findMany({
 			where: {
-				postId: dto.postId
+				postId: dto.postId,
+				parentId: null
 			},
 			orderBy: {
 				created_at: 'desc'
@@ -24,7 +25,12 @@ export class CommentService {
 						name: true,
 					}
 				},
-				Like: true
+				Like: true,
+				subComments: {
+					select: {
+						Like: true,
+					}
+				}
 			},
 			skip: (dto.page - 1) * 5,
 			take: 5
@@ -95,7 +101,6 @@ export class CommentService {
 			throw new BadRequestException('Comment not found')
 		}
 
-		// Проверяем существующий лайк
 		const existingLike = await this.prisma.$transaction(async (prisma) => {
 			const like = await prisma.commentLike.findFirst({
 				where: {
@@ -107,7 +112,6 @@ export class CommentService {
 			})
 
 			if (like) {
-				// Если лайк существует - удаляем его
 				await prisma.commentLike.deleteMany({
 					where: {
 						AND: [
@@ -118,7 +122,6 @@ export class CommentService {
 				})
 				return like
 			} else {
-				// Если лайка нет - создаем новый
 				return await prisma.commentLike.create({
 					data: {
 						userId: dto.userId,
@@ -128,7 +131,6 @@ export class CommentService {
 			}
 		})
 
-		// Получаем обновленный комментарий
 		const updatedComment = await this.prisma.comment.findUnique({
 			where: {
 				id: dto.commentId,
@@ -196,5 +198,75 @@ export class CommentService {
 				content: dto.content
 			}
 		})
+	}
+
+
+	async getSubcomments(dto: GetCommentsDto){
+		const comments = await this.prisma.comment.findMany({
+			where: {
+				postId: dto.postId,
+				parentId: dto.commentId
+			},
+			orderBy: {
+				created_at: 'desc'
+			},
+			include: {
+				user: {
+					select: {
+						id: true,
+						likedComments: true,
+						username: true,
+						userAvatar: true,
+						name: true,
+					}
+				},
+				Like: true
+			},
+			skip: (dto.page - 1) * 5,
+			take: 5
+		})
+
+		const total = await this.prisma.comment.count({
+			where: {
+				postId: dto.postId,
+				parentId: dto.commentId
+			}
+		})
+
+		return {
+			data: comments.map((comment) => ({
+				...comment,
+				likes: comment.Like.length
+			})),
+			total,
+		}
+	}
+	
+	async createSubcomment(dto: CreateCommentDto){
+		const comment = await this.prisma.comment.create({
+			data: {
+				postId: dto.postId,
+				parentId: dto.commentId,
+				userId: dto.userId,
+				content: dto.content
+			},
+			include: {
+				user: {
+					select: {
+						id: true,
+						likedComments: true,
+						username: true,
+						userAvatar: true,
+						name: true,
+					}
+				},
+				Like: true,
+			}
+		})
+		
+		return {
+			...comment,
+			likes: comment.Like.length
+		}
 	}
 }

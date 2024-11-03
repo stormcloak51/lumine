@@ -1,5 +1,5 @@
-import { Header } from '../components/Header'
-import SideNav from '../components/SideNav'
+import { Header } from '@/components/common/Header'
+import {SideNav} from '@/components/common/SideNav'
 
 export default function MainLayout({
 	children,

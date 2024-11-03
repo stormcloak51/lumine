@@ -18,19 +18,6 @@ export declare class PostService {
     findAllByUsername(page: number, limit: number, username: string): Promise<{
         data: {
             likes: number;
-            User: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
-                id: string;
-                created_at: Date;
-                updated_at: Date;
-                password: string;
-                bio: string;
-                role: string;
-            };
             Like: {
                 postId: number;
                 userId: string;
@@ -38,11 +25,25 @@ export declare class PostService {
             Comment: {
                 id: number;
                 content: string;
-                postId: number;
                 created_at: Date;
                 updated_at: Date;
+                postId: number;
                 userId: string;
+                parentId: number | null;
             }[];
+            User: {
+                id: string;
+                created_at: Date;
+                updated_at: Date;
+                username: string;
+                email: string;
+                password: string;
+                name: string;
+                surname: string;
+                bio: string;
+                userAvatar: string;
+                role: string;
+            };
             id: number;
             content: string;
             created_at: Date;
@@ -54,19 +55,6 @@ export declare class PostService {
     findAllSortedByDate(page?: number, limit?: number): Promise<{
         data: {
             likes: number;
-            User: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
-                id: string;
-                created_at: Date;
-                updated_at: Date;
-                password: string;
-                bio: string;
-                role: string;
-            };
             Like: {
                 postId: number;
                 userId: string;
@@ -74,11 +62,25 @@ export declare class PostService {
             Comment: {
                 id: number;
                 content: string;
-                postId: number;
                 created_at: Date;
                 updated_at: Date;
+                postId: number;
                 userId: string;
+                parentId: number | null;
             }[];
+            User: {
+                id: string;
+                created_at: Date;
+                updated_at: Date;
+                username: string;
+                email: string;
+                password: string;
+                name: string;
+                surname: string;
+                bio: string;
+                userAvatar: string;
+                role: string;
+            };
             id: number;
             content: string;
             created_at: Date;
@@ -120,45 +122,46 @@ export declare class PostService {
     }>;
     findById(id: number): Promise<{
         likes: number;
-        User: {
-            username: string;
-            email: string;
-            userAvatar: string;
-            name: string;
-            surname: string;
-            id: string;
-            created_at: Date;
-            updated_at: Date;
-            password: string;
-            bio: string;
-            role: string;
-        };
         Like: {
             postId: number;
             userId: string;
         }[];
         Comment: ({
             user: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                username: string;
+                email: string;
                 password: string;
+                name: string;
+                surname: string;
                 bio: string;
+                userAvatar: string;
                 role: string;
             };
         } & {
             id: number;
             content: string;
-            postId: number;
             created_at: Date;
             updated_at: Date;
+            postId: number;
             userId: string;
+            parentId: number | null;
         })[];
+        User: {
+            id: string;
+            created_at: Date;
+            updated_at: Date;
+            username: string;
+            email: string;
+            password: string;
+            name: string;
+            surname: string;
+            bio: string;
+            userAvatar: string;
+            role: string;
+        };
         id: number;
         content: string;
         created_at: Date;

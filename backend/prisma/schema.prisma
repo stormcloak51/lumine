@@ -64,9 +64,12 @@ model Comment {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  Like CommentLike[]
+  Like      CommentLike[]
+  
+  parentComment   Comment?    @relation("SubComments", fields: [parentId], references: [id])
+  parentId        Int?
+  subComments     Comment[]   @relation("SubComments")
 }
-
 model PostLike {
   user   User   @relation(fields: [userId], references: [id])
   userId String

@@ -19,11 +19,11 @@ import LumineAvatar from './LumineAvatar'
 import { inter } from '@/fonts/fonts'
 import { SideNavItem } from './SideNavItem'
 
-const SideNav = () => {
+export const SideNav = () => {
 	const {
 		user: { userAvatar, surname, name, username },
 	} = useAuth()
-	const pathname = usePathname().substring(1)
+	const pathname = usePathname()!.substring(1)
 	const [index, setIndex] = useState<string>('feed')
 	useEffect(() => {
 		setIndex(pathname.split('/')[0])
@@ -148,5 +148,3 @@ const SideNav = () => {
 		</nav>
 	)
 }
-
-export default SideNav

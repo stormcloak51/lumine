@@ -35,6 +35,17 @@ let CommentController = class CommentController {
     async edit(dto) {
         this.commentService.edit(dto);
     }
+    async getSubcomments(postId, commentId, page = 1) {
+        return await this.commentService.getSubcomments({
+            postId,
+            commentId,
+            page,
+        });
+    }
+    async createSubcomment(postId, commentId, userId, content) {
+        const dto = { content, userId, commentId, postId };
+        return await this.commentService.createSubcomment(dto);
+    }
 };
 exports.CommentController = CommentController;
 __decorate([
@@ -74,6 +85,25 @@ __decorate([
     __metadata("design:paramtypes", [comment_dto_1.EditCommentDto]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "edit", null);
+__decorate([
+    (0, common_1.Get)('getSubcomments'),
+    __param(0, (0, common_1.Query)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)('commentId', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)('page', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Number]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "getSubcomments", null);
+__decorate([
+    (0, common_1.Post)('createSubcomment'),
+    __param(0, (0, common_1.Body)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)('commentId', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Body)('userId')),
+    __param(3, (0, common_1.Body)('content')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, String, String]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "createSubcomment", null);
 exports.CommentController = CommentController = __decorate([
     (0, common_1.Controller)('comment'),
     __metadata("design:paramtypes", [comment_service_1.CommentService])

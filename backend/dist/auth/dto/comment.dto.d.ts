@@ -1,10 +1,12 @@
 export declare class GetCommentsDto {
+    commentId?: number;
     postId: number;
     page: number;
 }
 export declare class CreateCommentDto {
     userId: string;
     postId: number;
+    commentId?: number;
     content: string;
 }
 export declare class DeleteCommentDto {

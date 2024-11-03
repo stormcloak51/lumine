@@ -1,12 +1,11 @@
 import { commentService } from '@/services/comment.service'
 import { TComment, TCommentLike, TCommentResponse } from '@/types/comment.types'
-import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { TPaginatedResponse } from '@/types/general.types'
 
 export const useComments = (postId: number) => {
 
-  const [createdComment, setCreatedComment] = useState<TCommentResponse>()
 	const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 	const queryClient = useQueryClient()
   
@@ -34,13 +33,13 @@ export const useComments = (postId: number) => {
 
   const createCommentMutation = useMutation({
     mutationFn: (data: TComment) => commentService.create(data),
-    onSuccess: (data: TCommentResponse) => {
-      setCreatedComment(data)
-    },
     onSettled: () => {
       queryClient.invalidateQueries({
+        queryKey: ['posts']
+      })
+      queryClient.invalidateQueries({
         queryKey: ['comments', postId],
-        refetchType: 'none'
+        refetchType: 'active'
       })
     }
   })
@@ -62,7 +61,7 @@ export const useComments = (postId: number) => {
 	}
 
 	return {
-    comments: comments?.pages.flat(),
+    comments: comments?.pages.flatMap(page => page.data),
     isLoading,
     error,
     createComment: createCommentMutation.mutate,
@@ -71,6 +70,5 @@ export const useComments = (postId: number) => {
 		isCommentsVisible,
 		fetchNextPage,
 		hasNextPage,
-    createdComment,
   };
 }

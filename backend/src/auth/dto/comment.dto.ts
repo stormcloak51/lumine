@@ -3,6 +3,9 @@ import { IsNumber, IsString } from 'class-validator'
 
 export class GetCommentsDto {
 	@IsNumber()
+	commentId?: number
+
+	@IsNumber()
 	postId: number
 
 	@IsNumber()
@@ -13,8 +16,11 @@ export class CreateCommentDto {
 	@IsString()
 	userId: string
 
-	@IsNumber()
+	@Transform(({value}) => parseInt(value))
 	postId: number;
+
+	@Transform(({value}) => parseInt(value))
+	commentId?: number
 
 	@IsString()
 	content: string

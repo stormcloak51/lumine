@@ -1,14 +1,20 @@
 import { Grid } from '@mantine/core'
-import { UserBanner } from '@/app/components/profile/UserBanner'
-import { FollowerSection } from '@/app/components/profile/FollowerSection'
+import { UserBanner } from '@/components/profile/UserBanner'
+import { FollowerSection } from '@/components/profile/FollowerSection'
 import { userService } from '@/services/user.service'
-import { Wrapper } from '@/app/components/profile/Wrapper'
+import { Wrapper } from '@/components/profile/Wrapper'
 import { Suspense } from 'react'
 import Loading from './loading'
 
-export const Profile = async ({ params }: { params: { slug: string } }) => {
+export async function generateMetadata({ params }: {params: {slug: string}}) {
+  return {
+    title: `${params.slug}'s Profile`,
+		description: `Check out ${params.slug}'s profile and posts!`
+  }
+}
+
+const Profile = async ({ params }: { params: { slug: string } }) => {
 	const user = await userService.getProfile(params.slug)
-	// const posts = await postService.findByUsername(params.slug)
 	return (
 		<Suspense fallback={<Loading />}>
 			<div>

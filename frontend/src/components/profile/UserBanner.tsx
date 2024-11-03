@@ -3,7 +3,7 @@
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { Flex, Card, Title, HoverCard, Transition, Image, Text } from '@mantine/core'
 import { FC, useState } from 'react'
-import LumineAvatar from '../LumineAvatar'
+import LumineAvatar from '@/components/common/LumineAvatar'
 import { useClipboard } from '@mantine/hooks'
 import { IUserCredentials } from '@/types/user.types'
 import { ChangeCredentials } from './ChangeCredentials'

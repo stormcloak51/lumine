@@ -7,30 +7,22 @@ import { IUserCredentials } from '@/types/user.types';
 import { Button } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import { Forward, Heart, MessageCircle } from 'lucide-react';
-import { TCommentResponse } from '@/types/comment.types'
 
 interface IPostActions {
   post: TPost
   onClickComment: () => void
   commentsCount: number
-  comments: TCommentResponse[] | undefined
 }
 
-export const PostActions = ({ comments, post, onClickComment, commentsCount }: IPostActions) => {
+export const PostActions = ({ post, onClickComment, commentsCount }: IPostActions) => {
   const { user } = useAuth();
-  const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount);
 	const [localLikes, setLocalLikes] = useState(post.likes)
   const [isInitiallyLiked, setIsInitiallyLiked] = useState(post?.Like?.some(like => like.userId === user?.id) ?? false);
 
-  
 
 	useEffect(() => {
-    setLocalCommentsCount(commentsCount)
 		setLocalLikes(post.likes)
 		setIsInitiallyLiked(post?.Like?.some(like => like.userId === user?.id) ?? false)
-    return (
-      setLocalCommentsCount(commentsCount)
-    )
 	}, [post, user?.id, post?.Like, commentsCount])
 
 
@@ -83,7 +75,7 @@ export const PostActions = ({ comments, post, onClickComment, commentsCount }: I
       />
       <Button
         leftSection={<MessageCircle size={18} />}
-        rightSection={localCommentsCount}
+        rightSection={commentsCount}
         onClick={onClickComment}
         className="bg-[#2a2a2a] transition-all h-8 rounded-[35px] flex items-center hover:bg-[rgb(66,66,66)]"
         styles={{

@@ -1,6 +1,6 @@
 'use client'
 import { Menu, rem } from '@mantine/core'
-import LumineAvatar from '../LumineAvatar'
+import LumineAvatar from '../common/LumineAvatar'
 import { FC } from 'react'
 import { Aperture, LogOut, Settings } from 'lucide-react'
 import { useAuth } from '@/lib/actions/state'

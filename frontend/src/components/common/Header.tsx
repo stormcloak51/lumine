@@ -1,11 +1,12 @@
 'use client'
-import { Box, Group, Text, Title, Input, useMantineTheme } from '@mantine/core'
-import LumineBlackMaterialLogo from '../../assets/icons/lumine-material-black.png'
+import { Box } from '@mantine/core';
+import { Group, Text, Title, Input, useMantineTheme } from '@mantine/core'
+import LumineBlackMaterialLogo from '@/assets/icons/lumine-material-black.png'
 import Image from 'next/image'
 import { Bell, Search, Sun } from 'lucide-react'
-import input from './styles/Header.module.scss'
+import input from '../styles/Header.module.scss'
 import Link from 'next/link'
-import { MenuAvatar } from './menu/MenuAvatar'
+import { MenuAvatar } from '../menu/MenuAvatar'
 import { krona } from '@/fonts/fonts'
 
 export function Header() {

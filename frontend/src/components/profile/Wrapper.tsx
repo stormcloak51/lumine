@@ -1,7 +1,7 @@
 'use client'
 
-import {PostCreate} from '@/app/components/Posts/PostCreate'
-import { ActionsSection } from '@/app/components/profile/ActionsSection'
+import {PostCreate} from '@/components/Posts/PostCreate'
+import { ActionsSection } from '@/components/profile/ActionsSection'
 import { useAuth } from '@/lib/actions/state'
 import { Grid } from '@mantine/core'
 import { FC } from 'react'
@@ -25,7 +25,7 @@ export const Wrapper: FC<IWrapper & Omit<IPostList, 'feed'>> = ({ username, curr
 	}
 	return (
 		<Grid.Col span={7.5} className='pt-4'>
-			<PostCreate isGrid={true} />
+			<PostCreate />
 			<PostList title={`${user?.name}'s Posts`} feed={false} username={username}/>
 		</Grid.Col>
 	)

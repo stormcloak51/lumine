@@ -10,7 +10,6 @@ import {
 } from '@mantine/core'
 import * as font from '../fonts/fonts'
 import ClientProvider from './ClientProvider'
-import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
 	title: 'lumine',

@@ -1,6 +1,6 @@
 'use client'
 import { Button, PasswordInput, Switch, TextInput, Title, Text } from '@mantine/core'
-import input from '../../components/styles/Header.module.scss'
+import input from '@/components/styles/Header.module.scss'
 import { useEffect, useRef } from 'react'
 import { uploadAvatar } from '@/lib/actions/uploadAvatar'
 import { authService } from '@/services/auth.service'

@@ -1,7 +1,7 @@
 'use client'
 import { AvatarProps, Avatar } from '@mantine/core'
 import { FC } from 'react'
-import classes from './styles/Avatar.module.scss'
+import classes from '../styles/Avatar.module.scss'
 import Link from 'next/link'
 
 interface IAvatar extends AvatarProps {

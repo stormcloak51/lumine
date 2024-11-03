@@ -1,17 +1,25 @@
 'use client'
 import { TCommentResponse } from '@/types/comment.types'
-import LumineAvatar from '../LumineAvatar'
+import LumineAvatar from '../common/LumineAvatar'
 import purify from 'dompurify'
 import { Text } from '@mantine/core'
-import { Circle } from 'lucide-react'
 import Link from 'next/link'
 import { CommentActions } from './CommentActions'
-import { useState } from 'react'
 import { timeAgo } from '@/lib/utils/timeAgo'
+import { useSubComments } from '@/hooks/useSubComments'
+import { CommentList } from './CommentList'
 
 export const CommentItem = (comment: TCommentResponse) => {
 
-	console.log(comment, 'COMMENNT')
+	const {
+		comments,
+		isLoading,
+		isCommentsVisible,
+		toggleCommentsVisibility,
+		fetchNextPage,
+		hasNextPage,
+	} = useSubComments({postId: comment.postId, commentId: comment.id})
+
 	return (
 		<div className='flex flex-row gap-x-2'>
 			<LumineAvatar
@@ -35,7 +43,10 @@ export const CommentItem = (comment: TCommentResponse) => {
 					className='!mt-2 text-[rgba-(255, 255, 255, 0.7)] ProseMirror'
 					dangerouslySetInnerHTML={{ __html: purify.sanitize(comment.content) }}
 				/>
-				<CommentActions comment={comment} />
+				<CommentActions onClickComment={toggleCommentsVisibility} comment={comment} />
+				{
+					comments && !isLoading && isCommentsVisible && <CommentList comments={comments} hasNextPage={hasNextPage} fetchNextPage={fetchNextPage} />
+				}
 			</div>
 		</div>
 	)

@@ -1,5 +1,6 @@
 'use client'
 import { useComments } from '@/hooks/useComments'
+import { useSubComments } from '@/hooks/useSubComments'
 import { useAuth } from '@/lib/actions/state'
 import { TCommentResponse } from '@/types/comment.types'
 import { Button, useMantineTheme } from '@mantine/core'
@@ -10,12 +11,14 @@ import { FaEllipsis } from "react-icons/fa6";
 
 interface ICommentActions {
 	comment: TCommentResponse
+	onClickComment: () => void
 }
 
-export const CommentActions = ({ comment }: ICommentActions) => {
+export const CommentActions = ({ comment, onClickComment }: ICommentActions) => {
 	const {
 		user: { id },
 	} = useAuth()
+
 
 	const {likeComment} = useComments(comment.postId)
 
@@ -60,10 +63,11 @@ export const CommentActions = ({ comment }: ICommentActions) => {
 			<Button
 				p={0}
 				color={theme.colors.myColor[2]}
-				rightSection={4}
+				rightSection={comment.subComments?.length}
 				classNames={{
 					section: 'ml-1',
 				}}
+				onClick={onClickComment}
 				variant='transparent'
 			>
 				<BiSolidMessageRoundedDots />

@@ -35,6 +35,17 @@ export class CommentService {
 		const response: AxiosResponse<TCommentEdit> = await axiosWithAuth.patch(this.BASE_URL + '/edit', data)
 		return JSON.parse(JSON.stringify(response.data))
 	}
+
+	// ==================== SUBCOMMENTS ===================
+
+	async getSubcomments({postId, commentId, page}: {postId: number, commentId: number, page: number}){
+		const response: AxiosResponse<TCommentResponse[]> = await axiosWithAuth.get(this.BASE_URL + `/getSubcomments?postId=${postId}&commentId=${commentId}&page=${page}`)
+	}
+
+	async createSubcomment(data: Omit<TComment, 'userId'> & {commentId: number}){
+		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/createSubcomment', data)
+		return JSON.parse(JSON.stringify(response.data))
+	}
 }
 
 export const commentService = new CommentService()

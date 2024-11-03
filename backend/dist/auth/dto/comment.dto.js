@@ -10,10 +10,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LikeCommentDto = exports.EditCommentDto = exports.DeleteCommentDto = exports.CreateCommentDto = exports.GetCommentsDto = void 0;
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class GetCommentsDto {
 }
 exports.GetCommentsDto = GetCommentsDto;
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    __metadata("design:type", Number)
+], GetCommentsDto.prototype, "commentId", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
@@ -30,9 +35,13 @@ __decorate([
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "userId", void 0);
 __decorate([
-    (0, class_validator_1.IsNumber)(),
+    (0, class_transformer_1.Transform)(({ value }) => parseInt(value)),
     __metadata("design:type", Number)
 ], CreateCommentDto.prototype, "postId", void 0);
+__decorate([
+    (0, class_transformer_1.Transform)(({ value }) => parseInt(value)),
+    __metadata("design:type", Number)
+], CreateCommentDto.prototype, "commentId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)

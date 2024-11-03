@@ -1,10 +1,8 @@
 'use client'
-import { TPost } from '@/types/post.types'
 import { Flex } from '@mantine/core'
-import { FC, Suspense, useCallback, useEffect, useRef } from 'react'
+import { FC, Suspense, useCallback, useRef } from 'react'
 import { PostItem } from './PostItem'
-import { QueryClient, useInfiniteQuery } from '@tanstack/react-query'
-import { axiosWithAuth } from '@/api/interceptors'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { postService } from '@/services/post.service'
 import Loading from '@/app/(main)/feed/loading'
 
@@ -30,7 +28,7 @@ const PostList: FC<IPostList> = ({ username, feed, title = 'Posts' }) => {
 				return hasMore ? pages.length + 1 : undefined
 			},
 			initialPageParam: 1,
-		
+			refetchOnMount: true,
 		})
 	const allPosts = data?.pages
 		.flatMap(page => page.data)
@@ -55,20 +53,24 @@ const PostList: FC<IPostList> = ({ username, feed, title = 'Posts' }) => {
 
 	return (
 		<Suspense fallback={<Loading />}>
-			<Flex direction={'column'} className='gap-y-4'>
-				{allPosts?.map((post, index) => {
-					const isLastPost = allPosts.length - 1 === index
-					return (
-						<PostItem
-							lastPostRef={isLastPost ? lastPostRef : undefined}
-							key={post.id}
-							{...post}
-							title={title}
-						/>
-					)
-				})}
-			</Flex>
-		</Suspense>
+    {isLoading ? (
+      <Loading />
+    ) : (
+      <Flex direction={'column'} className="gap-y-4">
+        {allPosts?.map((post, index) => {
+          const isLastPost = allPosts.length - 1 === index
+          return (
+            <PostItem
+              lastPostRef={isLastPost ? lastPostRef : undefined}
+              key={post.id}
+              {...post}
+              title={title}
+            />
+          )
+        })}
+      </Flex>
+    )}
+  </Suspense>
 	)
 }
 
