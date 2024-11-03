@@ -43,3 +43,8 @@ export type TCommentEdit = {
 	postId: number
 	content: string
 }
+
+export enum CommentRoles { 
+	SUBCOMMENT = 'subcomment',
+	MAINCOMMENT = 'maincomment',
+}

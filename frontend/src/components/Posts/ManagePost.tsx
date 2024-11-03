@@ -4,12 +4,11 @@ import { Modal, Button, Text, Menu, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Edit, Ellipsis, Trash } from 'lucide-react'
 import { PostCreate } from './PostCreate'
-import { useMutation } from '@tanstack/react-query'
-import { IUserCredentials } from '@/types/user.types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { postService } from '@/services/post.service'
 import { TPost } from '@/types/post.types'
-import { usePost } from '@/hooks/usePost'
 import Link from 'next/link'
+import { useState } from 'react'
 
 interface IManagePost {
 	post: TPost
@@ -21,31 +20,20 @@ interface IManagePost {
 export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 	const [isDeletePostOpened, { open: openDeletePostModal, close: closeDeletePostModal }] =
 		useDisclosure(false)
+
 	const [isEditPostOpened, { open: openEditPostModal, close: closeEditPostModal }] =
 		useDisclosure(false)
 
+	const queryClient = useQueryClient()
+	const [editedContent, setEditedContent] = useState(content)
 	const theme = useMantineTheme()
-
-	const {updatePostInCache} = usePost()
 
 	const editPostMutation = useMutation({
     mutationFn: (content: string) => 
       postService.edit(id, content),
-    onMutate: async (content) => {
-      const optimisticPost = {
-        ...post,
-        content,
-      };
-
-      updatePostInCache(optimisticPost);
-
-      return { previousPost: post };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousPost) {
-        updatePostInCache(context.previousPost);
-      }
-    }
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['posts'] })
+		}
   });
 
 	const handleDelete = async () => {
@@ -54,7 +42,8 @@ export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 	}
 
 	const handleEdit = async () => {
-		editPostMutation.mutate(content)
+		console.log(editedContent)
+		editPostMutation.mutate(editedContent)
 		closeEditPostModal()
 	}
 
@@ -123,7 +112,7 @@ export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 					blur: 3,
 				}}>
 				<Text c={'dimmed'} mb={10}>This action will edit your post</Text>
-				<PostCreate content={content} />
+				<PostCreate onChange={setEditedContent} content={content} />
 				<Button
 					onClick={handleEdit}
 					mr={15}

@@ -6,9 +6,9 @@ export declare class PostService {
     constructor(prisma: PrismaService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }[]>;
     findAllSortedByLikes(page?: number, limit?: number): Promise<{
@@ -18,36 +18,36 @@ export declare class PostService {
     findAllByUsername(page: number, limit: number, username: string): Promise<{
         data: {
             likes: number;
-            Like: {
-                postId: number;
-                userId: string;
-            }[];
-            Comment: {
-                id: number;
-                content: string;
-                created_at: Date;
-                updated_at: Date;
-                postId: number;
-                userId: string;
-                parentId: number | null;
-            }[];
             User: {
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
                 username: string;
                 email: string;
                 password: string;
-                name: string;
                 surname: string;
                 bio: string;
                 userAvatar: string;
                 role: string;
             };
+            Like: {
+                userId: string;
+                postId: number;
+            }[];
+            Comment: {
+                id: number;
+                created_at: Date;
+                updated_at: Date;
+                content: string;
+                userId: string;
+                postId: number;
+                parentId: number | null;
+            }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
+            content: string;
             userId: string;
         }[];
         total: number;
@@ -55,86 +55,99 @@ export declare class PostService {
     findAllSortedByDate(page?: number, limit?: number): Promise<{
         data: {
             likes: number;
-            Like: {
-                postId: number;
-                userId: string;
-            }[];
-            Comment: {
-                id: number;
-                content: string;
-                created_at: Date;
-                updated_at: Date;
-                postId: number;
-                userId: string;
-                parentId: number | null;
-            }[];
             User: {
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
                 username: string;
                 email: string;
                 password: string;
-                name: string;
                 surname: string;
                 bio: string;
                 userAvatar: string;
                 role: string;
             };
+            Like: {
+                userId: string;
+                postId: number;
+            }[];
+            Comment: {
+                id: number;
+                created_at: Date;
+                updated_at: Date;
+                content: string;
+                userId: string;
+                postId: number;
+                parentId: number | null;
+            }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
+            content: string;
             userId: string;
         }[];
         total: number;
     }>;
     createPost(data: CreatePostDto): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     likePost(data: LikePostDto): Promise<{
         likes: number;
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
     unLikePost(data: LikePostDto): Promise<{
         likes: number;
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
     findById(id: number): Promise<{
         likes: number;
+        User: {
+            id: string;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
+            username: string;
+            email: string;
+            password: string;
+            surname: string;
+            bio: string;
+            userAvatar: string;
+            role: string;
+        };
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         Comment: ({
             user: {
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
                 username: string;
                 email: string;
                 password: string;
-                name: string;
                 surname: string;
                 bio: string;
                 userAvatar: string;
@@ -142,44 +155,58 @@ export declare class PostService {
             };
         } & {
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
-            postId: number;
+            content: string;
             userId: string;
+            postId: number;
             parentId: number | null;
         })[];
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
+    delete(id: number): Promise<{
+        id: number;
+        created_at: Date;
+        updated_at: Date;
+        content: string;
+        userId: string;
+    }>;
+    edit(id: number, content: string): Promise<{
         User: {
             id: string;
             created_at: Date;
             updated_at: Date;
+            name: string;
             username: string;
             email: string;
             password: string;
-            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
             role: string;
         };
+        Like: {
+            userId: string;
+            postId: number;
+        }[];
+        Comment: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            content: string;
+            userId: string;
+            postId: number;
+            parentId: number | null;
+        }[];
+    } & {
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        userId: string;
-    }>;
-    delete(id: number): Promise<{
-        id: number;
         content: string;
-        created_at: Date;
-        updated_at: Date;
-        userId: string;
-    }>;
-    edit(id: number, content: string): Promise<{
-        id: number;
-        content: string;
-        created_at: Date;
-        updated_at: Date;
         userId: string;
     }>;
 }

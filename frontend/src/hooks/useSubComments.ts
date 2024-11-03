@@ -25,7 +25,7 @@ export const useSubComments = ({postId, commentId}: props) => {
   } = useInfiniteQuery({
     queryKey: ['subComments', postId, commentId],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await commentService.getById(postId, pageParam)
+      const response = await commentService.getSubcomments({postId, commentId, page: pageParam})
 
       return response as TPaginatedResponse<TCommentResponse>
     },

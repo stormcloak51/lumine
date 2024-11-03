@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostModel, User } from '@prisma/client';
 import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
 import { PrismaService } from '../prisma.service';
@@ -217,12 +217,19 @@ export class PostService {
     });
   }
   async edit(id: number, content: string) {
+    if (!id) throw new BadRequestException('Id not found') 
+
     return await this.prisma.postModel.update({
       where: {
         id,
       },
       data: {
         content,
+      },
+      include: {
+        User: true,
+        Like: true,
+        Comment: true,
       }
     })
   }

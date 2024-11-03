@@ -39,7 +39,12 @@ export class CommentService {
 	// ==================== SUBCOMMENTS ===================
 
 	async getSubcomments({postId, commentId, page}: {postId: number, commentId: number, page: number}){
-		const response: AxiosResponse<TCommentResponse[]> = await axiosWithAuth.get(this.BASE_URL + `/getSubcomments?postId=${postId}&commentId=${commentId}&page=${page}`)
+		const response = await axiosWithAuth.get(this.BASE_URL + `/getSubcomments?postId=${postId}&commentId=${commentId}&page=${page}`)
+
+		return {
+			data: JSON.parse(JSON.stringify(response.data.data)),
+			total: JSON.parse(JSON.stringify(response.data.total)),
+		}
 	}
 
 	async createSubcomment(data: Omit<TComment, 'userId'> & {commentId: number}){

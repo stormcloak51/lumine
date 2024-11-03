@@ -32,9 +32,10 @@ import { getHotkeyHandler } from '@mantine/hooks'
 
 interface IPostCreate {
 	content?: string
+	onChange?: (newContent: string) => void
 }
 
-export const PostCreate: FC<IPostCreate> = ({ content }) => {
+export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 	const { user } = useAuth()
 
 	const os = useOs()
@@ -49,7 +50,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['posts'] })
-		},
+		}
 	})
 
 	const editor = useEditor({
@@ -77,6 +78,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 		onUpdate: ({ editor }) => {
 			const element = editor.options.element
 			if (element) setContentHeight(Math.max(element.clientHeight))
+			if (onChange) onChange(editor.getHTML())
 		},
 		onFocus: ({ editor }) => {
 			if (editor) {

@@ -79,7 +79,7 @@ export class PostController {
     return this.postService.delete(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Patch('edit')
   edit(@Body() data: EditPostDto){
     return this.postService.edit(data.postId, data.content)

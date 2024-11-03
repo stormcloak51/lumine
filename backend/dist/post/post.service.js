@@ -205,12 +205,19 @@ let PostService = class PostService {
         });
     }
     async edit(id, content) {
+        if (!id)
+            throw new common_1.BadRequestException('Id not found');
         return await this.prisma.postModel.update({
             where: {
                 id,
             },
             data: {
                 content,
+            },
+            include: {
+                User: true,
+                Like: true,
+                Comment: true,
             }
         });
     }

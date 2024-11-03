@@ -1,6 +1,6 @@
 'use client'
 
-import { TCommentResponse } from '@/types/comment.types'
+import { CommentRoles, TCommentResponse } from '@/types/comment.types'
 import { CommentItem } from './CommentItem'
 import {Button} from '@mantine/core'
 import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query'
@@ -17,7 +17,7 @@ export const CommentList = ({comments, hasNextPage, fetchNextPage}: ICommmentLis
 	return (
 		<div className='flex flex-col gap-y-4 mb-5'>
 			{comments && comments.map(comment => (
-				<CommentItem {...comment} key={`${comment.postId}/${comment.id}`}/>
+				<CommentItem role={comment.parrentId ? CommentRoles.SUBCOMMENT : CommentRoles.MAINCOMMENT} comment={comment} key={`${comment.postId}/${comment.id}`}/>
 			))}
 			{hasNextPage && (
 				<Button className='w-[25%] mx-auto rounded-lg' onClick={() => fetchNextPage()} style={{

@@ -131,7 +131,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Patch)('edit'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

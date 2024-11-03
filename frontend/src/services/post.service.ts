@@ -56,9 +56,9 @@ class PostService {
 			console.log(error)
 		}
 	}
-	async edit(id: number, content: string) {
+	async edit(postId: number, content: string) {
 		try {
-			const response = await axiosClassic.patch(this.BASE_URL + `/edit?id=${id}`, {content})
+			const response = await axiosClassic.patch(this.BASE_URL + `/edit`, {postId, content})
 			return JSON.parse(JSON.stringify(response.data))
 		} catch (error) {
 			console.log(error)
