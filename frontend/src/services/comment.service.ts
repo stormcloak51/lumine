@@ -1,5 +1,5 @@
 import { axiosWithAuth } from '@/api/interceptors'
-import { TComment, TCommentDelete, TCommentEdit, TCommentLike, TCommentResponse } from '@/types/comment.types'
+import { TComment, TCommentDelete, TCommentEdit, TCommentLike, TCommentResponse, TSubComment } from '@/types/comment.types'
 import { AxiosResponse } from 'axios'
 
 
@@ -47,7 +47,7 @@ export class CommentService {
 		}
 	}
 
-	async createSubcomment(data: Omit<TComment, 'userId'> & {commentId: number}){
+	async createSubcomment(data: TSubComment){
 		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/createSubcomment', data)
 		return JSON.parse(JSON.stringify(response.data))
 	}

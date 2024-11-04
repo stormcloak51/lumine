@@ -10,15 +10,18 @@ export type TUser = {
 	access_token?: string
 }
 
-// export type TUserProfile = {
-// 	name: string
-// 	surname: string
-// 	username: string
-// 	email: string
-// 	userAvatar: string | undefined
-// 	bio: string
-// 	role: string
-// }
+export type TUserProfile = {
+	id: string
+	name: string
+	surname: string
+	username: string
+	email: string
+	userAvatar: string | undefined
+	bio: string
+	role: string
+	created_at: Date | string | null
+	updated_at: Date | string | null
+}
 
 export type TUserLogin = {
 	usernameOrEmail: string

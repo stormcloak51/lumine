@@ -8,18 +8,18 @@ export declare class JwtStrategy extends JwtStrategy_base {
     validate({ id }: {
         id: string;
     }): Promise<{
-        id: string;
-        created_at: Date;
-        name: string;
         username: string;
         email: string;
-        surname: string;
-        bio: string;
         userAvatar: string;
+        name: string;
+        surname: string;
+        id: string;
+        created_at: Date;
+        bio: string;
         role: string;
         likedPosts: {
-            userId: string;
             postId: number;
+            userId: string;
         }[];
     }>;
 }

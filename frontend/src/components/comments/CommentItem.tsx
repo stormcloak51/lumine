@@ -3,22 +3,25 @@ import { CommentRoles, TCommentResponse } from '@/types/comment.types'
 import LumineAvatar from '../common/LumineAvatar'
 import purify from 'dompurify'
 import { Text } from '@mantine/core'
-import Link from 'next/link'
 import { CommentActions } from './CommentActions'
 import { timeAgo } from '@/lib/utils/timeAgo'
 import { useSubComments } from '@/hooks/useSubComments'
 import { CommentList } from './CommentList'
+import { UserHoverCard } from '../common/UserHoverCard'
+import { CommentCreate } from './CommentCreate'
 
 interface props {
 	comment: TCommentResponse
 	role?: CommentRoles
 }
 
-export const CommentItem = ({comment, role}: props) => {
-	console.log(comment);
+export const CommentItem = ({ comment, role }: props) => {
+	console.log(comment)
 	const {
 		comments,
 		isLoading,
+		createSubcomment,
+		likeSubComment,
 		isCommentsVisible,
 		toggleCommentsVisibility,
 		fetchNextPage,
@@ -28,15 +31,12 @@ export const CommentItem = ({comment, role}: props) => {
 	return (
 		<div className='flex flex-row gap-x-2'>
 			<LumineAvatar size={30} url={comment.user.userAvatar} username={comment.user.username} />
-			<div className='w-full border-b border-[rgb(0,0,0)]'>
+			<div className='w-full border-b border-[rgb(66,66,66)]'>
 				<div className='flex flex-row items-center gap-x-3'>
-					<Link href={`/profile/${comment.user.username}`} className=''>
-						<Text size='md' fw={700}>
-							{comment.user.name}
-						</Text>
-						{/* <Circle fill='#ffdd9a' size={8} stroke='#ffdd9a' /> */}
-					</Link>
-					<Text c={'dimmed'}>{timeAgo(comment.created_at.toString())}</Text>
+					<UserHoverCard ml={0} targetSize='md' user={comment.user} />
+					<Text size='md' c={'dimmed'}>
+						{timeAgo(comment.created_at.toString())}
+					</Text>
 				</div>
 
 				<Text
@@ -46,11 +46,21 @@ export const CommentItem = ({comment, role}: props) => {
 				/>
 				<CommentActions role={role} onClickComment={toggleCommentsVisibility} comment={comment} />
 				{comments && !isLoading && isCommentsVisible && (
-					<CommentList
-						comments={comments}
-						hasNextPage={hasNextPage}
-						fetchNextPage={fetchNextPage}
-					/>
+					<>
+						<CommentCreate
+							onSubmit={data => {
+								setCommentLength(prev => prev + 1)
+								createSubcomment(data)
+								if (!isCommentsVisible) toggleCommentsVisibility()
+							}}
+							postId={comment.postId}
+						/>
+						<CommentList
+							comments={comments}
+							hasNextPage={hasNextPage}
+							fetchNextPage={fetchNextPage}
+						/>
+					</>
 				)}
 			</div>
 		</div>

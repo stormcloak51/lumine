@@ -5,7 +5,7 @@ import {
 	Divider,
 	Text,
 } from '@mantine/core'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import LumineAvatar from '../common/LumineAvatar'
 import purify from 'dompurify'
 import { timeAgo } from '@/lib/utils/timeAgo'
@@ -27,9 +27,7 @@ export const PostItem: FC<
 > = post => {
 	const { user } = useAuth()
 
-
 	const [commentLength, setCommentLength] = useState(post?.Comment?.length)
-
 
 	const {
 		comments,
@@ -41,13 +39,7 @@ export const PostItem: FC<
 		fetchNextPage,
 	} = useComments(post.id)
 
-	useEffect(() => {
-		if (post.id === 47){
-			console.log(post)
-		}
-	})
-
-
+	console.log(comments, 'comments')
 	return (
 		<Card
 			ref={post.lastPostRef}
@@ -64,7 +56,7 @@ export const PostItem: FC<
 						url={post.User.userAvatar}
 						username={post.User.username}
 					/>
-					<UserHoverCard post={post}/>
+					<UserHoverCard user={post.User}/>
 					<Circle fill='#ffdd9a' size={8} stroke='#ffdd9a' />
 					<Text c='dimmed' size='md'>
 						{timeAgo(post.created_at)}

@@ -24,8 +24,7 @@ export const useComments = (postId: number) => {
       return response as TPaginatedResponse<TCommentResponse>
     },
     getNextPageParam: (lastPage, pages) => {
-      const hasMore = lastPage.data.length === 5
-      return hasMore ? pages.length + 1 : undefined
+      return lastPage.data.length === 5 ? pages.length + 1 : undefined
     },
     initialPageParam: 1,
     enabled: isCommentsVisible,
@@ -69,6 +68,6 @@ export const useComments = (postId: number) => {
 		toggleCommentsVisibility,
 		isCommentsVisible,
 		fetchNextPage,
-		hasNextPage,
+		hasNextPage: hasNextPage,
   };
 }

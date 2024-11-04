@@ -1,29 +1,31 @@
-import { HoverCard, Title, ActionIcon, Blockquote, Text, useMantineTheme } from '@mantine/core'
+import { HoverCard, Title, ActionIcon, Blockquote, Text, useMantineTheme, MantineSize } from '@mantine/core'
 import { UserPlus, MessagesSquare, Quote } from 'lucide-react'
 import LumineAvatar from './LumineAvatar'
 import Link from 'next/link'
-import { TPost } from '@/types/post.types'
+import { TUserProfile } from '@/types/user.types'
+import { TextProps } from '@mantine/core';
 
-
-interface props {
-	post: TPost
+interface props extends TextProps  {
+	user: TUserProfile
+	targetSize?: MantineSize | (string & {}) | undefined
 }
 
-export const UserHoverCard = ({post}: props) => {
+export const UserHoverCard = ({user, targetSize = 'lg', ...textProps}: props) => {
 	const theme = useMantineTheme()
 
 	return (
 		<HoverCard shadow='xl' openDelay={700}>
 		<HoverCard.Target>
 			<Text
-				href={`/profile/${post.User.username}`}
+				href={`/profile/${user.username}`}
 				component={Link}
 				className='hover:underline cursor-pointer'
 				ml={-8}
-				size='lg'
+				size={targetSize}
 				fw={700}
+				{...textProps}
 			>
-				{post.User.name} {post.User.surname}
+				{user.name} {user.surname}
 			</Text>
 		</HoverCard.Target>
 		<HoverCard.Dropdown
@@ -37,17 +39,17 @@ export const UserHoverCard = ({post}: props) => {
 		>
 			<LumineAvatar
 				size={50}
-				url={post.User.userAvatar}
-				username={post.User.username}
+				url={user.userAvatar!}
+				username={user.username}
 			/>
 			<div className=''>
 				<div className='flex justify-between'>
 					<div>
 						<Title order={3}>
-							{post.User.name} {post.User.surname}
+							{user.name} {user.surname}
 						</Title>
 						<Title mb={20} c='dimmed' order={4}>
-							@{post.User.username}
+							@{user.username}
 						</Title>
 					</div>
 					<div className='flex flex-row gap-x-2'>
@@ -71,7 +73,7 @@ export const UserHoverCard = ({post}: props) => {
 					iconSize={30}
 					icon={<Quote size={16} />}
 					className='pt-3 pl-5 whitespace-normal break-words'
-					cite={post.User.name + ' ' + post.User.surname}
+					cite={user.name + ' ' + user.surname}
 					styles={{
 						icon: {
 							border: '1px solid #ffd37d',
@@ -79,9 +81,9 @@ export const UserHoverCard = ({post}: props) => {
 					}}
 				>
 					<i>
-						{post.User.bio === ''
+						{user.bio === ''
 							? 'No bio yet :( lorem15123123lkawmdkjaskjdaklsdmalkdsmalksdmalkdsmalksdm msdlkm askldma klsda lksdmal sdma'
-							: post.User.bio}
+							: user.bio}
 					</i>
 				</Blockquote>
 			</div>

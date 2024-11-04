@@ -14,6 +14,7 @@ interface ICommmentList {
 
 export const CommentList = ({comments, hasNextPage, fetchNextPage}: ICommmentList) => {
 
+
 	return (
 		<div className='flex flex-col gap-y-4 mb-5'>
 			{comments && comments.map(comment => (

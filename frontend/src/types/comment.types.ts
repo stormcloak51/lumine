@@ -1,6 +1,6 @@
 import { IUserCredentials } from './user.types'
 
-
+// =================================COMMENTS=================================
 
 export type TComment = {
 	postId: number
@@ -25,6 +25,7 @@ export type TCommentResponse = {
 	created_at: Date
 	updated_at: Date
 	subComments?: TCommentResponse[]
+	parrentId?: number
 }
 
 export type TCommentLike = {
@@ -44,6 +45,16 @@ export type TCommentEdit = {
 	content: string
 }
 
+// =================================SUBCOMMENTS=================================
+
+export type TSubComment = {
+	userId: string
+	commentId: number
+	postId: number
+	content: string
+}
+
+//  =================================GENERAL=================================
 export enum CommentRoles { 
 	SUBCOMMENT = 'subcomment',
 	MAINCOMMENT = 'maincomment',

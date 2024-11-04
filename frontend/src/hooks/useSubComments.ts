@@ -1,7 +1,7 @@
 import { commentService } from '@/services/comment.service'
-import { TCommentResponse } from '@/types/comment.types'
+import { TCommentLike, TCommentResponse, TSubComment } from '@/types/comment.types'
 import { TPaginatedResponse } from '@/types/general.types'
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
 
@@ -37,6 +37,37 @@ export const useSubComments = ({postId, commentId}: props) => {
     enabled: isCommentsVisible,
   })
 
+  const createSubCommentMutation = useMutation({
+    mutationFn: (data: TSubComment) => {
+      return commentService.createSubcomment(data)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['subComments', postId, commentId],
+        refetchType: 'active'
+      })
+    }
+  })
+
+  const likedSubCommentMutation = useMutation({
+		mutationFn: async (data: TCommentLike) => {
+      return commentService.like(data)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['comments', postId],
+        refetchType: 'none'
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['subComments', postId, commentId],
+        refetchType: 'active'
+      })
+    }
+  })
+
 	const toggleCommentsVisibility = () => {
 		setIsCommentsVisible(prev => !prev)
 	}
@@ -44,7 +75,9 @@ export const useSubComments = ({postId, commentId}: props) => {
 	return {
 		comments: comments?.pages.flatMap(page => page.data),
 		isLoading,
-		fetchNextPage,
+    createSubcomment: createSubCommentMutation.mutate,
+		likeSubComment: likedSubCommentMutation.mutate,
+    fetchNextPage,
 		hasNextPage,
 		isCommentsVisible,
 		toggleCommentsVisibility
