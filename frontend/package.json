@@ -46,7 +46,8 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.79.3",
     "socket.io-client": "^4.8.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@tanstack/react-query-devtools": "^5.59.19",

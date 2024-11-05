@@ -6,6 +6,7 @@ import { Aperture, LogOut, Settings } from 'lucide-react'
 import { useAuth } from '@/lib/actions/state'
 import { authService } from '@/services/auth.service'
 import { useRouter } from 'next/navigation'
+import { useUser } from '@/lib/store/user.slice'
 
 interface IMenuAvatar {
 	size: number
@@ -13,12 +14,14 @@ interface IMenuAvatar {
 
 export const MenuAvatar: FC<IMenuAvatar> = ({ size }) => {
 	const {user: { userAvatar, username}} = useAuth()
+	const {deleteUser} = useUser()
 
 	const router = useRouter()
 
 	const handleLogout = async () => {
 		try {
 			await authService.logout()
+			deleteUser()
 			router.push('/auth/login')
 		} catch (err) {
 			console.log(err)

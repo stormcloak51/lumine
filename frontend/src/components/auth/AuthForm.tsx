@@ -1,15 +1,15 @@
 'use client'
 import { Button, PasswordInput, Switch, TextInput, Title, Text } from '@mantine/core'
 import input from '@/components/styles/Header.module.scss'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { uploadAvatar } from '@/lib/actions/uploadAvatar'
 import { authService } from '@/services/auth.service'
 import { useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useDispatch } from 'react-redux'
-import { setUser } from '@/lib/store/slices/user.slice'
 import { UploadImage } from './UploadImage'
 import { useForm } from '@mantine/form'
+import { useUser } from '@/lib/store/user.slice'
+import { useRouter } from 'next/navigation'
 
 interface FormData {
 	name: string
@@ -22,7 +22,9 @@ interface FormData {
 }
 
 export const AuthForm = () => {
-	const dispatch = useDispatch()
+	const router = useRouter()
+
+	const setUser = useUser((state) => state.setUser)
 
 	const mutation = useMutation({
 		mutationFn: async (data: FormData) => {
@@ -37,6 +39,10 @@ export const AuthForm = () => {
 				return null
 			}
 		},
+		onSuccess: (data) => {
+			setUser(data!)
+			router.push('/feed')
+		}
 	})
 
 	const submitRef = useRef<HTMLButtonElement>(null)
@@ -68,14 +74,6 @@ export const AuthForm = () => {
 		const data: FormData = form.getValues()
 		mutation.mutate(data)
 	}
-
-	useEffect(() => {
-		if (mutation.isSuccess === true && mutation.data !== null) {
-			dispatch(setUser(mutation.data))
-			window.location.href = '/feed'
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [mutation.isSuccess, mutation.data])
 
 	return (
 		<form
