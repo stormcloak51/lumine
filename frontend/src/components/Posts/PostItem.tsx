@@ -21,16 +21,11 @@ import { CommentCreate } from '../comments/CommentCreate'
 import { CommentList } from '../comments/CommentList'
 import { useComments } from '@/hooks/useComments'
 import { UserHoverCard } from '../common/UserHoverCard'
-import { useStore } from 'zustand'
-import { useUser } from '@/lib/store/user.slice'
 
 export const PostItem: FC<
 	TPost & { title: string; lastPostRef?: React.Ref<HTMLDivElement> }
 > = post => {
 
-	const userSecond = useUser((state) => state.user)
-
-	console.log(userSecond)
 	const { user } = useAuth()
 
 	const [commentLength, setCommentLength] = useState(post?.Comment?.length)

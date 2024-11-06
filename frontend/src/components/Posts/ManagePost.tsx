@@ -42,7 +42,6 @@ export const ManagePost = ({ post, id, content, userId }: IManagePost) => {
 	}
 
 	const handleEdit = async () => {
-		console.log(editedContent)
 		editPostMutation.mutate(editedContent)
 		closeEditPostModal()
 	}

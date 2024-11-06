@@ -35,7 +35,7 @@ export const CommentActions = ({ role, comment, onClickComment }: ICommentAction
 
 	const theme = useMantineTheme()
 
-	console.log(role)
+	console.log(role, 'ROLLELLELEL')
 	return (
 		<div className='flex flex-row gap-x-4 items-center'>
 			<Button
@@ -57,7 +57,7 @@ export const CommentActions = ({ role, comment, onClickComment }: ICommentAction
 				<AiFillLike />
 				<span className='ml-1'>{localLikes}</span>
 			</Button>
-			{role === 'maincomment' && (
+			{role === CommentRoles.MAINCOMMENT && (
 				<Button
 					p={0}
 					className='flex items-center'

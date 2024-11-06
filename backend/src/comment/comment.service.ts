@@ -13,7 +13,7 @@ export class CommentService {
 				parentId: null
 			},
 			orderBy: {
-				created_at: 'desc'
+				created_at: 'asc'
 			},
 			include: {
 				user: {
@@ -208,7 +208,7 @@ export class CommentService {
 				parentId: dto.commentId
 			},
 			orderBy: {
-				created_at: 'desc'
+				created_at: 'asc'
 			},
 			include: {
 				user: {

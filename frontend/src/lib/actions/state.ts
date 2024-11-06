@@ -1,9 +1,7 @@
 'use client';
-import { useSelector } from 'react-redux'
-import { RootState } from '../store/store'
-import { getCookie } from 'cookies-next'
 import { useUser } from '../store/user.slice'
 import { IUserCredentials } from '@/types/user.types'
+import { emptyUser } from '@/config/constants/user.constant'
 
 
 
@@ -13,7 +11,7 @@ export const useAuth = (): { isAuth: boolean; user: IUserCredentials } => {
 	if (!data) {
 		return {
 			isAuth: false,
-			user: {}
+			user: emptyUser
 		}
 	}
 

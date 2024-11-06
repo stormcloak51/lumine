@@ -38,7 +38,7 @@ export const useSubComments = ({postId, commentId}: props) => {
   })
 
   const createSubCommentMutation = useMutation({
-    mutationFn: (data: TSubComment) => {
+    mutationFn: (data: Partial<TSubComment>) => {
       return commentService.createSubcomment(data)
     },
     onSettled: () => {

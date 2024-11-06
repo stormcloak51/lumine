@@ -15,9 +15,13 @@ import { useAuth } from '@/lib/actions/state'
 export const CommentCreate = ({
 	onSubmit,
 	postId,
+	commentId,
+	cl = '',
 }: {
-	postId: number
-	onSubmit: (data: { content: string; postId: number; userId: string }) => void
+	postId: number,
+	commentId?: number,
+	cl?: string
+	onSubmit: (data: { content: string; postId: number; userId: string, commentId?: number }) => void
 }) => {
 	const [isActive, setActive] = useState(false)
 	const { user } = useAuth()
@@ -71,7 +75,7 @@ export const CommentCreate = ({
 			}}
 			transition={{ duration: 0.3 }}
 			ref={rootRef}
-			className='!bg-[#1f2124] flex flex-col rounded-[1rem] relative border-[rgb(66,66,66)] border cursor-text'
+			className={`'!bg-[#1f2124] flex flex-col rounded-[1rem] relative border-[rgb(66,66,66)] border cursor-text' ${cl}`}
 			style={{
 				boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
 			}}
@@ -90,6 +94,7 @@ export const CommentCreate = ({
 						content: editor.getHTML(),
 						userId: user.id,
 						postId,
+						commentId: commentId
 					})
 					editor.commands.clearContent()
 				}}

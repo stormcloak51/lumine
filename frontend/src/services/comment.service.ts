@@ -47,7 +47,7 @@ export class CommentService {
 		}
 	}
 
-	async createSubcomment(data: TSubComment){
+	async createSubcomment(data: Partial<TSubComment>){
 		const response: AxiosResponse<TCommentResponse> = await axiosWithAuth.post(this.BASE_URL + '/createSubcomment', data)
 		return JSON.parse(JSON.stringify(response.data))
 	}

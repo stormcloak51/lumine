@@ -15,8 +15,7 @@ interface props {
 	role?: CommentRoles
 }
 
-export const CommentItem = ({ comment, role }: props) => {
-	console.log(comment)
+export const CommentItem = ({ comment, role = CommentRoles.MAINCOMMENT }: props) => {
 	const {
 		comments,
 		isLoading,
@@ -28,10 +27,11 @@ export const CommentItem = ({ comment, role }: props) => {
 		hasNextPage,
 	} = useSubComments({ postId: comment.postId, commentId: comment.id })
 
+	console.log(comment.content, role)
 	return (
 		<div className='flex flex-row gap-x-2'>
 			<LumineAvatar size={30} url={comment.user.userAvatar} username={comment.user.username} />
-			<div className='w-full border-b border-[rgb(66,66,66)]'>
+			<div className={`w-full ${role === CommentRoles.MAINCOMMENT ? 'border-b border-[rgb(66,66,66)]' : ''}`}>
 				<div className='flex flex-row items-center gap-x-3'>
 					<UserHoverCard ml={0} targetSize='md' user={comment.user} />
 					<Text size='md' c={'dimmed'}>
@@ -45,22 +45,26 @@ export const CommentItem = ({ comment, role }: props) => {
 					dangerouslySetInnerHTML={{ __html: purify.sanitize(comment.content) }}
 				/>
 				<CommentActions role={role} onClickComment={toggleCommentsVisibility} comment={comment} />
-				{comments && !isLoading && isCommentsVisible && (
-					<>
-						<CommentCreate
-							onSubmit={data => {
-								setCommentLength(prev => prev + 1)
-								createSubcomment(data)
-								if (!isCommentsVisible) toggleCommentsVisibility()
-							}}
-							postId={comment.postId}
-						/>
+				{comments && !isLoading && isCommentsVisible && role !== CommentRoles.SUBCOMMENT && (
+					<div className={comments.length > 0 ? 'mt-3' : ''}>
 						<CommentList
 							comments={comments}
 							hasNextPage={hasNextPage}
 							fetchNextPage={fetchNextPage}
 						/>
-					</>
+						<CommentCreate
+							cl='mb-5'
+							commentId={comment.id}
+							onSubmit={data => {
+								// setCommentLength(prev => prev + 1)
+								if (data.commentId) {
+									createSubcomment(data)
+									if (!isCommentsVisible) toggleCommentsVisibility()
+								}
+							}}
+							postId={comment.postId}
+						/>
+					</div>
 				)}
 			</div>
 		</div>
