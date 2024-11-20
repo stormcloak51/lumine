@@ -1,0 +1,1 @@
+export { Feed as default, metadata} from '@/pages/feed'

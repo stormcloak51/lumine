@@ -16,6 +16,11 @@ export declare class LikePostDto {
 }
 export declare class EditPostDto {
     postId: number;
+    userId: string;
     content: string;
+}
+export declare class DeletePostDto {
+    postId: number;
+    userId: string;
 }
 export {};

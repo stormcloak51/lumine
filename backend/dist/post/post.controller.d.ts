@@ -1,5 +1,5 @@
 import { PostModel } from '@prisma/client';
-import { CreatePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 import { Request } from 'express';
 export declare class PostController {
@@ -7,9 +7,9 @@ export declare class PostController {
     constructor(postService: PostService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }[]>;
     findAllSortedByLikes(page?: number, limit?: number): Promise<{
@@ -20,127 +20,127 @@ export declare class PostController {
         data: {
             likes: number;
             User: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
+                username: string;
+                email: string;
                 password: string;
+                surname: string;
                 bio: string;
+                userAvatar: string;
                 role: string;
             };
             Like: {
-                postId: number;
                 userId: string;
+                postId: number;
             }[];
             Comment: {
                 id: number;
-                content: string;
-                postId: number;
                 created_at: Date;
                 updated_at: Date;
+                content: string;
                 userId: string;
+                postId: number;
                 parentId: number | null;
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
+            content: string;
             userId: string;
         }[];
         total: number;
     }>;
     createPost(data: CreatePostDto, req: Request): import(".prisma/client").Prisma.Prisma__PostModelClient<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
     findById(id: number): Promise<{
         likes: number;
         User: {
-            username: string;
-            email: string;
-            userAvatar: string;
-            name: string;
-            surname: string;
             id: string;
             created_at: Date;
             updated_at: Date;
+            name: string;
+            username: string;
+            email: string;
             password: string;
+            surname: string;
             bio: string;
+            userAvatar: string;
             role: string;
         };
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         Comment: ({
             user: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
+                username: string;
+                email: string;
                 password: string;
+                surname: string;
                 bio: string;
+                userAvatar: string;
                 role: string;
             };
         } & {
             id: number;
-            content: string;
-            postId: number;
             created_at: Date;
             updated_at: Date;
+            content: string;
             userId: string;
+            postId: number;
             parentId: number | null;
         })[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
     findByUsername(page: number, limit: number, username: string): Promise<{
         data: {
             likes: number;
             User: {
-                username: string;
-                email: string;
-                userAvatar: string;
-                name: string;
-                surname: string;
                 id: string;
                 created_at: Date;
                 updated_at: Date;
+                name: string;
+                username: string;
+                email: string;
                 password: string;
+                surname: string;
                 bio: string;
+                userAvatar: string;
                 role: string;
             };
             Like: {
-                postId: number;
                 userId: string;
+                postId: number;
             }[];
             Comment: {
                 id: number;
-                content: string;
-                postId: number;
                 created_at: Date;
                 updated_at: Date;
+                content: string;
                 userId: string;
+                postId: number;
                 parentId: number | null;
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
+            content: string;
             userId: string;
         }[];
         total: number;
@@ -148,66 +148,39 @@ export declare class PostController {
     likePost(data: LikePostDto): Promise<{
         likes: number;
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
     unlikePost(data: LikePostDto): Promise<{
         likes: number;
         Like: {
-            postId: number;
             userId: string;
+            postId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
-    delete(id: number): Promise<{
+    delete(data: DeletePostDto): Promise<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
     edit(data: EditPostDto): Promise<{
-        User: {
-            username: string;
-            email: string;
-            userAvatar: string;
-            name: string;
-            surname: string;
-            id: string;
-            created_at: Date;
-            updated_at: Date;
-            password: string;
-            bio: string;
-            role: string;
-        };
-        Like: {
-            postId: number;
-            userId: string;
-        }[];
-        Comment: {
-            id: number;
-            content: string;
-            postId: number;
-            created_at: Date;
-            updated_at: Date;
-            userId: string;
-            parentId: number | null;
-        }[];
-    } & {
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
+        content: string;
         userId: string;
     }>;
 }

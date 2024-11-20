@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^3.9.0",
     "@lottiefiles/dotlottie-react": "^0.9.1",
     "@mantine/core": "^7.12.2",
+    "@mantine/dropzone": "^7.14.1",
     "@mantine/form": "^7.13.3",
     "@mantine/hooks": "^7.12.2",
     "@mantine/tiptap": "^7.13.4",
@@ -23,6 +24,7 @@
     "@tanstack/react-query": "^5.56.2",
     "@tiptap/extension-bold": "^2.8.0",
     "@tiptap/extension-heading": "^2.8.0",
+    "@tiptap/extension-history": "^2.9.1",
     "@tiptap/extension-placeholder": "^2.8.0",
     "@tiptap/extension-underline": "^2.8.0",
     "@tiptap/pm": "^2.8.0",
@@ -50,7 +52,7 @@
     "zustand": "^5.0.1"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.59.19",
+    "@tanstack/react-query-devtools": "^5.59.20",
     "@types/backblaze-b2": "^1.5.6",
     "@types/dompurify": "^3.0.5",
     "@types/js-cookie": "^3.0.6",

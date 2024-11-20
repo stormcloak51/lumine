@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
-import '@mantine/core/styles.css'
 import {
 	ColorSchemeScript,
 	createTheme,
 	MantineColorsTuple,
 	MantineProvider,
 } from '@mantine/core'
-import * as font from '../fonts/fonts'
+import '@mantine/core/styles.css'
+import * as font from '../shared/assets/fonts/fonts'
 import ClientProvider from './ClientProvider'
 
 export const metadata: Metadata = {
@@ -36,12 +36,11 @@ const theme = createTheme({
 	},
 })
 
-export default async function RootLayout({
+export async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-
 	return (
 		<html lang='en'>
 			<head>

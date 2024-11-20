@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostModel, User } from '@prisma/client';
-import { CreatePostDto, LikePostDto } from '../dtos/post.dto';
+import { CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -208,29 +208,42 @@ export class PostService {
     }
   }
 
-  async delete(id: number) {
+  async delete(data: DeletePostDto) {
     
+    if (!data.postId) throw new BadRequestException('Id not found') 
+    
+    const post = await this.prisma.postModel.findUnique({
+      where: {
+        id: data.postId
+      },
+    })
+
+    if (post.userId !== data.userId) throw new BadRequestException("You can't update someones else's post!") 
+
     return await this.prisma.postModel.delete({
       where: {
-        id,
+        id: data.postId
       },
     });
   }
-  async edit(id: number, content: string) {
-    if (!id) throw new BadRequestException('Id not found') 
+  async edit(data: EditPostDto) {
+    if (!data.postId) throw new BadRequestException('Id not found') 
+    
+    const post = await this.prisma.postModel.findUnique({
+      where: {
+        id: data.postId
+      }
+    })
+
+    if (post.userId !== data.userId) throw new BadRequestException("You can't update someones else's post!") 
 
     return await this.prisma.postModel.update({
       where: {
-        id,
+        id: data.postId
       },
       data: {
-        content,
+        content: data.content
       },
-      include: {
-        User: true,
-        Like: true,
-        Comment: true,
-      }
     })
   }
 }

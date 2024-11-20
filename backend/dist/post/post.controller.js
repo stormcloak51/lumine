@@ -47,11 +47,11 @@ let PostController = class PostController {
     unlikePost(data) {
         return this.postService.unLikePost(data);
     }
-    delete(id) {
-        return this.postService.delete(id);
+    delete(data) {
+        return this.postService.delete(data);
     }
     edit(data) {
-        return this.postService.edit(data.postId, data.content);
+        return this.postService.edit(data);
     }
 };
 exports.PostController = PostController;
@@ -125,9 +125,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Delete)('delete'),
-    __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [post_dto_1.DeletePostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([

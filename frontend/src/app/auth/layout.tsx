@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import '@mantine/core/styles.css'
 
 export const metadata: Metadata = {
-	title: 'Auth - lumine',
+	title: 'Shall we begin?',
 	description: 'Lumine network',
 }
 

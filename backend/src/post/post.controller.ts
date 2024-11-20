@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, Request as RequestNest, UseGuards } from '@nestjs/common';
 import { PostModel } from '@prisma/client';
-import { CreatePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 import { Request } from 'express'
@@ -75,13 +75,13 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @Delete('delete')
-  delete(@Query('id', ParseIntPipe) id: number) {
-    return this.postService.delete(id);
+  delete(@Body() data: DeletePostDto) {
+    return this.postService.delete(data);
   }
 
   // @UseGuards(JwtAuthGuard)
   @Patch('edit')
   edit(@Body() data: EditPostDto){
-    return this.postService.edit(data.postId, data.content)
+    return this.postService.edit(data)
   }
 }

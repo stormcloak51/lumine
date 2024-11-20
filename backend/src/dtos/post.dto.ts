@@ -45,5 +45,16 @@ export class EditPostDto {
 	postId: number
 
 	@IsString()
+	userId: string
+
+	@IsString()
 	content: string
+}
+
+export class DeletePostDto {
+	@IsNumber()
+	postId: number
+
+	@IsString()
+	userId: string
 }
