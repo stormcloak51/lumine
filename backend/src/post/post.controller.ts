@@ -9,7 +9,7 @@ import * as cookie from 'cookie'
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.postService.findAll();
@@ -21,7 +21,7 @@ export class PostController {
     return this.postService.findAllSortedByLikes(page, limit);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('sortedByDate')
   findAllSortedByDate(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     return this.postService.findAllSortedByDate(page, limit);

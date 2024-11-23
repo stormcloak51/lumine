@@ -5,6 +5,7 @@ export type TUser = {
 	email: string
 	password?: string
 	userAvatar: string | undefined
+	userCover: string
 	bio?: string
 	role?: string
 	access_token?: string
@@ -17,6 +18,7 @@ export type TUserProfile = {
 	username: string
 	email: string
 	userAvatar: string | undefined
+	userCover: string
 	bio: string
 	role: string
 	created_at: Date | string | null
@@ -37,6 +39,7 @@ export interface IUserCredentials {
 	email: string
 	password: string
 	userAvatar: string
+	userCover: string
 	bio: string
 	role: string
 	created_at: Date | string | null

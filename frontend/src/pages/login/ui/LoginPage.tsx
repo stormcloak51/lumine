@@ -75,6 +75,7 @@ export const LoginPage = () => {
 					color='#ffd37d'
 					type='submit'
 					loading={isPending}
+					disabled={isPending}
 					className='w-full'
 				>
 					Log In

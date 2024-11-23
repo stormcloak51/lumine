@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-
+import '@mantine/notifications/styles.css';
 import {
 	ColorSchemeScript,
 	createTheme,
@@ -10,6 +10,7 @@ import {
 import '@mantine/core/styles.css'
 import * as font from '../shared/assets/fonts/fonts'
 import ClientProvider from './ClientProvider'
+import { Notifications } from '@mantine/notifications'
 
 export const metadata: Metadata = {
 	title: 'lumine',
@@ -51,6 +52,19 @@ export async function RootLayout({
 			>
 				<ClientProvider>
 					<MantineProvider defaultColorScheme='dark' theme={theme}>
+						<Notifications
+							zIndex={2000}
+							styles={{
+								root: {
+									position: 'fixed',
+									pointerEvents: 'none',
+									zIndex: 2000,
+								},
+								notification: {
+									pointerEvents: 'auto',
+								},
+							}}
+						/>
 						{children}
 					</MantineProvider>
 				</ClientProvider>

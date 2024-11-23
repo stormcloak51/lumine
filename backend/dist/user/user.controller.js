@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const user_dto_1 = require("../dtos/user.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -23,8 +24,11 @@ let UserController = class UserController {
         return this.userService.findAll();
     }
     async findOne(idOrEmailOrUsername) {
-        const user = this.userService.findOne(idOrEmailOrUsername);
+        const user = await this.userService.findOne(idOrEmailOrUsername);
         return user;
+    }
+    update(id, dto) {
+        return this.userService.update({ id, dto });
     }
 };
 exports.UserController = UserController;
@@ -41,6 +45,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, user_dto_1.UpdateUserDto]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "update", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

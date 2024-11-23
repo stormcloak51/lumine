@@ -12,11 +12,10 @@ import { Paperclip } from 'lucide-react'
 import { setCanvasPreview } from '@/shared/lib/setCanvasPreview'
 
 interface UploadImageProps {
-	classNames?: string;
 	onChange: (file: File | null) => void;
 }
 
-export const UploadImage = ({ classNames, onChange }: UploadImageProps) => {
+export const UploadImage = ({ onChange }: UploadImageProps) => {
 	const [opened, { open, close }] = useDisclosure(false)
 	const [crop, setCrop] = useState<Crop>()
 	const [imgSrc, setImgSrc] = useState<string | undefined>(undefined)

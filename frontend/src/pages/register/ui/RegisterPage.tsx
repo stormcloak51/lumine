@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import wallpaperImage from '@/assets/wallpapers/authPreview1.jpg'
+import wallpaperImage from '@/shared/assets/wallpapers/authPreview1.jpg'
 import { useRegisterSchema } from '../model/useRegisterSchema'
 import { Text, TextInput, PasswordInput, Button, Switch, Title } from '@mantine/core'
 import Link from 'next/link'
@@ -106,7 +106,6 @@ export const RegisterPage = () => {
 					</Text>
 				</div>
 				<Button
-					// ref={submitRef}
 					variant='outline'
 					color='#ffd37d'
 					type='submit'

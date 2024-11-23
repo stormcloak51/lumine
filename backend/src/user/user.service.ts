@@ -3,6 +3,7 @@ import { User } from '@prisma/client'
 import { hash } from 'bcrypt'
 import { AuthService } from 'src/auth/auth.service'
 import { RegisterDto } from 'src/auth/dto/register.dto'
+import { UpdateUserDto } from 'src/dtos/user.dto'
 
 import { PrismaService } from 'src/prisma.service'
 
@@ -39,18 +40,6 @@ export class UserService {
 					}
 				]
 			},
-			select: {
-				id: true,
-				username: true,
-				email: true,
-				name: true,
-				surname: true,
-				bio: true,
-				userAvatar: true,
-				created_at: true,
-				role: true,
-				likedPosts: true
-			}
 		})
 	}
 
@@ -58,6 +47,18 @@ export class UserService {
 
 	findAll() {
 		return this.prisma.user.findMany()
+	}
+
+	update({id, dto}: {id: string, dto: UpdateUserDto} ){
+		console.log('Updating user:', { id, dto });
+		return this.prisma.user.update({
+			where: {
+				id
+			},
+			data: {
+				...dto
+			}
+		})
 	}
 
 	delete(id: string){

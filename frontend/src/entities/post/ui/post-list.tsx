@@ -14,7 +14,6 @@ export interface IPostList {
 export const PostList: FC<IPostList> = ({ username, feed, title = 'Posts' }) => {
 
 	const {isLoading, allPosts, lastPostRef} = usePostList({feed, username})
-
 	return (
 		<Suspense fallback={<Loading />}>
     {isLoading ? (

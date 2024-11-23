@@ -24,6 +24,7 @@ export const usePostList = ({ feed, username }: props) => {
 			initialPageParam: 1,
 			refetchOnMount: true,
 		})
+	console.log(data?.pages, 'DATA')
 	const allPosts = data?.pages
 		.flatMap(page => page.data)
 		.filter(

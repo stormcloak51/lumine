@@ -56,6 +56,7 @@ let PostController = class PostController {
 };
 exports.PostController = PostController;
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -71,7 +72,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAllSortedByLikes", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)('sortedByDate'),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),

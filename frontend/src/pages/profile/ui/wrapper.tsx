@@ -12,7 +12,7 @@ interface IWrapper {
 	username: string
 }
 
-export const Wrapper: FC<IWrapper & Omit<IPostList, 'feed'>> = ({ username, currId, title = 'Posts' }) => {
+export const Wrapper: FC<IWrapper & Omit<IPostList, 'feed'>> = ({ username, currId }) => {
 	const { user } = useAuth()
 
 	if (user.id !== currId) {

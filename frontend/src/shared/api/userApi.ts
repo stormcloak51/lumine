@@ -17,6 +17,11 @@ export class UserApi {
 		return JSON.parse(JSON.stringify(response.data))
 	}
 	
+	async update({id, dto}: {id: string, dto: Partial<IUserCredentials>}) {
+		console.log(dto)
+		const response: AxiosResponse<IUserCredentials> = await axiosWithAuth.patch(this.BASE_URL + `/${id}`, dto)
+		return JSON.parse(JSON.stringify(response.data))
+	}
 }
 
 export const userApi = new UserApi()

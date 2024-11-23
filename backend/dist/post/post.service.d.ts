@@ -25,11 +25,15 @@ export declare class PostService {
                 name: string;
                 username: string;
                 email: string;
-                password: string;
                 surname: string;
                 bio: string;
                 userAvatar: string;
+                userCover: string;
                 role: string;
+                likedPosts: {
+                    userId: string;
+                    postId: number;
+                }[];
             };
             Like: {
                 userId: string;
@@ -62,11 +66,15 @@ export declare class PostService {
                 name: string;
                 username: string;
                 email: string;
-                password: string;
                 surname: string;
                 bio: string;
                 userAvatar: string;
+                userCover: string;
                 role: string;
+                likedPosts: {
+                    userId: string;
+                    postId: number;
+                }[];
             };
             Like: {
                 userId: string;
@@ -129,11 +137,15 @@ export declare class PostService {
             name: string;
             username: string;
             email: string;
-            password: string;
             surname: string;
             bio: string;
             userAvatar: string;
+            userCover: string;
             role: string;
+            likedPosts: {
+                userId: string;
+                postId: number;
+            }[];
         };
         Like: {
             userId: string;
@@ -151,6 +163,7 @@ export declare class PostService {
                 surname: string;
                 bio: string;
                 userAvatar: string;
+                userCover: string;
                 role: string;
             };
         } & {

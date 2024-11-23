@@ -2,24 +2,12 @@ import { Card, Container, Flex, Skeleton } from '@mantine/core'
 
 export default function Loading() {
 	return (
-		<Container p={0} className='box-border flex flex-col'>
+		<Container p={0} className='box-border flex flex-col w-full'>
 			<Flex direction={'column'} className='gap-y-4'>
-				<Card
-					className='flex flex-row justify-between items-center !bg-[#1f2124] border border-[rgb(66,66,66)]'
-					withBorder
-					shadow='sm'
-					radius={'1rem'}
-				>
-					<div className='flex justify-start items-center gap-x-4'>
-						<Skeleton height={36} width={36} circle />
-						<Skeleton height={16} width={120} radius='md' />
-					</div>
-					<Skeleton height={28} width={28} radius={'sm'}/>
-				</Card>
 				{[1, 2, 3, 4].map(index => (
 					<Card
 						key={index}
-						className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)]'
+						className='!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)] w-full'
 						withBorder
 						shadow='sm'
 						radius='md'

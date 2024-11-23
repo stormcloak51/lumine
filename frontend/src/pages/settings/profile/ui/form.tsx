@@ -18,7 +18,7 @@ export const ProfileForm = () => {
 	return (
 		<div>
 			<Flex className='w-full relative' direction={'column'}>
-				<ProfileBackground imageUrl={user?.userAvatar} />
+				<ProfileBackground imageUrl={user.userCover} />
 				<div className='relative'>
 					<div className='flex items-center justify-between pl-[150px]'>
 						<div className='flex gap-y-1 flex-col '>

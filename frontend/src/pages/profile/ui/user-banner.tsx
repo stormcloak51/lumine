@@ -7,17 +7,15 @@ import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { useClipboard } from '@mantine/hooks'
 import { IUserCredentials } from '@/shared/config/types/user.types'
 import { ChangeCredentials } from './change-credentials'
-import AmIgoodenough from '@/shared/assets/wallpapers/AmIgoodenough.png'
 
 export const UserBanner: FC<IUserCredentials> = (user) => {
 	const clipboard = useClipboard({ timeout: 1000 })
-
 	const [mounted, setMounted] = useState<boolean>(false)
 	return (
 		<Flex className='w-full relative' direction={'column'}>
 		<div className='w-full h-[200px] overflow-hidden'>
 			<Image
-				src={AmIgoodenough.src}
+				src={user.userCover}
 				alt='profile background'
 				className='w-full h-full object-cover object-center rounded-t-lg'
 			/>
