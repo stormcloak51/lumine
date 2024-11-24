@@ -2,13 +2,12 @@ import {
   Button,
   Modal,
   Text,
-  Image as MantineImage,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Camera, Upload } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
-import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from '@mantine/dropzone'
+import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
 import { ImageEditor } from './image-editor'
 
@@ -68,7 +67,7 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
         title="Change Cover"
         centered
         radius={'lg'}
-        size={'70%'}
+        size={'50%'}
         transitionProps={{ transition: 'rotate-left' }}
       >
         {!file ? (

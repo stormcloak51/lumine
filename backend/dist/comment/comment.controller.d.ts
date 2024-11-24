@@ -8,8 +8,8 @@ export declare class CommentController {
             likes: number;
             user: {
                 id: string;
-                username: string;
                 name: string;
+                username: string;
                 userAvatar: string;
                 likedComments: {
                     created_at: Date;
@@ -30,11 +30,11 @@ export declare class CommentController {
                 }[];
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
-            postId: number;
+            content: string;
             userId: string;
+            postId: number;
             parentId: number | null;
         }[];
         total: number;
@@ -43,8 +43,8 @@ export declare class CommentController {
         likes: number;
         user: {
             id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
             likedComments: {
                 created_at: Date;
@@ -58,19 +58,19 @@ export declare class CommentController {
             commentId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
+        content: string;
         userId: string;
+        postId: number;
         parentId: number | null;
     }>;
     like(dto: LikeCommentDto): Promise<{
         likes: number;
         user: {
             id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
             likedComments: {
                 created_at: Date;
@@ -88,11 +88,11 @@ export declare class CommentController {
             commentId: number;
         })[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
+        content: string;
         userId: string;
+        postId: number;
         parentId: number | null;
     }>;
     delete(dto: DeleteCommentDto): Promise<void>;
@@ -102,8 +102,8 @@ export declare class CommentController {
             likes: number;
             user: {
                 id: string;
-                username: string;
                 name: string;
+                username: string;
                 userAvatar: string;
                 likedComments: {
                     created_at: Date;
@@ -117,11 +117,11 @@ export declare class CommentController {
                 commentId: number;
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
-            postId: number;
+            content: string;
             userId: string;
+            postId: number;
             parentId: number | null;
         }[];
         total: number;
@@ -130,8 +130,8 @@ export declare class CommentController {
         likes: number;
         user: {
             id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
             likedComments: {
                 created_at: Date;
@@ -145,11 +145,11 @@ export declare class CommentController {
             commentId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
+        content: string;
         userId: string;
+        postId: number;
         parentId: number | null;
     }>;
 }

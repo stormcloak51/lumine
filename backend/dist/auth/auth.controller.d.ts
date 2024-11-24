@@ -9,15 +9,15 @@ export declare class AuthController {
         accessToken: string;
         user: {
             id: string;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
             username: string;
             email: string;
-            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
             userCover: string;
-            created_at: Date;
-            updated_at: Date;
             role: string;
         };
     }>;
@@ -25,15 +25,15 @@ export declare class AuthController {
         accessToken: string;
         user: {
             id: string;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
             username: string;
             email: string;
-            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
             userCover: string;
-            created_at: Date;
-            updated_at: Date;
             role: string;
         };
     }>;
@@ -41,16 +41,16 @@ export declare class AuthController {
         accessToken: string;
         user: {
             id: string;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
             username: string;
             email: string;
             password: string;
-            name: string;
             surname: string;
             bio: string;
             userAvatar: string;
             userCover: string;
-            created_at: Date;
-            updated_at: Date;
             role: string;
         };
     }>;

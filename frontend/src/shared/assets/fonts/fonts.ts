@@ -1,5 +1,10 @@
-import {IBM_Plex_Mono, Krona_One, DM_Sans, Inter} from 'next/font/google'
+import {IBM_Plex_Mono, Krona_One, DM_Sans, Inter, Roboto} from 'next/font/google'
 import localFont from 'next/font/local'
+
+export const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+})
 
 export const IBMPlexMono = IBM_Plex_Mono({
   subsets: ['latin'],

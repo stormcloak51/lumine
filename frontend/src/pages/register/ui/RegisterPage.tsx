@@ -110,6 +110,7 @@ export const RegisterPage = () => {
 					color='#ffd37d'
 					type='submit'
 					loading={isPending}
+					disabled={isPending}
 					className='mt-4 w-full'
 				>
 					Create account

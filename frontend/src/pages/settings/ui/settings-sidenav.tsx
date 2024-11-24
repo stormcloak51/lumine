@@ -11,7 +11,7 @@ export const SettingsSidenav = () => {
 	const [activePage, setActivePage] = useState(pathname)
 
 	return (
-		<div className='flex gap-x-3'>
+		<div className='flex gap-x-4'>
 			<aside className='flex flex-col gap-y-1'>
 				<SettingsSidenavItem
 					c={'#29a2f3'}

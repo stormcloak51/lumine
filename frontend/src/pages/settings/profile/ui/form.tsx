@@ -1,3 +1,4 @@
+'use client'
 import { useAuth } from '@/shared/lib/useAuth'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { Button, Divider, Flex, Title, useMantineTheme, Text } from '@mantine/core'

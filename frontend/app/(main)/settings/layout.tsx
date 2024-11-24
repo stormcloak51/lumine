@@ -11,10 +11,10 @@ export default function SettingsLayout({
 		<Container
 			px={5}
 			py={12}
-			className={`flex flex-row !bg-[#1f2124] rounded-lg border border-[rgba(126,126,126,0.15)] ${inter.className}`}
+			className={`flex flex-row !bg-[#1f2124] rounded-lg border border-[rgba(126,126,126,0.15)]`}
 		>
 			<SettingsSidenav />
-			<div className='w-full max-h-[600px] overflow-y-auto'>{children}</div>
+			<div className='w-full overflow-y-auto'>{children}</div>
 		</Container>
 	)
 }

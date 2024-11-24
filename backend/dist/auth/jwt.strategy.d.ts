@@ -9,16 +9,16 @@ export declare class JwtStrategy extends JwtStrategy_base {
         id: string;
     }): Promise<{
         id: string;
+        created_at: Date;
+        updated_at: Date;
+        name: string;
         username: string;
         email: string;
         password: string;
-        name: string;
         surname: string;
         bio: string;
         userAvatar: string;
         userCover: string;
-        created_at: Date;
-        updated_at: Date;
         role: string;
     }>;
 }
