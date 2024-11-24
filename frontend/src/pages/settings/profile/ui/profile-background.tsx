@@ -44,6 +44,7 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
           width={1920}
           height={1080}
           quality={100}
+          priority
         />
         <div
           className={`absolute top-4 right-4 transition-opacity duration-200 ${

@@ -12,4 +12,5 @@ export const emptyUser = {
 	role: '',
 	created_at: '',
 	updated_at: '',
+	userCover: '',
 }

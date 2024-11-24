@@ -6,7 +6,7 @@ import { uploadContent } from '@/shared/api/upload-content'
 import { getCroppedImg } from '@/shared/lib/getCroppedImg'
 import { Area } from 'react-easy-crop'
 import { Dispatch, SetStateAction } from 'react'
-import { useAuth } from '@/shared/lib/useAuth'
+import { useUser } from '@/shared/stores/user.store'
 
 interface props {
 	img: string
@@ -15,11 +15,19 @@ interface props {
 	setIsCropping: Dispatch<SetStateAction<boolean>>
 }
 
-export const useCropImage = ({img, croppedAreaPixels, close, setIsCropping}: props) => {
-	const {user: {username, id}} = useAuth()
+export const useCropImage = ({
+	img,
+	croppedAreaPixels,
+	close,
+	setIsCropping,
+}: props) => {
+	const { setUser, user } = useUser()
+	if (!user?.user) {
+		throw new Error('User ID is required')
+	}
 	const mutation = useMutation({
 		mutationFn: async (data: { dto: Partial<IUserCredentials> }) => {
-			return await userApi.update({ id, dto: data.dto })
+			return await userApi.update({ id: user?.user.id, dto: data.dto })
 		},
 	})
 
@@ -31,14 +39,14 @@ export const useCropImage = ({img, croppedAreaPixels, close, setIsCropping}: pro
 				const url = await uploadContent(
 					croppedImage,
 					'accounts/' +
-						username +
+						user?.user.username +
 						'/' +
 						'background.' +
 						croppedImage.type.split('/')[1],
-					username
+					user?.user.username
 				)
-				await mutation.mutateAsync({dto: { userCover: url } })
-
+				await mutation.mutateAsync({ dto: { userCover: url } })
+				setUser({ ...user, user: { ...user.user, userCover: url } })
 				notifications.show({
 					title: 'Success',
 					message: 'Background saved successfully',

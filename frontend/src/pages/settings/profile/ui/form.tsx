@@ -13,7 +13,7 @@ export const ProfileForm = () => {
 	const theme = useMantineTheme()
 	const [isAvatarHovered, setIsAvatarHovered] = useState
 	(false)
-
+	console.log(user.userCover)
 
 	return (
 		<div>

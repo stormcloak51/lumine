@@ -1,4 +1,4 @@
-import {create} from 'zustand'
+import { create } from 'zustand'
 import { TUserData } from '@/shared/config/types/user.types'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
@@ -10,7 +10,7 @@ interface SliceProps {
 
 export const useUser = create<SliceProps>()(
 	persist(
-		(set) => ({
+		set => ({
 			user: null,
 			setUser: (user: TUserData) => set({ user }),
 			deleteUser: () => set({ user: null }),
@@ -18,7 +18,7 @@ export const useUser = create<SliceProps>()(
 		{
 			name: 'user-storage',
 			storage: createJSONStorage(() => localStorage),
-			partialize: (state) => ({ user: state.user }),
+			partialize: state => ({ user: state.user }),
 		}
 	)
 )
