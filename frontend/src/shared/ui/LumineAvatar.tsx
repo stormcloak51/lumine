@@ -8,7 +8,7 @@ interface IAvatar extends AvatarProps {
 	hasStories?: boolean
 	shouldRedirect?: boolean
 	position?: 'relative' | 'absolute'
-	url: string
+	url: string | null
 	username: string
 }
 

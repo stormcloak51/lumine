@@ -7,12 +7,14 @@ import { getCroppedImg } from '@/shared/lib/getCroppedImg'
 import { Area } from 'react-easy-crop'
 import { Dispatch, SetStateAction } from 'react'
 import { useUser } from '@/shared/stores/user.store'
+import { capitalize } from '@/shared/lib/capitalize'
 
 interface props {
 	img: string
 	croppedAreaPixels: Area | null
 	close: () => void
 	setIsCropping: Dispatch<SetStateAction<boolean>>
+	type: 'avatar' | 'background'
 }
 
 export const useCropImage = ({
@@ -20,6 +22,7 @@ export const useCropImage = ({
 	croppedAreaPixels,
 	close,
 	setIsCropping,
+	type
 }: props) => {
 	const { setUser, user } = useUser()
 	if (!user?.user) {
@@ -41,15 +44,30 @@ export const useCropImage = ({
 					'accounts/' +
 						user?.user.username +
 						'/' +
-						'background.' +
+						type +
 						croppedImage.type.split('/')[1],
 					user?.user.username
 				)
-				await mutation.mutateAsync({ dto: { userCover: url } })
-				setUser({ ...user, user: { ...user.user, userCover: url } })
+
+				if (type === 'avatar') {
+					mutation.mutate({
+						dto: {
+							userAvatar: url,
+						},
+					})
+					setUser({ ...user, user: { ...user.user, userAvatar: url } })
+				} else {
+					mutation.mutate({
+						dto: {
+							userCover: url,
+						},
+					})
+					setUser({ ...user, user: { ...user.user, userCover: url } })
+				}
+
 				notifications.show({
 					title: 'Success',
-					message: 'Background saved successfully',
+					message: `${capitalize(type)} saved successfully`,
 				})
 				close()
 			}

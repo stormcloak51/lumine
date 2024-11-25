@@ -8,9 +8,10 @@ interface props {
 	img: string
 	close: () => void
 	handleCancel: () => void
+	type: 'avatar' | 'background'
 }
 
-export const ImageEditor: FC<props> = ({ isOpen, img, close, handleCancel }) => {
+export const ImageEditor: FC<props> = ({ isOpen, img, close, handleCancel, type }) => {
 	const [crop, setCrop] = useState<Point>({ x: 0, y: 0 })
 	const [zoom, setZoom] = useState<number>(1)
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
@@ -21,6 +22,7 @@ export const ImageEditor: FC<props> = ({ isOpen, img, close, handleCancel }) => 
 		croppedAreaPixels,
 		close,
 		setIsCropping,
+		type,
 	})
 	const theme = useMantineTheme()
 
@@ -47,7 +49,7 @@ export const ImageEditor: FC<props> = ({ isOpen, img, close, handleCancel }) => 
 				image={img}
 				crop={crop}
 				zoom={zoom}
-				aspect={20 / 5}
+				aspect={type === 'avatar' ? 1 : 3 / 1}
 				onCropChange={onCropChange}
 				onZoomChange={onZoomChange}
 				onCropComplete={onCropCompleteHandler}

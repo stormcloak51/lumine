@@ -4,8 +4,8 @@ export type TUser = {
 	username: string
 	email: string
 	password?: string
-	userAvatar: string | undefined
-	userCover: string
+	userAvatar: string | null
+	userCover?: string
 	bio?: string
 	role?: string
 	access_token?: string
@@ -17,7 +17,7 @@ export type TUserProfile = {
 	surname: string
 	username: string
 	email: string
-	userAvatar: string | undefined
+	userAvatar: string | null
 	userCover: string
 	bio: string
 	role: string
