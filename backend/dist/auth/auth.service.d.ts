@@ -15,15 +15,15 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            username: string;
+            email: string;
+            userAvatar: string;
+            name: string;
+            surname: string;
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
-            username: string;
-            email: string;
-            surname: string;
             bio: string;
-            userAvatar: string;
             userCover: string;
             role: string;
         };
@@ -32,15 +32,15 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            username: string;
+            email: string;
+            userAvatar: string;
+            name: string;
+            surname: string;
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
-            username: string;
-            email: string;
-            surname: string;
             bio: string;
-            userAvatar: string;
             userCover: string;
             role: string;
         };
@@ -49,16 +49,16 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            username: string;
+            email: string;
+            userAvatar: string;
+            name: string;
+            surname: string;
             id: string;
             created_at: Date;
             updated_at: Date;
-            name: string;
-            username: string;
-            email: string;
             password: string;
-            surname: string;
             bio: string;
-            userAvatar: string;
             userCover: string;
             role: string;
         };

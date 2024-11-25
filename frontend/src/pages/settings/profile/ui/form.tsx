@@ -12,8 +12,6 @@ import { ProfileBackground } from './profile-background'
 export const ProfileForm = () => {
 	const { user } = useAuth()
 	const theme = useMantineTheme()
-	const [isAvatarHovered, setIsAvatarHovered] = useState
-	(false)
 	console.log(user.userCover)
 
 	return (

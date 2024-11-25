@@ -5,17 +5,24 @@ import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
 import { Upload } from 'lucide-react'
 import { ImageEditor } from './image-editor'
+import { Dispatch, SetStateAction } from 'react'
 
 interface props {
 	type: 'profile' | 'background'
 	isOpened: boolean
 	close: () => void
 	file: File | null
+	setFile: Dispatch<SetStateAction<File | null>>
 }
 
 
-export const ProfileModal = ({ type, isOpened, close, file }: props) => {
-	
+export const ProfileModal = ({ type, isOpened, close, file, setFile }: props) => {
+	const handleCancel = () => {
+		close()
+		setTimeout(() => {
+			setFile(null)
+		}, 200);
+	}
 	
 	return (
 		<Modal
