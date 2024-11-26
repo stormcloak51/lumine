@@ -1,7 +1,7 @@
-import { Textarea, TextInput } from '@mantine/core'
+import { Textarea, TextInput, TextInputProps, TextareaProps } from '@mantine/core'
 import { IconType } from 'react-icons/lib'
 
-interface props {
+interface props extends Omit<TextInputProps & TextareaProps, 'autoComplete'>{
 	cl?: string
 	label: string
 	placeholder: string
@@ -20,6 +20,7 @@ export const Field = ({
 	placeholder,
 	LeftSectionIcon,
 	role = ROLES.INPUT,
+	...props
 }: props) => {
 	if (role === ROLES.TEXTAREA) {
 		return (
@@ -32,6 +33,7 @@ export const Field = ({
 				className={cl}
 				minRows={3}
 				autosize
+				{...props}
 			/>
 		)
 	}
@@ -45,6 +47,7 @@ export const Field = ({
 			placeholder={placeholder}
 			className={cl}
 			leftSection={LeftSectionIcon && <LeftSectionIcon size={16} />}
+			{...props}
 		/>
 	)
 }
