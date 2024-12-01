@@ -15,16 +15,16 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            id: string;
             username: string;
             email: string;
-            userAvatar: string;
             name: string;
             surname: string;
-            id: string;
+            bio: string;
+            userAvatar: string;
+            userCover: string;
             created_at: Date;
             updated_at: Date;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;
@@ -32,16 +32,16 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            id: string;
             username: string;
             email: string;
-            userAvatar: string;
             name: string;
             surname: string;
-            id: string;
+            bio: string;
+            userAvatar: string;
+            userCover: string;
             created_at: Date;
             updated_at: Date;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;
@@ -49,17 +49,17 @@ export declare class AuthService {
         accessToken: string;
         refreshToken: string;
         user: {
+            id: string;
             username: string;
             email: string;
-            userAvatar: string;
+            password: string;
             name: string;
             surname: string;
-            id: string;
+            bio: string;
+            userAvatar: string;
+            userCover: string;
             created_at: Date;
             updated_at: Date;
-            password: string;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;

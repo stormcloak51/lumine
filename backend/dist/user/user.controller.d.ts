@@ -4,45 +4,45 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     findAll(): import(".prisma/client").Prisma.PrismaPromise<{
+        id: string;
         username: string;
         email: string;
-        userAvatar: string;
+        password: string;
         name: string;
         surname: string;
-        id: string;
+        bio: string;
+        userAvatar: string;
+        userCover: string;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }[]>;
     findOne(idOrEmailOrUsername: string): Promise<{
+        id: string;
         username: string;
         email: string;
-        userAvatar: string;
+        password: string;
         name: string;
         surname: string;
-        id: string;
+        bio: string;
+        userAvatar: string;
+        userCover: string;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }>;
-    update(id: string, dto: UpdateUserDto): import(".prisma/client").Prisma.Prisma__UserClient<{
+    update(id: string, dto: UpdateUserDto): Promise<{
+        id: string;
         username: string;
         email: string;
-        userAvatar: string;
+        password: string;
         name: string;
         surname: string;
-        id: string;
+        bio: string;
+        userAvatar: string;
+        userCover: string;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        bio: string;
-        userCover: string;
         role: string;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }>;
 }

@@ -1,11 +1,11 @@
 import { SettingsSidenav } from '@/pages/settings'
-import { inter } from '@/shared/assets/fonts/fonts'
 import { Container } from '@mantine/core'
+import { ReactNode } from 'react'
 
 export default function SettingsLayout({
 	children,
 }: Readonly<{
-	children: React.ReactNode
+	children: ReactNode
 }>) {
 	return (
 		<Container

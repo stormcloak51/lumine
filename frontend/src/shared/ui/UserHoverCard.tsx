@@ -41,6 +41,7 @@ export const UserHoverCard = ({
 				</Text>
 			</HoverCard.Target>
 			<HoverCard.Dropdown
+				miw={400}
 				className='flex flex-row gap-x-4 rounded-xl'
 				style={{
 					border: '1px solid rgba(255, 200, 100, 0.15)',
@@ -54,7 +55,7 @@ export const UserHoverCard = ({
 					url={user.userAvatar!}
 					username={user.username}
 				/>
-				<div className=''>
+				<div className='w-full'>
 					<div className='flex justify-between'>
 						<div>
 							<Title order={3}>
@@ -87,9 +88,15 @@ export const UserHoverCard = ({
 						}}
 					>
 						<i>
-							{user.bio === ''
-								? 'No bio yet :( lorem15123123lkawmdkjaskjdaklsdmalkdsmalksdmalkdsmalksdm msdlkm askldma klsda lksdmal sdma'
-								: user.bio}
+							{user.bio === '' ? (
+								'No bio yet :('
+							) : (
+								<>
+									{user.bio.split('\n').map((line, index) => (
+										<Text key={index}>{line}</Text>
+									))}
+								</>
+							)}
 						</i>
 					</Blockquote>
 				</div>

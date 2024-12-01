@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
 const bcrypt_1 = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let UserService = class UserService {
@@ -25,7 +26,7 @@ let UserService = class UserService {
             bio: '',
         };
         return this.prisma.user.create({
-            data
+            data,
         });
     }
     findOne(idOrEmailOrUsername) {
@@ -33,37 +34,48 @@ let UserService = class UserService {
             where: {
                 OR: [
                     {
-                        id: idOrEmailOrUsername
+                        id: idOrEmailOrUsername,
                     },
                     {
-                        email: idOrEmailOrUsername
+                        email: idOrEmailOrUsername,
                     },
                     {
-                        username: idOrEmailOrUsername
-                    }
-                ]
+                        username: idOrEmailOrUsername,
+                    },
+                ],
             },
         });
     }
     findAll() {
         return this.prisma.user.findMany();
     }
-    update({ id, dto }) {
-        console.log('Updating user:', { id, dto });
-        return this.prisma.user.update({
-            where: {
-                id
-            },
-            data: {
-                ...dto
+    async update({ id, dto }) {
+        try {
+            const updatedUser = await this.prisma.user.update({
+                where: {
+                    id,
+                },
+                data: {
+                    ...dto,
+                },
+            });
+            return updatedUser;
+        }
+        catch (err) {
+            if (err instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+                if (err.code === 'P2002') {
+                    const errorMessage = err.message;
+                    const conflictingField = errorMessage.match(/Unique constraint failed on the fields: \((.*)\)/)[1];
+                    throw new common_1.HttpException(`User with this ${conflictingField} already exists`, common_1.HttpStatus.CONFLICT);
+                }
             }
-        });
+        }
     }
     delete(id) {
         return this.prisma.user.delete({
             where: {
-                id
-            }
+                id,
+            },
         });
     }
 };

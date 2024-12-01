@@ -9,17 +9,25 @@ import { useEditSchema } from '../model/useEditSchema'
 import { EditProfileFormValues } from '../model/edit.types'
 import { useEditMutation } from '../model/useEditMutation'
 import { DMSans } from '@/shared/assets/fonts/fonts'
+import { useEffect } from 'react'
+
 
 export const ProfileForm = () => {
 	const { user } = useAuth()
 	const { form } = useEditSchema()
 	const theme = useMantineTheme()
-	const { mutate } = useEditMutation()
+	const { mutate, errors } = useEditMutation()
 
-	const onSubmit = (data: Partial<EditProfileFormValues>) => {
-		mutate(data)
-		console.log(form.errors, 'ERRORS')
+	const onSubmit = async (data: Partial<EditProfileFormValues>) => {
+		await mutate(data)
 	}
+
+	useEffect(() => {
+		if (errors) {
+			const fieldValue = errors?.message.split('`')[1]
+			form.setFieldError(fieldValue, errors?.message)
+		}
+	}, [errors])
 
 	return (
 		<div>
@@ -70,7 +78,9 @@ export const ProfileForm = () => {
 					placeholder={user?.username}
 					LeftSectionIcon={MdOutlineAlternateEmail}
 					key={form.key('username')}
+					
 					{...form.getInputProps('username')}
+					
 				/>
 				{/* <Field
 					label='Email'

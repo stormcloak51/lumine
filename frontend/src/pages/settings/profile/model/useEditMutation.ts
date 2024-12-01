@@ -4,6 +4,7 @@ import { userApi } from '@/shared/api/userApi'
 import { useAuth } from '@/shared/lib/useAuth'
 import { useUser } from '@/shared/stores/user.store'
 import { IUserCredentials } from '@/shared/config/types/user.types'
+import { AxiosError } from 'axios'
 
 
 
@@ -22,13 +23,13 @@ export const useEditMutation = () => {
 			setUser({user: data})
 			console.log('SUCCESFFULY EDITED')
 		},
-		onError: () => {
-			console.log('ERROR HANDLED')
+		onError: (res: AxiosError) => {
+			return res.response?.data
 		}
 	})
-
 	return {
-		mutate: mutation.mutate
+		mutate: mutation.mutate,
+		errors: mutation.error?.response?.data as {message: string, statusCode: number}
 	}
 
 }

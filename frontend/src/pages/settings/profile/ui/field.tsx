@@ -48,6 +48,7 @@ export const Field = ({
 			className={cl}
 			leftSection={LeftSectionIcon && <LeftSectionIcon size={16} />}
 			{...props}
+			error={props.error}
 		/>
 	)
 }

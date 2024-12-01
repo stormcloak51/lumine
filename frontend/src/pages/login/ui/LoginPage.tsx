@@ -27,8 +27,8 @@ export const LoginPage = () => {
 					alt='Login wallpaper'
 					className='object-cover'
 					fill
-					sizes='(max-width: 768px) 0vw, 66vw'
 					priority
+					sizes='(max-width: 768px) 0vw, 66vw'
 					quality={100}
 				/>
 				<div className='absolute bottom-0 left-0 p-12 z-20 text-white'>

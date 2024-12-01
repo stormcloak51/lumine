@@ -1,6 +1,6 @@
 'use client'
 import { Flex } from '@mantine/core'
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 import { PostItem } from './post-item'
 import { usePostList } from '../model/usePostList'
 import Loading from '@/pages/feed/ui/loading'
@@ -11,28 +11,27 @@ export interface IPostList {
 	username?: string
 }
 
-export const PostList: FC<IPostList> = ({ username, feed, title = 'Posts' }) => {
-
-	const {isLoading, allPosts, lastPostRef} = usePostList({feed, username})
-	return (
-		<Suspense fallback={<Loading />}>
-    {isLoading ? (
-      <Loading />
-    ) : (
-      <Flex direction={'column'} className="gap-y-4">
-        {allPosts?.map((post, index) => {
-          const isLastPost = allPosts.length - 1 === index
-          return (
-            <PostItem
-              lastPostRef={isLastPost ? lastPostRef : undefined}
-              key={post.id}
-              {...post}
-              title={title}
-            />
-          )
-        })}
-      </Flex>
-    )}
-  </Suspense>
-	)
+export const PostList: FC<IPostList> = ({
+	username,
+	feed,
+	title = 'Posts',
+}) => {
+	const { isLoading, allPosts, lastPostRef } = usePostList({ feed, username })
+	return !isLoading ? (
+		<Flex direction={'column'} className='gap-y-4'>
+			{allPosts?.map((post, index) => {
+				const isLastPost = allPosts.length - 1 === index
+				return (
+					<PostItem
+						lastPostRef={isLastPost ? lastPostRef : undefined}
+						key={post.id}
+						{...post}
+						title={title}
+					/>
+				)
+			})}
+		</Flex>
+	) : (
+    <Loading />
+  )
 }

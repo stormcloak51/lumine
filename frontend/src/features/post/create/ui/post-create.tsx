@@ -17,6 +17,7 @@ import { HeadingButton } from './heading-button'
 import { getHotkeyHandler } from '@mantine/hooks'
 import { useSendPost } from '../model/useSendPost'
 import { useEditor } from '../model/useEditor'
+import { MediaContent } from './media-content'
 
 interface IPostCreate {
 	content?: string
@@ -126,6 +127,7 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 				</motion.div>
 				{!content && (
 					<Group className='absolute bottom-0 right-0 p-4'>
+						<MediaContent />
 						<Tooltip
 							openDelay={200}
 							transitionProps={{ transition: 'rotate-left', duration: 300 }}

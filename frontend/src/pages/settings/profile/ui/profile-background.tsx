@@ -15,7 +15,8 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
   ] = useDisclosure(false)
 
   const [file, setFile] = useState<File | null>(null)
-  const [croppedImage, setCroppedImage] = useState<string | null>(null)
+
+  if (!imageUrl) return null
 
   return (
     <>
@@ -25,13 +26,13 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
         onMouseLeave={() => setIsBackgroundHovered(false)}
       >
         <Image
-          src={croppedImage || imageUrl}
+          src={imageUrl}
           alt="profile background"
           className="w-full h-full object-cover object-center transition-opacity duration-200"
-          width={1920}
-          height={1080}
+          fill
           quality={100}
           priority
+          sizes='(max-width: 768px) 100vw, 640px'
         />
         <div
           className={`absolute top-4 right-4 transition-opacity duration-200 ${
