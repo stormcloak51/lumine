@@ -18,8 +18,8 @@ export const ProfileForm = () => {
 	const theme = useMantineTheme()
 	const { mutate, errors } = useEditMutation()
 
-	const onSubmit = async (data: Partial<EditProfileFormValues>) => {
-		await mutate(data)
+	const onSubmit = (data: Partial<EditProfileFormValues>) => {
+		mutate(data)
 	}
 
 	useEffect(() => {

@@ -7,7 +7,6 @@ import {
 	Title,
 	HoverCard,
 	Transition,
-	Image,
 	Text,
 } from '@mantine/core'
 import { FC, useState } from 'react'
@@ -15,17 +14,19 @@ import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { useClipboard } from '@mantine/hooks'
 import { IUserCredentials } from '@/shared/config/types/user.types'
 import { ChangeCredentials } from './change-credentials'
+import Image from 'next/image'
 
 export const UserBanner: FC<IUserCredentials> = user => {
 	const clipboard = useClipboard({ timeout: 1000 })
 	const [mounted, setMounted] = useState<boolean>(false)
 	return (
 		<Flex className='w-full relative' direction={'column'}>
-			<div className='w-full h-[200px] overflow-hidden'>
+			<div className='w-full min-h-[200px] overflow-hidden relative'>
 				<Image
 					src={user.userCover}
 					alt='profile background'
-					className='w-full h-full object-cover object-center rounded-t-lg'
+					className='object-cover object-center rounded-t-lg'
+					fill
 				/>
 			</div>
 			<Card className='!bg-[#1f2124] rounded-b-lg border-b border-r border-l border-[rgb(66,66,66)] relative pl-[180px]'>

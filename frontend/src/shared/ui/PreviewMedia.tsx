@@ -26,11 +26,6 @@ export const PreviewMedia: FC<props> = ({ src, type }) => {
 
 	return (
 		<>
-			{Media({
-				width: 60,
-				height: 50,
-				className: 'rounded-md border border-slate-300 cursor-pointer',
-			})}
 			<Modal
 				styles={{
 					content: {

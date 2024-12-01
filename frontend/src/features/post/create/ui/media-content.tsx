@@ -1,63 +1,63 @@
 'use client'
 import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
-import { FileButton } from '@mantine/core'
+import { FileButton, Flex, Image } from '@mantine/core'
 import { Camera } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PreviewMedia } from '@/shared/ui/PreviewMedia'
-
-interface props {}
 
 export const MediaContent = () => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
 
 	const handleFileChange = (files: File[]) => {
-		const urlFiles = files.map(file => (
-			URL.createObjectURL(file)
-		))
+		const urlFiles = files.map(file => URL.createObjectURL(file))
 		setContent([...(content ?? []), ...urlFiles])
 	}
 	useEffect(() => {
 		setPreviews(
 			content?.map(item => {
 				return item
-			})
+			}),
 		)
 		return () => {
 			setPreviews(null)
 		}
 	}, [content])
-	console.log(
-		localStorage.getItem('media-content-storage')?.length
-			? JSON.parse(localStorage.getItem('media-content-storage'))
-			: null,
-		content,
-		'CONTENT'
-	)
+
 	useEffect(() => {
 		setPreviews(
 			content?.map(item => {
-				return item
-			})
+				 const blobItem = new Blob([item], { type: 'image/png' })
+				 return URL.createObjectURL(blobItem)
+			}),
 		)
-	}, [])
+
+	}, [])	
+	console.log(previews)
 	return (
 		<>
 			{previews && (
-				<div className='flex flex-row gap-x-2'>
+				<Flex align={'center'} gap={10} className='overflow-x-auto scrollbar max-w-[100px] flex-nowrap'>
 					{previews.map((item, index) => {
 						if (!item) return null
-						return <PreviewMedia key={index} src={item} type='image' />
+						return (
+							
+							<div key={index} style={{ minWidth: '50px', maxWidth: '75px'}}>
+								<Image
+									width="100%"
+									height="auto"
+									src={item}
+									alt='media'
+									style={{ maxHeight: '50px', objectFit: 'contain' }}
+								/>
+								<PreviewMedia key={index} src={item} type='image' />
+							</div>
+						)
 					})}
-				</div>
+				</Flex>
 			)}
 			<FileButton accept='image/* video/*' onChange={handleFileChange} multiple>
-				{props => (
-					<Camera
-						{...props}
-						className={'text-[rgb(66,66,66)] cursor-pointer'}
-					/>
-				)}
+				{props => <Camera {...props} className={'text-[rgb(66,66,66)] cursor-pointer'} />}
 			</FileButton>
 		</>
 	)

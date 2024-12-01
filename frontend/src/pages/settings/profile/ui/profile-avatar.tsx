@@ -12,7 +12,6 @@ export const ProfileAvatar = () => {
 	const { user } = useAuth()
 
 	const [file, setFile] = useState<File | null>(null)
-	const [croppedImage, setCroppedImage] = useState<string | null>(null)
 	return (
 		<>
 			<div
@@ -23,7 +22,7 @@ export const ProfileAvatar = () => {
 					<LumineAvatar
 						hasStories={false}
 						size={130}
-						url={user?.userAvatar  || croppedImage}
+						url={user?.userAvatar}
 						username={user?.username}
 						shouldRedirect={false}
 					/>

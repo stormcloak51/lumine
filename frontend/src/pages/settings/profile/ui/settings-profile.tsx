@@ -1,5 +1,3 @@
-'use server'
-
 import { Divider, Title } from '@mantine/core'
 import { ProfileForm } from './form'
 export const SettingsProfile = () => {
