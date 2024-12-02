@@ -31,6 +31,7 @@
     "@tiptap/pm": "^2.8.0",
     "@tiptap/react": "^2.8.0",
     "@tiptap/starter-kit": "^2.8.0",
+    "@uploadthing/react": "^7.1.1",
     "axios": "^1.7.7",
     "dompurify": "^3.1.7",
     "firebase": "^10.13.2",
@@ -50,6 +51,7 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.79.3",
     "socket.io-client": "^4.8.0",
+    "uploadthing": "^7.3.0",
     "zod": "^3.23.8",
     "zustand": "^5.0.1"
   },

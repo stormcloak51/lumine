@@ -4,14 +4,16 @@ import { FileButton, Flex, Image } from '@mantine/core'
 import { Camera } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PreviewMedia } from '@/shared/ui/PreviewMedia'
+import { uploadMedia } from '@/shared/api/uploadthing/route'
 
 export const MediaContent = () => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
 
-	const handleFileChange = (files: File[]) => {
+	const handleFileChange = async (files: File[]) => {
 		const urlFiles = files.map(file => URL.createObjectURL(file))
 		setContent([...(content ?? []), ...urlFiles])
+		uploadMedia(files[0])
 	}
 	useEffect(() => {
 		setPreviews(
@@ -33,7 +35,6 @@ export const MediaContent = () => {
 		)
 
 	}, [])	
-	console.log(previews)
 	return (
 		<>
 			{previews && (
