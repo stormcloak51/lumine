@@ -23,7 +23,12 @@ const nextConfig = {
 			},
 			{
 				hostname: 'google.com'
-			}
+			},
+			{
+				protocol: "https",
+				hostname: "utfs.io",
+				pathname: `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/*`,
+			},
 		],
 	}
 }

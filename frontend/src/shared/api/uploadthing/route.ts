@@ -2,11 +2,9 @@ import { createRouteHandler } from "uploadthing/next";
 
 import { ourFileRouter } from "./core";
 
-// Export routes for Next App Router
-export const { GET: getMedia, POST: uploadMedia } = createRouteHandler({
+export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
-
-  config: {
-		token: process.env.NEXT_PUBLIC_UPLOADTHING_TOKEN
+	config: {
+		token: process.env.UPLOADTHING_TOKEN
 	}
 });

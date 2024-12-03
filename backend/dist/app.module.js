@@ -15,13 +15,12 @@ const prisma_service_1 = require("./prisma.service");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const comment_module_1 = require("./comment/comment.module");
-const media_module_1 = require("./media/media.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot(), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule, media_module_1.MediaModule],
+        imports: [config_1.ConfigModule.forRoot(), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule],
         providers: [post_service_1.PostService, prisma_service_1.PrismaService],
     })
 ], AppModule);

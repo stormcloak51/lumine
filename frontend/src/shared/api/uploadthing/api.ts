@@ -1,10 +1,5 @@
+import { OurFileRouter } from './core'
+import { generateReactHelpers } from "@uploadthing/react";
 
-
-
-export class UploadthingApi {
-	private baseUrl = '/api/uploadthing'
-
-	upload(data: FormData){
-    
-	}
-}
+export const { useUploadThing, uploadFiles } =
+  generateReactHelpers<OurFileRouter>();
