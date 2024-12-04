@@ -5,7 +5,6 @@ import { Camera } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PreviewMedia } from '@/shared/ui/PreviewMedia'
 import { usePreviewMutation } from '../model/usePreviewMutation'
-import {UploadButton} from '../../../../../app/api/uploadthing/components'
 
 export const MediaContent = () => {
 	const { content, setContent } = useMediaContentStore()
@@ -59,7 +58,7 @@ export const MediaContent = () => {
 					})}
 				</Flex>
 			)}
-			<UploadButton endpoint={'mediaPost'} onClientUploadComplete={file => console.log(file, 'RESULT URLLL FINALLY')} />
+			{/* <UploadButton endpoint={'mediaPost'} onClientUploadComplete={file => console.log(file, 'RESULT URLLL FINALLY')} /> */}
 			<FileButton accept='image/* video/*' onChange={handleFileChange} multiple>
 				{props => <Camera {...props} className={'text-[rgb(66,66,66)] cursor-pointer'} />}
 			</FileButton>
