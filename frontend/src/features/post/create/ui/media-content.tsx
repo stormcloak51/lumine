@@ -5,17 +5,17 @@ import { Camera } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PreviewMedia } from '@/shared/ui/PreviewMedia'
 import { usePreviewMutation } from '../model/usePreviewMutation'
-import { UploadButton } from '@/shared/api/uploadthing/components'
+import {UploadButton} from '../../../../../app/api/uploadthing/components'
 
 export const MediaContent = () => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
 	const { previewMutate } = usePreviewMutation()
-
 	const handleFileChange = async (files: File[]) => {
 		const urlFiles = files.map(file => URL.createObjectURL(file))
 		setContent([...(content ?? []), ...urlFiles])
-		previewMutate(files)
+		const result = await previewMutate(files)
+		console.log(result, 'RESULT')
 	}
 	useEffect(() => {
 		setPreviews(
@@ -27,7 +27,6 @@ export const MediaContent = () => {
 			setPreviews(null)
 		}
 	}, [content])
-
 	useEffect(() => {
 		setPreviews(
 			content?.map(item => {
@@ -60,17 +59,7 @@ export const MediaContent = () => {
 					})}
 				</Flex>
 			)}
-			<UploadButton
-				endpoint={'mediaPost'}
-				onClientUploadComplete={res => {
-					console.log('Files: ', res)
-					alert('Upload Completed')
-				}}
-				onUploadError={(error: Error) => {
-					alert(`ERROR! ${error.message}`)
-					console.log(error)
-				}}
-			/>
+			<UploadButton endpoint={'mediaPost'} onClientUploadComplete={file => console.log(file, 'RESULT URLLL FINALLY')} />
 			<FileButton accept='image/* video/*' onChange={handleFileChange} multiple>
 				{props => <Camera {...props} className={'text-[rgb(66,66,66)] cursor-pointer'} />}
 			</FileButton>
