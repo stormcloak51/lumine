@@ -29,7 +29,7 @@ export function Header() {
 							variant='gradient'
 							gradient={{ from: '#ffd37d', to: '#ffbb38', deg: 90 }}
 						>
-							lumine
+							shrekogram
 						</Text>
 					</Title>
 				</Group>

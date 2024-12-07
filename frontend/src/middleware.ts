@@ -20,6 +20,10 @@ export function middleware(req: NextRequest) {
 		return NextResponse.redirect(url)
 	}
 
+	if (req.nextUrl.pathname === '/api/uploadthing') {
+    return NextResponse.next();
+  }
+
 	return NextResponse.next()
 }
 

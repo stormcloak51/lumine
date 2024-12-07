@@ -1,4 +1,4 @@
-import { SettingsSidenav } from '@/pages/settings'
+import { SettingsSidenav } from '@/_pages/settings'
 import { Container } from '@mantine/core'
 import { ReactNode } from 'react'
 

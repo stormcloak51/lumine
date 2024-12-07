@@ -1,1 +1,1 @@
-export { RegisterPage as default } from '@/pages/register/index'
+export { RegisterPage as default } from '@/_pages/register/index'

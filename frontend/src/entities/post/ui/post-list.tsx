@@ -1,9 +1,9 @@
 'use client'
+import Loading from '@/_pages/feed/ui/loading'
 import { Flex } from '@mantine/core'
 import { FC } from 'react'
-import { PostItem } from './post-item'
 import { usePostList } from '../model/usePostList'
-import Loading from '@/pages/feed/ui/loading'
+import { PostItem } from './post-item'
 
 export interface IPostList {
 	feed: boolean
@@ -32,6 +32,6 @@ export const PostList: FC<IPostList> = ({
 			})}
 		</Flex>
 	) : (
-    <Loading />
-  )
+		<Loading />
+	)
 }

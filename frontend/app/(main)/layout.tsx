@@ -1,3 +1,1 @@
-
-
-export {default} from '@/app/main/layout'
+export { default } from '@/_app/main/layout'

@@ -1,66 +1,74 @@
 'use client'
 import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
-import { FileButton, Flex, Image } from '@mantine/core'
+import { FileButton, Flex, Image, Indicator, Loader } from '@mantine/core'
 import { Camera } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { PreviewMedia } from '@/shared/ui/PreviewMedia'
 import { usePreviewMutation } from '../model/usePreviewMutation'
 
-export const MediaContent = () => {
+interface props {
+	isFocused: boolean
+}
+
+export const MediaContent = ({ isFocused }: props) => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
-	const { previewMutate } = usePreviewMutation()
+	const { previewMutate, isLoading } = usePreviewMutation()
 	const handleFileChange = async (files: File[]) => {
-		const urlFiles = files.map(file => URL.createObjectURL(file))
-		setContent([...(content ?? []), ...urlFiles])
+		const urlFiles = files.map(item => URL.createObjectURL(item))
+		setPreviews(prev => ([...(prev ?? []), ...urlFiles]))
 		const result = await previewMutate(files)
-		console.log(result, 'RESULT')
+		setContent([...(content ?? []), ...result])
 	}
+
 	useEffect(() => {
-		setPreviews(
-			content?.map(item => {
-				return item
-			}),
-		)
-		return () => {
-			setPreviews(null)
+		if (content) {
+			setPreviews(content.map(file => file))
 		}
-	}, [content])
-	useEffect(() => {
-		setPreviews(
-			content?.map(item => {
-				const blobItem = new Blob([item], { type: 'image/png' })
-				return URL.createObjectURL(blobItem)
-			}),
-		)
 	}, [])
+
 	return (
 		<>
 			{previews && (
 				<Flex
 					align={'center'}
 					gap={10}
-					className='overflow-x-auto scrollbar max-w-[100px] flex-nowrap'>
+					className={`overflow-x-auto scrollbar max-w-[100px] flex-nowrap transition-all ${isFocused ? 'opacity-1 flex' : 'opacity-0'}`}
+				>
 					{previews.map((item, index) => {
 						if (!item) return null
 						return (
 							<div key={index} style={{ minWidth: '50px', maxWidth: '75px' }}>
-								<Image
-									width='100%'
-									height='auto'
-									src={item}
-									alt='media'
-									style={{ maxHeight: '50px', objectFit: 'contain' }}
-								/>
+								<div className='w-full h-full border border-white rounded-md'>
+									<Image
+										width='100%'
+										height='auto'
+										src={item}
+										alt='media'
+										radius={'md'}
+										style={{ maxHeight: '50px', objectFit: 'contain' }}
+									/>
+								</div>
 								<PreviewMedia key={index} src={item} type='image' />
 							</div>
 						)
 					})}
 				</Flex>
 			)}
-			{/* <UploadButton endpoint={'mediaPost'} onClientUploadComplete={file => console.log(file, 'RESULT URLLL FINALLY')} /> */}
-			<FileButton accept='image/* video/*' onChange={handleFileChange} multiple>
-				{props => <Camera {...props} className={'text-[rgb(66,66,66)] cursor-pointer'} />}
+			<FileButton
+				accept='image/* video/*'
+				onChange={handleFileChange}
+				multiple
+				disabled={isLoading}
+			>
+				{props => (
+					<Indicator size={16} label={isLoading ? <Loader size={14} /> : content?.length}>
+						<Camera
+							{...props}
+							className={'text-[rgb(66,66,66)] cursor-pointer'}
+						/>
+					</Indicator>
+				)}
 			</FileButton>
 		</>
 	)

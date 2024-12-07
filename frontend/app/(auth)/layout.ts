@@ -1,3 +1,1 @@
-
-export {metadata} from '@/app/auth/layout'
-export {default} from '@/app/auth/layout'
+export { default, metadata } from '@/_app/auth/layout'

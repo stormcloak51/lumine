@@ -1,4 +1,4 @@
-import { uploadFiles } from '../../../../../app/api/uploadthing/api'
+import { uploadFiles } from '@/shared/lib/uploadthing'
 import { useMutation } from '@tanstack/react-query'
 
 export const usePreviewMutation = () => {
@@ -6,11 +6,12 @@ export const usePreviewMutation = () => {
 	
 
   const mutation = useMutation({
-    mutationFn: async (files: File[]) => {
+    mutationFn: async (files: File[]): Promise<string[]> => {
       try {
         const result = await uploadFiles('mediaPost', {files})
-        console.log('Upload Result:', result);
-        return { data: result };
+        return result.map(item => {
+          return item.url
+        })
       } catch (error) {
         console.error('Upload Error:', error);
         throw error;
@@ -19,7 +20,8 @@ export const usePreviewMutation = () => {
   });
 
 	return {
-		previewMutate: mutation.mutate,
-		data: mutation.data
+		previewMutate: mutation.mutateAsync,
+		data: mutation.data,
+    isLoading: mutation.isPending,
 	}
 }

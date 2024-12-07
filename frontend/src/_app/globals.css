@@ -98,7 +98,7 @@ body {
 }
 
 .scrollbar::-webkit-scrollbar {
-  width: 16px;
+  width: 1px;
   scrollbar-width: thin;
 }
 

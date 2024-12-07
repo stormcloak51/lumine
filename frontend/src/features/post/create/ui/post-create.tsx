@@ -75,14 +75,14 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 			}}
 			initial={{ height: 'auto' }}
 			animate={{
-				height: styled ? `${contentHeight + 60}px` : 'auto',
+				height: styled ? `${contentHeight + 80}px` : 'auto',
 			}}
 			transition={{ duration: 0.2 }}
 			ref={ref}
 			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
 			<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
 				<EditorContent
-					className={`overflow-y-auto p-[16px] pr-[50px] w-full !outline-none !border-none ${
+					className={`overflow-y-auto p-[16px] pr-[100px] w-full !outline-none !border-none ${
 						styled ? 'h-auto' : 'h-full'
 					}`}
 					editor={editor}
@@ -127,7 +127,7 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 				</motion.div>
 				{!content && (
 					<Group className='absolute bottom-0 right-0 p-4'>
-						<MediaContent />
+						<MediaContent isFocused={styled} />
 						<Tooltip
 							openDelay={200}
 							transitionProps={{ transition: 'rotate-left', duration: 300 }}
