@@ -9,35 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeletePostDto = exports.EditPostDto = exports.LikePostDto = exports.CreatePostDto = void 0;
+exports.UpsertDraftDto = exports.DeletePostDto = exports.EditPostDto = exports.LikePostDto = exports.CreatePostDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
-class User {
-}
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "username", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "userAvatar", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "name", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "surname", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], User.prototype, "id", void 0);
+const user_dto_1 = require("./user.dto");
 class CreatePostDto {
 }
 exports.CreatePostDto = CreatePostDto;
@@ -48,8 +23,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => User),
-    __metadata("design:type", User)
+    (0, class_transformer_1.Type)(() => user_dto_1.User),
+    __metadata("design:type", user_dto_1.User)
 ], CreatePostDto.prototype, "User", void 0);
 class LikePostDto {
 }
@@ -61,8 +36,8 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => User),
-    __metadata("design:type", User)
+    (0, class_transformer_1.Type)(() => user_dto_1.User),
+    __metadata("design:type", user_dto_1.User)
 ], LikePostDto.prototype, "user", void 0);
 class EditPostDto {
 }
@@ -90,4 +65,17 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], DeletePostDto.prototype, "userId", void 0);
+class UpsertDraftDto {
+}
+exports.UpsertDraftDto = UpsertDraftDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpsertDraftDto.prototype, "content", void 0);
+__decorate([
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.ArrayMaxSize)(7),
+    (0, class_validator_1.IsUrl)({}, { each: true }),
+    __metadata("design:type", Array)
+], UpsertDraftDto.prototype, "media", void 0);
 //# sourceMappingURL=post.dto.js.map

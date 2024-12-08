@@ -19,14 +19,17 @@ let JwtStrategy = class JwtStrategy extends (0, passport_1.PassportStrategy)(pas
     constructor(configService, userService) {
         super({
             jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: true,
+            ignoreExpiration: false,
             secretOrKey: configService.get('JWT_SECRET')
         });
         this.configService = configService;
         this.userService = userService;
     }
     async validate({ id }) {
-        return this.userService.findOne(id);
+        const user = await this.userService.findOne(id);
+        if (!user)
+            throw new common_1.UnauthorizedException('лох ебанный');
+        return user;
     }
 };
 exports.JwtStrategy = JwtStrategy;

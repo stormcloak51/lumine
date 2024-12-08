@@ -12,11 +12,11 @@ export declare class UserService {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }>;
     findOne(idOrEmailOrUsername: string): Prisma.Prisma__UserClient<{
@@ -26,11 +26,11 @@ export declare class UserService {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }, null, import("@prisma/client/runtime/library").DefaultArgs>;
     findAll(): Prisma.PrismaPromise<{
@@ -40,11 +40,11 @@ export declare class UserService {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }[]>;
     update({ id, dto }: {
@@ -57,11 +57,11 @@ export declare class UserService {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }>;
     delete(id: string): Prisma.Prisma__UserClient<{
@@ -71,11 +71,11 @@ export declare class UserService {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }, never, import("@prisma/client/runtime/library").DefaultArgs>;
 }

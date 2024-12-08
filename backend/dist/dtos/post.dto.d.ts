@@ -1,11 +1,4 @@
-declare class User {
-    username: string;
-    email: string;
-    userAvatar: string;
-    name: string;
-    surname: string;
-    id: string;
-}
+import { User } from './user.dto';
 export declare class CreatePostDto {
     content: string;
     User: User;
@@ -23,4 +16,7 @@ export declare class DeletePostDto {
     postId: number;
     userId: string;
 }
-export {};
+export declare class UpsertDraftDto {
+    content: string;
+    media: string[];
+}

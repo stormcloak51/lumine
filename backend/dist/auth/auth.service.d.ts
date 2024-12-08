@@ -21,10 +21,10 @@ export declare class AuthService {
             name: string;
             surname: string;
             id: string;
+            userCover: string;
+            bio: string;
             created_at: Date;
             updated_at: Date;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;
@@ -38,10 +38,10 @@ export declare class AuthService {
             name: string;
             surname: string;
             id: string;
+            userCover: string;
+            bio: string;
             created_at: Date;
             updated_at: Date;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;
@@ -55,16 +55,29 @@ export declare class AuthService {
             name: string;
             surname: string;
             id: string;
+            userCover: string;
+            bio: string;
             created_at: Date;
             updated_at: Date;
             password: string;
-            bio: string;
-            userCover: string;
             role: string;
         };
     }>;
     private issueTokens;
-    private validateUser;
+    validateUser(dto: LoginDto): Promise<{
+        username: string;
+        email: string;
+        userAvatar: string;
+        name: string;
+        surname: string;
+        id: string;
+        userCover: string;
+        bio: string;
+        created_at: Date;
+        updated_at: Date;
+        password: string;
+        role: string;
+    }>;
     addRefreshTokenToResponse(res: Response, refreshToken: string): void;
     removeRefreshTokenFromResponse(res: Response): void;
 }

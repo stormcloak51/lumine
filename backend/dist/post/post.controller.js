@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const post_dto_1 = require("../dtos/post.dto");
 const post_service_1 = require("./post.service");
 const jwt_guard_1 = require("../auth/guards/jwt.guard");
+const user_decorator_1 = require("../auth/decorators/user.decorator");
 let PostController = class PostController {
     constructor(postService) {
         this.postService = postService;
@@ -30,9 +31,7 @@ let PostController = class PostController {
     findAllSortedByDate(page = 1, limit = 10) {
         return this.postService.findAllSortedByDate(page, limit);
     }
-    createPost(data, req) {
-        const refreshToken = req.cookies['refresh_token'];
-        const accessToken = req.cookies['access_token'];
+    createPost(data) {
         return this.postService.createPost(data);
     }
     findById(id) {
@@ -52,6 +51,12 @@ let PostController = class PostController {
     }
     edit(data) {
         return this.postService.edit(data);
+    }
+    getDraft(user) {
+        return this.postService.getDraft(user.id);
+    }
+    upsertDraft(data, user) {
+        return this.postService.upsertDraft(user.id, data);
     }
 };
 exports.PostController = PostController;
@@ -83,9 +88,8 @@ __decorate([
     (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.CreatePostDto, Object]),
+    __metadata("design:paramtypes", [post_dto_1.CreatePostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "createPost", null);
 __decorate([
@@ -131,12 +135,30 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Patch)('edit'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [post_dto_1.EditPostDto]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "edit", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)('getDraft'),
+    __param(0, (0, user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "getDraft", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Post)('upsertDraft'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [post_dto_1.UpsertDraftDto, Object]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "upsertDraft", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService])

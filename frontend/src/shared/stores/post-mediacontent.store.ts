@@ -4,7 +4,6 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface State {
   content: string[]  | null
-	// videos: Blob[] | File[] | string[] | null
 }
 
 interface Action {

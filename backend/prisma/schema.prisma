@@ -36,20 +36,21 @@ model User {
   email    String @unique
   password String
 
-  name       String
-  surname    String
-  bio        String
-  userAvatar String
-  userCover  String @default("https://firebasestorage.googleapis.com/v0/b/lumine-d6ae4.appspot.com/o/general%2Fdefault-cover.png?alt=media&token=4d474931-41b8-4f5b-b11c-1982adff3170")
+  name          String
+  surname       String
+  bio           String
+  userAvatar    String
+  userCover     String        @default("https://firebasestorage.googleapis.com/v0/b/lumine-d6ae4.appspot.com/o/general%2Fdefault-cover.png?alt=media&token=4d474931-41b8-4f5b-b11c-1982adff3170")
+  role          String        @default("USER")
+  created_at    DateTime      @default(now()) @map("created_at")
+  updated_at    DateTime      @updatedAt @map("updated_at")
 
-  posts      PostModel[]
-  created_at DateTime    @default(now()) @map("created_at")
-  updated_at DateTime    @updatedAt @map("updated_at")
-  role       String      @default("USER")
-
+  posts         PostModel[]
   likedPosts    PostLike[]
   comments      Comment[]
   likedComments CommentLike[]
+  postDraft     PostDraft?
+
 
   @@map("users")
 }
@@ -95,6 +96,17 @@ model CommentLike {
 
   @@id([userId, commentId])
   @@map("CommentLike")
+}
+
+model PostDraft {
+  id      Int @id @default(autoincrement())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @unique
+
+  content String
+  media   String[]
+
+  @@map("post_draft")
 }
 
 enum Role {

@@ -64,6 +64,29 @@ class PostApi {
 			console.log(error)
 		}
 	}
+
+	// ==================== DRAFTS ====================
+
+	async findDraft(){
+		try {
+			const response = await axiosWithAuth.get(this.BASE_URL 
+				+ '/getDraft'
+			)
+			console.log(response)
+			return JSON.parse(JSON.stringify(response.data))
+		} catch (err) {
+			console.log(err)
+		}
+	}
+
+	async upsertDraft(data: {content: string, media: string[] | null}) {
+		try {
+			const response = await axiosWithAuth.post(this.BASE_URL + '/upsertDraft', data)
+			return JSON.parse(JSON.stringify(response.data))
+		} catch(err) {
+			console.log(err)
+		}
+	}
 }
 
 export const postApi = new PostApi()

@@ -1,24 +1,6 @@
-import { IsNumber, IsObject, IsString, ValidateNested } from 'class-validator'
+import { ArrayMaxSize, IsArray, IsNumber, IsObject, IsString, IsUrl, ValidateNested } from 'class-validator'
 import {Type} from 'class-transformer'
-class User {
-	@IsString()
-	username: string
-
-	@IsString()
-	email: string
-
-	@IsString()
-	userAvatar: string
-
-	@IsString()
-	name: string
-
-	@IsString()
-	surname: string
-
-	@IsString()
-	id: string
-}
+import { User } from './user.dto'
 
 export class CreatePostDto {
 	@IsString()
@@ -57,4 +39,16 @@ export class DeletePostDto {
 
 	@IsString()
 	userId: string
+}
+
+// ==================== DRAFTS ====================
+
+export class UpsertDraftDto {
+	@IsString()
+	content: string
+
+	@IsArray()
+	@ArrayMaxSize(7)
+	@IsUrl({}, {each: true})
+	media: string[]
 }

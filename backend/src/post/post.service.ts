@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostModel, User } from '@prisma/client';
 import {
+  UpsertDraftDto,
   CreatePostDto,
   DeletePostDto,
   EditPostDto,
@@ -259,6 +260,7 @@ export class PostService {
       },
     });
   }
+
   async edit(data: EditPostDto) {
     if (!data.postId) throw new BadRequestException('Id not found');
 
@@ -279,5 +281,30 @@ export class PostService {
         content: data.content,
       },
     });
+  }
+
+  // ==================== DRAFTS ====================
+
+  async upsertDraft(userId: string, data: UpsertDraftDto) {
+    return await this.prisma.postDraft.upsert({
+      where: {
+        userId,
+      },
+      create: {
+        userId,
+        ...data
+      },
+      update: {
+        ...data
+      }
+    })
+  }
+
+  async getDraft(userId: string) {
+    return await this.prisma.postDraft.findUnique({
+      where: {
+        userId,
+      }
+    })
   }
 }

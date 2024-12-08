@@ -80,7 +80,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  private async validateUser(dto: LoginDto) {
+  public async validateUser(dto: LoginDto) {
     const user = await this.prisma.user.findFirst({
       where: {
         OR: [

@@ -1,27 +1,22 @@
 import { Modal } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
 import Image from 'next/image'
 import { FC } from 'react'
 
 interface props {
 	src: string
 	type: 'image' | 'video'
+	isOpened: boolean
+	setIsOpened: (val: boolean) => void
 }
 
-export const PreviewMedia: FC<props> = ({ src, type }) => {
-	const [isOpenedPreview, { open: openPreview, close: closePreview }] =
-		useDisclosure(false)
-
-	const handlePreview = () => {
-		openPreview()
-	}
+export const PreviewMedia: FC<props> = ({ src, type, isOpened, setIsOpened }) => {
 
 	const baseProps = {
 		src: src,
 		alt: 'media',
 		objectFit: 'cover',
-		onClick: handlePreview,
 		className: '!relative rounded-md',
+		fill: true,
 	}
 
 	return (
@@ -38,8 +33,8 @@ export const PreviewMedia: FC<props> = ({ src, type }) => {
 				className='h-full'
 				size='auto'
 				variant=''
-				opened={isOpenedPreview}
-				onClose={closePreview}
+				opened={isOpened}
+				onClose={() => setIsOpened(false)}
 			>
 				{type === 'image' ? (
 					<Image {...baseProps} alt='media' />

@@ -1,10 +1,10 @@
 'use client'
 import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
-import { FileButton, Flex, Image, Indicator, Loader } from '@mantine/core'
+import { FileButton, Flex, Indicator, Loader } from '@mantine/core'
 import { Camera } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { PreviewMedia } from '@/shared/ui/PreviewMedia'
+import { useEffect, useRef, useState } from 'react'
 import { usePreviewMutation } from '../model/usePreviewMutation'
+import { MediaContentItem } from './media-content-item'
 
 interface props {
 	isFocused: boolean
@@ -14,12 +14,14 @@ export const MediaContent = ({ isFocused }: props) => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
 	const { previewMutate, isLoading } = usePreviewMutation()
+
 	const handleFileChange = async (files: File[]) => {
 		const urlFiles = files.map(item => URL.createObjectURL(item))
 		setPreviews(prev => ([...(prev ?? []), ...urlFiles]))
 		const result = await previewMutate(files)
 		setContent([...(content ?? []), ...result])
 	}
+
 
 	useEffect(() => {
 		if (content) {
@@ -33,24 +35,12 @@ export const MediaContent = ({ isFocused }: props) => {
 				<Flex
 					align={'center'}
 					gap={10}
-					className={`overflow-x-auto scrollbar max-w-[100px] flex-nowrap transition-all ${isFocused ? 'opacity-1 flex' : 'opacity-0'}`}
-				>
+					className={`cursor-default overflow-x-auto scrollbar max-w-[150px] flex-nowrap ${isFocused ? 'flex' : 'hidden'}`}
+				> 
 					{previews.map((item, index) => {
 						if (!item) return null
 						return (
-							<div key={index} style={{ minWidth: '50px', maxWidth: '75px' }}>
-								<div className='w-full h-full border border-white rounded-md'>
-									<Image
-										width='100%'
-										height='auto'
-										src={item}
-										alt='media'
-										radius={'md'}
-										style={{ maxHeight: '50px', objectFit: 'contain' }}
-									/>
-								</div>
-								<PreviewMedia key={index} src={item} type='image' />
-							</div>
+							<MediaContentItem src={item} key={index} />
 						)
 					})}
 				</Flex>
@@ -62,7 +52,7 @@ export const MediaContent = ({ isFocused }: props) => {
 				disabled={isLoading}
 			>
 				{props => (
-					<Indicator size={16} label={isLoading ? <Loader size={14} /> : content?.length}>
+					<Indicator size={16} label={isLoading ? <Loader size={14} /> : content?.length && content?.length > 0 ? content.length : ''}>
 						<Camera
 							{...props}
 							className={'text-[rgb(66,66,66)] cursor-pointer'}

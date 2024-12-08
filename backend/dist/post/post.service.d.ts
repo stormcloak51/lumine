@@ -1,5 +1,5 @@
 import { PostModel } from '@prisma/client';
-import { CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { UpsertDraftDto, CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PrismaService } from '../prisma.service';
 export declare class PostService {
     private readonly prisma;
@@ -25,10 +25,10 @@ export declare class PostService {
                 name: string;
                 surname: string;
                 id: string;
+                userCover: string;
+                bio: string;
                 created_at: Date;
                 updated_at: Date;
-                bio: string;
-                userCover: string;
                 role: string;
                 likedPosts: {
                     postId: number;
@@ -66,10 +66,10 @@ export declare class PostService {
                 name: string;
                 surname: string;
                 id: string;
+                userCover: string;
+                bio: string;
                 created_at: Date;
                 updated_at: Date;
-                bio: string;
-                userCover: string;
                 role: string;
                 likedPosts: {
                     postId: number;
@@ -137,10 +137,10 @@ export declare class PostService {
             name: string;
             surname: string;
             id: string;
+            userCover: string;
+            bio: string;
             created_at: Date;
             updated_at: Date;
-            bio: string;
-            userCover: string;
             role: string;
             likedPosts: {
                 postId: number;
@@ -159,11 +159,11 @@ export declare class PostService {
                 name: string;
                 surname: string;
                 id: string;
+                userCover: string;
+                bio: string;
                 created_at: Date;
                 updated_at: Date;
                 password: string;
-                bio: string;
-                userCover: string;
                 role: string;
             };
         } & {
@@ -194,5 +194,17 @@ export declare class PostService {
         userId: string;
         created_at: Date;
         updated_at: Date;
+    }>;
+    upsertDraft(userId: string, data: UpsertDraftDto): Promise<{
+        id: number;
+        content: string;
+        userId: string;
+        media: string[];
+    }>;
+    getDraft(userId: string): Promise<{
+        id: number;
+        content: string;
+        userId: string;
+        media: string[];
     }>;
 }

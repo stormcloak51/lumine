@@ -255,6 +255,27 @@ let PostService = class PostService {
             },
         });
     }
+    async upsertDraft(userId, data) {
+        return await this.prisma.postDraft.upsert({
+            where: {
+                userId,
+            },
+            create: {
+                userId,
+                ...data
+            },
+            update: {
+                ...data
+            }
+        });
+    }
+    async getDraft(userId) {
+        return await this.prisma.postDraft.findUnique({
+            where: {
+                userId,
+            }
+        });
+    }
 };
 exports.PostService = PostService;
 exports.PostService = PostService = __decorate([

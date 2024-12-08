@@ -10,11 +10,11 @@ export declare class UserController {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }[]>;
     findOne(idOrEmailOrUsername: string): Promise<{
@@ -24,11 +24,11 @@ export declare class UserController {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }>;
     update(id: string, dto: UpdateUserDto): Promise<{
@@ -38,11 +38,11 @@ export declare class UserController {
         name: string;
         surname: string;
         id: string;
+        userCover: string;
+        bio: string;
         created_at: Date;
         updated_at: Date;
         password: string;
-        bio: string;
-        userCover: string;
         role: string;
     }>;
 }

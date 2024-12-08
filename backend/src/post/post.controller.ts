@@ -1,10 +1,12 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, Request as RequestNest, UseGuards } from '@nestjs/common';
-import { PostModel } from '@prisma/client';
-import { CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { PostModel, User } from '@prisma/client';
+import { UpsertDraftDto, CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 import { Request } from 'express'
 import * as cookie from 'cookie'
+import { AuthGuard } from '@nestjs/passport'
+import { CurrentUser } from 'src/auth/decorators/user.decorator'
 
 @Controller('posts')
 export class PostController {
@@ -32,10 +34,7 @@ export class PostController {
   createPost(
     @Body()
     data: CreatePostDto,
-    @RequestNest() req: Request
   ) {
-    const refreshToken = req.cookies['refresh_token'];
-    const accessToken = req.cookies['access_token'];
     
     return this.postService.createPost(data);
   }
@@ -79,9 +78,24 @@ export class PostController {
     return this.postService.delete(data);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('edit')
   edit(@Body() data: EditPostDto){
     return this.postService.edit(data)
   }
+
+  // ==================== DRAFTS ====================
+
+  @UseGuards(JwtAuthGuard)
+  @Get('getDraft')
+  getDraft(@CurrentUser() user: User) {
+    return this.postService.getDraft(user.id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('upsertDraft')
+  upsertDraft(@Body() data: UpsertDraftDto, @CurrentUser() user: User){
+    return this.postService.upsertDraft(user.id, data)
+  }
+
 }

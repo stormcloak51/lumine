@@ -10,34 +10,38 @@ import {
 	Strikethrough as StrikeButton,
 	Underline as UnderlineButton,
 } from 'lucide-react'
-import { FC, useState } from 'react'
-
-import { motion } from 'framer-motion'
-import { HeadingButton } from './heading-button'
+import { FC, useState, useEffect } from 'react'
 import { getHotkeyHandler } from '@mantine/hooks'
+import { motion } from 'framer-motion'
+
+import { HeadingButton } from './heading-button'
 import { useSendPost } from '../model/useSendPost'
 import { useEditor } from '../model/useEditor'
 import { MediaContent } from './media-content'
+import { useDraft } from '../model/useDraft'
+import { Loading } from './loading'
 
 interface IPostCreate {
 	content?: string
-	onChange?: (newContent: string) => void
 }
 
-export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
+export const PostCreate: FC<IPostCreate> = ({ content }) => {
 	const os = useOs()
 	const [contentHeight, setContentHeight] = useState(100)
 	const [styled, setStyled] = useState<boolean>(false)
+	const { useDraftDebounce: upsertDraft, data: draftData, isLoading: isDraftLoading } = useDraft()
 
 	const editor = useEditor({
-		content: content ? content : null,
+		content: content ? content : '', 
 		onCreate: () => {
-			if (content) handleFocus()
+			if (content) {
+				handleFocus()
+			}
 		},
 		onUpdate: ({ editor }) => {
 			const element = editor.options.element
 			if (element) setContentHeight(element.clientHeight)
-			if (onChange) onChange(editor.getHTML())
+				upsertDraft(editor.getHTML())
 		},
 		onFocus: ({ editor }) => {
 			if (editor) {
@@ -45,6 +49,13 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 			}
 		},
 	})
+
+	useEffect(() => {
+		if (draftData?.content){
+			editor.commands.setContent(draftData?.content)
+		}
+		
+	}, [draftData?.content, editor])
 
 	const ref = useClickOutside(() => {
 		if (!styled) return
@@ -63,9 +74,11 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 		}
 	}
 
-	const {handleSend, contentLength} = useSendPost(editor)
+	const { handleSend, contentLength } = useSendPost(editor)
 
 	if (!editor) return null
+
+	if (isDraftLoading) return <Loading />
 
 	return (
 		<motion.div
@@ -79,6 +92,7 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 			}}
 			transition={{ duration: 0.2 }}
 			ref={ref}
+			key={draftData.content}
 			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
 			<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
 				<EditorContent
@@ -126,40 +140,43 @@ export const PostCreate: FC<IPostCreate> = ({ content, onChange }) => {
 					</ActionIcon>
 				</motion.div>
 				{!content && (
-					<Group className='absolute bottom-0 right-0 p-4'>
-						<MediaContent isFocused={styled} />
-						<Tooltip
-							openDelay={200}
-							transitionProps={{ transition: 'rotate-left', duration: 300 }}
-							color='#1f2124'
-							className='text-white'
-							label={
-								os === 'macos' ? (
-									<>
-										<Kbd>⌘</Kbd> + <Kbd>Enter</Kbd> - to send a post
-									</>
-								) : os === 'windows' ?(
-									<>
-										<Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd> - to send a post
-									</>
-								) : (
-									''
-								)
-							}>
-							<button
-								onClick={handleSend}
-								disabled={typeof contentLength !== 'undefined' && contentLength > 0 ? false : true}>
-								<SendHorizontal
-									className={`transition-all ${
-										typeof contentLength !== 'undefined' && contentLength > 0
-											? `text-[#ffd37d] animate-pulse`
-											: `text-[rgb(66,66,66)] animate-none`
-									}`}
-									size={22}
-								/>
-							</button>
-						</Tooltip>
-					</Group>
+
+						<Group className='absolute bottom-0 right-0 p-4'>
+							<MediaContent isFocused={styled} />
+							<Tooltip
+								openDelay={200}
+								transitionProps={{ transition: 'rotate-left', duration: 300 }}
+								color='#1f2124'
+								className='text-white'
+								label={
+									os === 'macos' ? (
+										<>
+											<Kbd>⌘</Kbd> + <Kbd>Enter</Kbd> - to send a post
+										</>
+									) : os === 'windows' ? (
+										<>
+											<Kbd>Ctrl</Kbd> + <Kbd>Enter</Kbd> - to send a post
+										</>
+									) : (
+										''
+									)
+								}>
+								<button
+									onClick={handleSend}
+									disabled={
+										typeof contentLength !== 'undefined' && contentLength > 0 ? false : true
+									}>
+									<SendHorizontal
+										className={`transition-all ${
+											typeof contentLength !== 'undefined' && contentLength > 0
+												? `text-[#ffd37d] animate-pulse`
+												: `text-[rgb(66,66,66)] animate-none`
+										}`}
+										size={22}
+									/>
+								</button>
+							</Tooltip>
+						</Group>
 				)}
 			</div>
 		</motion.div>
