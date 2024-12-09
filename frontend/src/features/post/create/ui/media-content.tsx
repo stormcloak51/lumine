@@ -1,10 +1,11 @@
 'use client'
 import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
-import { FileButton, Flex, Indicator, Loader } from '@mantine/core'
-import { Camera } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { FileButton, Flex, Indicator } from '@mantine/core'
+import { Camera, LoaderCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { usePreviewMutation } from '../model/usePreviewMutation'
 import { MediaContentItem } from './media-content-item'
+import { useUrls } from '@/shared/hooks/useUrls'
 
 interface props {
 	isFocused: boolean
@@ -14,6 +15,7 @@ export const MediaContent = ({ isFocused }: props) => {
 	const { content, setContent } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
 	const { previewMutate, isLoading } = usePreviewMutation()
+	const { createUrls, revokeUrls } = useUrls()
 
 	const handleFileChange = async (files: File[]) => {
 		const urlFiles = files.map(item => URL.createObjectURL(item))
@@ -52,7 +54,7 @@ export const MediaContent = ({ isFocused }: props) => {
 				disabled={isLoading}
 			>
 				{props => (
-					<Indicator size={16} label={isLoading ? <Loader size={14} /> : content?.length && content?.length > 0 ? content.length : ''}>
+					<Indicator color='#ffbb38' size={16} label={isLoading ? <LoaderCircle size={12} className='animate-spin'/> : content?.length}>
 						<Camera
 							{...props}
 							className={'text-[rgb(66,66,66)] cursor-pointer'}

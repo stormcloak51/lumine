@@ -1,6 +1,6 @@
 'use client'
 
-import { ActionIcon, Group, Kbd, Tooltip } from '@mantine/core'
+import { ActionIcon, Kbd, Tooltip } from '@mantine/core'
 import { useClickOutside, useOs } from '@mantine/hooks'
 import { EditorContent } from '@tiptap/react'
 import {
@@ -141,7 +141,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 				</motion.div>
 				{!content && (
 
-						<Group className='absolute bottom-0 right-0 p-4'>
+						<div className='flex gap-x-4 items-baseline absolute bottom-0 right-0 p-4'>
 							<MediaContent isFocused={styled} />
 							<Tooltip
 								openDelay={200}
@@ -176,7 +176,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 									/>
 								</button>
 							</Tooltip>
-						</Group>
+						</div>
 				)}
 			</div>
 		</motion.div>

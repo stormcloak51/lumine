@@ -3,8 +3,6 @@ import { useMutation } from '@tanstack/react-query'
 
 export const usePreviewMutation = () => {
 
-	
-
   const mutation = useMutation({
     mutationFn: async (files: File[]): Promise<string[]> => {
       try {
