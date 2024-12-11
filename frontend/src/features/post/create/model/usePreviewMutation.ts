@@ -33,9 +33,13 @@ export const usePreviewMutation = () => {
   });
 
   const deletePreviewMutation = useMutation({
-    mutationFn: async (file: string) => {
+    mutationFn: async (file: IAsset) => {
       try {
         await utapiDeleteFiles(file)
+        return {
+          success: true,
+          message: 'Successfully deleted file'
+        }
       } catch (err) {
         console.log(err)
         return {
@@ -48,8 +52,7 @@ export const usePreviewMutation = () => {
 
 
 	return {
-		createPreviewMutate: createPreviewMutation.mutateAsync,
-		data: createPreviewMutation.data,
-    isLoading: createPreviewMutation.isPending,
+		createMutation: createPreviewMutation,
+    deleteMutation: deletePreviewMutation,
 	}
 }

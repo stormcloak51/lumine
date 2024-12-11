@@ -31,7 +31,7 @@ export const UserHoverCard = ({
 				<Text
 					href={`/profile/${user.username}`}
 					component={Link}
-					className='hover:underline cursor-pointer'
+					className='hover:underline cursor-pointer text-[#d9e4ed]'
 					ml={-8}
 					size={targetSize}
 					fw={700}

@@ -119,7 +119,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
 				<Text c={'dimmed'} mb={10}>
 					This action will edit your post
 				</Text>
-				<PostCreate onChange={setEditedContent} content={content} />
+				<PostCreate content={content} />
 				<Button
 					onClick={() => handleEdit({ content: editedContent, id: post.id })}
 					mr={15}

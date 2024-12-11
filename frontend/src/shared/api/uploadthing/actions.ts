@@ -1,10 +1,11 @@
 "use server"
 
+import { IAsset } from '@/shared/config/types/general.types'
 import { utapi } from './utapi'
 
-export const utapiDeleteFiles = async (file: string) => {
+export const utapiDeleteFiles = async (file: IAsset) => {
 	"use server"
-	const result = await utapi.deleteFiles('Em1u6KysRyuViUpdRR9UA86ZO1rGCjYNcEtvlFqgkSKVX2m0')
+	const result = await utapi.deleteFiles(file.key)
 	if (result.success) {
 		return {
 			success: true,
