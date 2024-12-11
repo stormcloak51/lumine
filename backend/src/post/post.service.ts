@@ -286,25 +286,62 @@ export class PostService {
   // ==================== DRAFTS ====================
 
   async upsertDraft(userId: string, data: UpsertDraftDto) {
+    const postDraft = await this.prisma.postDraft.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        media: true,
+      }
+    });
+
     return await this.prisma.postDraft.upsert({
       where: {
         userId,
       },
       create: {
         userId,
-        ...data
+        content: data.content || '',
+        media: {
+          create: data.media.map((asset) => {
+            return {
+              key: asset.key,
+              url: asset.url,
+            };
+          }),
+        },
       },
       update: {
-        ...data
-      }
-    })
+        content: data.content,
+        media: {
+          upsert: data.media.map(asset => {
+            return {
+              where: {
+                key: asset.key
+              },
+              create: {
+                key: asset.key,
+                url: asset.url
+              },
+              update: {
+                key: asset.key,
+                url: asset.url
+              }
+            }
+          })
+        },
+      },
+    });
   }
 
   async getDraft(userId: string) {
     return await this.prisma.postDraft.findUnique({
       where: {
         userId,
-      }
-    })
+      },
+      include: {
+        media: true,
+      },
+    });
   }
 }

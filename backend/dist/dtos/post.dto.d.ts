@@ -18,5 +18,8 @@ export declare class DeletePostDto {
 }
 export declare class UpsertDraftDto {
     content: string;
-    media: string[];
+    media: {
+        url: string;
+        key: string;
+    }[];
 }

@@ -6,28 +6,45 @@ import { useEffect, useState } from 'react'
 import { usePreviewMutation } from '../model/usePreviewMutation'
 import { MediaContentItem } from './media-content-item'
 import { useUrls } from '@/shared/hooks/useUrls'
+import { utapiDeleteFiles } from '@/shared/api/uploadthing/actions'
+import { notifications } from '@mantine/notifications';
 
 interface props {
 	isFocused: boolean
 }
 
 export const MediaContent = ({ isFocused }: props) => {
-	const { content, setContent } = useMediaContentStore()
+	const { media, setMedia } = useMediaContentStore()
 	const [previews, setPreviews] = useState<string[] | undefined | null>(null)
-	const { previewMutate, isLoading } = usePreviewMutation()
+	const { createPreviewMutate, isLoading } = usePreviewMutation()
 	const { createUrls, revokeUrls } = useUrls()
 
 	const handleFileChange = async (files: File[]) => {
-		const urlFiles = files.map(item => URL.createObjectURL(item))
+		if (media && (media.length + files.length > 7)) {
+			notifications.show({
+				color: 'red',
+				title: 'Oops!',
+				message: 'You cannot upload more than 7 media files'
+			})
+			return
+		}
+		const urlFiles = createUrls(files)
 		setPreviews(prev => ([...(prev ?? []), ...urlFiles]))
-		const result = await previewMutate(files)
-		setContent([...(content ?? []), ...result])
+		const result = await createPreviewMutate(files)
+		setMedia([...(media ?? []), ...result])
+		setPreviews([...(media?.map(item => item.url) ?? []), ...(result?.map(item => item.url))])
+		revokeUrls(urlFiles)
 	}
 
+	const handleFileDelete = async (file: string) => {
+		const result = await utapiDeleteFiles(file)
+		console.log(result, 'RESULT')
+	}
+	
 
 	useEffect(() => {
-		if (content) {
-			setPreviews(content.map(file => file))
+		if (media) {
+			setPreviews(media.map(file => file.url))
 		}
 	}, [])
 
@@ -36,13 +53,13 @@ export const MediaContent = ({ isFocused }: props) => {
 			{previews && (
 				<Flex
 					align={'center'}
-					gap={10}
-					className={`cursor-default overflow-x-auto scrollbar max-w-[150px] flex-nowrap ${isFocused ? 'flex' : 'hidden'}`}
+					gap={16}
+					className={`cursor-default overflow-x-auto scrollbar max-w-[190px] flex-nowrap ${isFocused ? 'flex' : 'hidden'}`}
 				> 
 					{previews.map((item, index) => {
 						if (!item) return null
 						return (
-							<MediaContentItem src={item} key={index} />
+							<MediaContentItem onDelete={handleFileDelete} src={item} key={index} />
 						)
 					})}
 				</Flex>
@@ -51,10 +68,11 @@ export const MediaContent = ({ isFocused }: props) => {
 				accept='image/* video/*'
 				onChange={handleFileChange}
 				multiple
-				disabled={isLoading}
+				disabled={isLoading || media?.length == 5}
+				
 			>
 				{props => (
-					<Indicator color='#ffbb38' size={16} label={isLoading ? <LoaderCircle size={12} className='animate-spin'/> : content?.length}>
+					<Indicator color='#ffbb38' size={16} label={isLoading ? <LoaderCircle size={12} className='animate-spin'/> : media?.length}>
 						<Camera
 							{...props}
 							className={'text-[rgb(66,66,66)] cursor-pointer'}

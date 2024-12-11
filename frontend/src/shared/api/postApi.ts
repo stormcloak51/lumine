@@ -1,5 +1,5 @@
 import { axiosWithAuth } from './interceptors'
-import { IPostData, TPost } from '@/shared/config/types/post.types'
+import { IPostData, IPostDraft, TPost } from '@/shared/config/types/post.types'
 import { IUserCredentials } from '@/shared/config/types/user.types'
 import { AxiosResponse } from 'axios'
 
@@ -67,19 +67,19 @@ class PostApi {
 
 	// ==================== DRAFTS ====================
 
-	async findDraft(){
+	async findDraft() {
 		try {
-			const response = await axiosWithAuth.get(this.BASE_URL 
+			const response: AxiosResponse<IPostDraft[]> = await axiosWithAuth.get(this.BASE_URL 
 				+ '/getDraft'
 			)
-			console.log(response)
+			console.log(response.data)
 			return JSON.parse(JSON.stringify(response.data))
 		} catch (err) {
 			console.log(err)
 		}
 	}
 
-	async upsertDraft(data: {content: string, media: string[] | null}) {
+	async upsertDraft(data: Partial<IPostDraft> | null) {
 		try {
 			const response = await axiosWithAuth.post(this.BASE_URL + '/upsertDraft', data)
 			return JSON.parse(JSON.stringify(response.data))

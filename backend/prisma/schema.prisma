@@ -98,13 +98,20 @@ model CommentLike {
   @@map("CommentLike")
 }
 
+model Asset {
+  id     Int
+  key    String @unique
+  url    String
+  post   PostDraft? @relation(fields: [id], references: [id])
+}
+
 model PostDraft {
   id      Int @id @default(autoincrement())
   user    User   @relation(fields: [userId], references: [id])
   userId  String @unique
 
   content String
-  media   String[]
+  media   Asset[]
 
   @@map("post_draft")
 }

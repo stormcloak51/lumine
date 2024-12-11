@@ -1,4 +1,5 @@
 import { TCommentResponse } from './comment.types'
+import { IAsset } from './general.types'
 import { IUserCredentials } from './user.types'
 
 export interface IPostData {
@@ -19,4 +20,9 @@ export type TPost = {
 	Like: TPostLikes[]
 	Comment: TCommentResponse[]
 	likes: number
+}
+
+export interface IPostDraft {
+	content: string | null
+	media: IAsset[] | null
 }

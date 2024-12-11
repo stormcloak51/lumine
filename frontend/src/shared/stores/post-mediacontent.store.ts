@@ -1,25 +1,26 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { IAsset } from '../config/types/general.types'
 
 
 interface State {
-  content: string[]  | null
+	media: IAsset[] | null
 }
 
 interface Action {
-  setContent: (content: State['content']) => void
+  setMedia: ( media?: State['media']) => void
 }
 
 export const useMediaContentStore = create<State & Action>()(
 	persist(
 		set => ({
-			content: null,
-			setContent: (content) => set(() => ({ content })),
+			media: null,
+			setMedia: (media) => set(() => ({ media })),
 		}),
 		{
 			name: 'media-content-storage',
 			storage: createJSONStorage(() => localStorage),
-			partialize: state => ({ content: state.content }),
+			partialize: state => ({ media: state.media }),
 		}
 	)
 )

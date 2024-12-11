@@ -5,3 +5,8 @@ export interface TPaginatedResponse<T> {
 	total: number
 	nextPage?: number
 }
+
+export interface IAsset {
+	key: string
+	url: string
+}

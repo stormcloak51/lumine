@@ -31,7 +31,7 @@ export const useSendPost = (editor: Editor) => {
 		}
 	}
 
-	const contentLength = editor.getText().length
+	const contentLength = editor ? editor.getText().length : 0
 
 	return {
 		handleSend,

@@ -32,7 +32,7 @@ export const useEditor = (options: Partial<EditorOptions>) => {
         levels: [1, 2, 3],
       }),
     ], []),
-		immediatelyRender: true,
+		immediatelyRender: false,
     editorProps: {
       attributes: {
         class: '!outline-none !border-none',

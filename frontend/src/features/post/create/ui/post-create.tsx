@@ -51,7 +51,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 	})
 
 	useEffect(() => {
-		if (draftData?.content){
+		if (draftData?.content && editor){
 			editor.commands.setContent(draftData?.content)
 		}
 		
@@ -74,7 +74,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 		}
 	}
 
-	const { handleSend, contentLength } = useSendPost(editor)
+	const { handleSend, contentLength } = useSendPost(editor!)
 
 	if (!editor) return null
 
@@ -92,7 +92,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 			}}
 			transition={{ duration: 0.2 }}
 			ref={ref}
-			key={draftData.content}
+			key={draftData?.content}
 			className='mb-[20px] !bg-[#1f2124] flex flex-col rounded-[1rem] shadow-lg border-[rgb(66,66,66)] border cursor-text'>
 			<div className={`relative w-full h-full ${!styled ? 'flex items-center' : ''}`}>
 				<EditorContent

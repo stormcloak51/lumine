@@ -50,5 +50,8 @@ export class UpsertDraftDto {
 	@IsArray()
 	@ArrayMaxSize(7)
 	@IsUrl({}, {each: true})
-	media: string[]
+	media: {
+		url: string,
+		key: string
+	}[]
 }
