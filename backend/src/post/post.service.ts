@@ -1,14 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PostModel, User } from '@prisma/client';
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { PostModel } from '@prisma/client'
+import { userSelect } from 'src/config/constants/user.constants'
 import {
-  UpsertDraftDto,
   CreatePostDto,
   DeletePostDto,
   EditPostDto,
   LikePostDto,
-} from '../dtos/post.dto';
-import { PrismaService } from '../prisma.service';
-import { userSelect } from 'src/config/constants/user.constants';
+  UpsertDraftDto,
+} from '../dtos/post.dto'
+import { PrismaService } from '../prisma/prisma.service'
 
 @Injectable()
 export class PostService {

@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateCommentDto, DeleteCommentDto, LikeCommentDto, EditCommentDto, GetCommentsDto } from 'src/auth/dto/comment.dto'
-import { PrismaService } from 'src/prisma.service'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { CreateCommentDto, DeleteCommentDto, EditCommentDto, GetCommentsDto, LikeCommentDto } from 'src/auth/dto/comment.dto'
+import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
 export class CommentService {

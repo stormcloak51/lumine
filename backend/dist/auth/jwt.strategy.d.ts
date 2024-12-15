@@ -8,17 +8,17 @@ export declare class JwtStrategy extends JwtStrategy_base {
     validate({ id }: {
         id: string;
     }): Promise<{
-        id: string;
-        created_at: Date;
-        updated_at: Date;
-        name: string;
         username: string;
         email: string;
-        password: string;
-        surname: string;
-        bio: string;
         userAvatar: string;
+        name: string;
+        surname: string;
+        id: string;
         userCover: string;
+        bio: string;
+        created_at: Date;
+        updated_at: Date;
+        password: string;
         role: string;
     }>;
 }
