@@ -20,7 +20,6 @@ axiosWithAuth.interceptors.request.use(
   async config => {
     const accessToken = await getAccessToken()
     if (config.headers && accessToken) {
-      // console.log(123123123)
       config.headers.Authorization = `Bearer ${accessToken}`
     }
 

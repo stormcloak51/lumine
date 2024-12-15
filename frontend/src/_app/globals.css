@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1e1b1b84;
+    --background: #1d1e1b84;
     --foreground: #ededed;
   }
 }
@@ -21,8 +21,6 @@ html {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  scrollbar-gutter: stable;
 }
 
 @layer utilities {

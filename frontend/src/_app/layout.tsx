@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import '@mantine/notifications/styles.css';
 import {
-	ColorSchemeScript,
 	createTheme,
 	MantineColorsTuple,
 	MantineProvider,
@@ -45,7 +44,7 @@ export async function RootLayout({
 	return (
 		<html lang='en'>
 			<head>
-				<ColorSchemeScript />
+				{/* <ColorSchemeScript /> */}
 			</head>
 			<body
 				className={`${font.geistSans.variable} ${font.geistMono.variable} ${font.helvetica_bold.variable} ${font.helvetica_regular.variable} antialiased`}

@@ -24,8 +24,7 @@ let UserController = class UserController {
         return this.userService.findAll();
     }
     async findOne(idOrEmailOrUsername) {
-        const user = await this.userService.findOne(idOrEmailOrUsername);
-        return user;
+        return await this.userService.findOne(idOrEmailOrUsername);
     }
     update(id, dto) {
         return this.userService.update({ id, dto });

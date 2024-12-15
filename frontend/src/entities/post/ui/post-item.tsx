@@ -9,14 +9,14 @@ import { useAuth } from '@/shared/lib/useAuth'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { UserHoverCard } from '@/shared/ui/UserHoverCard'
 import { Card, Divider, Text } from '@mantine/core'
-import purify from 'dompurify'
+// import DOMpurify from 'dompurify'
 import { Circle, LoaderCircle } from 'lucide-react'
 import { FC, useState } from 'react'
 import { PostActions } from './post-actions'
 import { ManagePost } from './post-manage'
 
 export const PostItem: FC<
-	TPost & { title: string; lastPostRef?: React.Ref<HTMLDivElement> }
+	TPost & { lastPostRef?: React.Ref<HTMLDivElement> }
 > = post => {
 	const { user } = useAuth()
 
@@ -70,7 +70,7 @@ export const PostItem: FC<
 			<Text
 				mt='sm'
 				className='text-white ProseMirror'
-				dangerouslySetInnerHTML={{ __html: purify.sanitize(post.content) }}
+				dangerouslySetInnerHTML={{ __html: post.content }}
 			/>
 			<div className='mt-4 flex gap-x-3'>
 				<PostActions

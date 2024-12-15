@@ -1,13 +1,15 @@
 import { postApi } from '@/shared/api/postApi'
+import { TPost } from '@/shared/config/types/post.types'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useCallback, useRef } from 'react'
 
 interface props {
 	feed: boolean
 	username?: string
+	initialData: any
 }
 
-export const usePostList = ({ feed, username }: props) => {
+export const usePostList = ({ feed, username, initialData }: props) => {
 	const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
 			queryKey: ['posts'],
@@ -22,13 +24,14 @@ export const usePostList = ({ feed, username }: props) => {
 				return hasMore ? pages.length + 1 : undefined
 			},
 			initialPageParam: 1,
-			refetchOnMount: true,
+			refetchOnMount: false,
+			initialData: {
+				pages: [initialData],
+				pageParams: [1],
+			},
 		})
-	const allPosts = data?.pages
-		.flatMap(page => page.data)
-		.filter(
-			(post, index, self) => index === self.findIndex(p => p.id === post.id)
-		)
+
+	const allPosts = data?.pages.flatMap(page => page)
 
 	const observerRef = useRef<IntersectionObserver | null>(null)
 	const lastPostRef = useCallback(

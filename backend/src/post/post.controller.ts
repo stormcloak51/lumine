@@ -98,4 +98,10 @@ export class PostController {
     return this.postService.upsertDraft(user.id, data)
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Delete('deleteMediaDraft')
+  deleteMediaDraft(@Body('key') key: string, @CurrentUser() user: User){
+    return this.postService.deleteMediaDraft(user.id, key)
+  }
+
 }

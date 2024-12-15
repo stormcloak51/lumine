@@ -1,4 +1,3 @@
-
 import { Suspense } from 'react'
 import Loading from './loading'
 import { ProfileContent } from './profile-content'
@@ -15,6 +14,8 @@ export async function generateMetadata({
 }
 
 export const Profile = async ({ params }: { params: { slug: string } }) => {
+
+
 	return (
 		<Suspense fallback={<Loading />}>
 			<ProfileContent params={params}/>

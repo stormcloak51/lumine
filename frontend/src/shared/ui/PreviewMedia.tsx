@@ -1,5 +1,4 @@
-import { Modal } from '@mantine/core'
-import Image from 'next/image'
+import { Modal, Image } from '@mantine/core'
 import { FC } from 'react'
 
 interface props {
@@ -14,9 +13,8 @@ export const PreviewMedia: FC<props> = ({ src, type, isOpened, setIsOpened }) =>
 	const baseProps = {
 		src: src,
 		alt: 'media',
-		objectFit: 'cover',
-		className: '!relative rounded-md',
-		fill: true,
+		objectFit: 'contain',
+		className: '!relative rounded-lg w-full h-full',
 	}
 
 	return (
@@ -32,12 +30,11 @@ export const PreviewMedia: FC<props> = ({ src, type, isOpened, setIsOpened }) =>
 				centered
 				className='h-full'
 				size='auto'
-				variant=''
 				opened={isOpened}
 				onClose={() => setIsOpened(false)}
 			>
 				{type === 'image' ? (
-					<Image {...baseProps} alt='media' />
+					<Image {...baseProps} alt='media'/>
 				) : (
 					<video {...baseProps} />
 				)}

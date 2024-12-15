@@ -34,8 +34,10 @@ export const usePreviewMutation = () => {
 
   const deletePreviewMutation = useMutation({
     mutationFn: async (file: IAsset) => {
+      if (!file.key) return { success: false, message: 'Something went wrong, please try again!' }
       try {
         await utapiDeleteFiles(file)
+        await postApi.deleteMediaDraft(file.key)
         return {
           success: true,
           message: 'Successfully deleted file'

@@ -200,6 +200,11 @@ export declare class PostService {
         content: string;
         userId: string;
     }>;
+    deleteMediaDraft(userId: string, key: string): Promise<{
+        id: number;
+        content: string;
+        userId: string;
+    }>;
     getDraft(userId: string): Promise<{
         media: {
             id: number;

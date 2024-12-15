@@ -36,6 +36,7 @@
     "dompurify": "^3.1.7",
     "firebase": "^10.13.2",
     "framer-motion": "^11.11.9",
+    "isomorphic-dompurify": "^2.19.0",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.445.0",
     "next": "^14.2.13",

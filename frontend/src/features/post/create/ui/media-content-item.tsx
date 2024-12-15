@@ -27,7 +27,10 @@ export const MediaContentItem = ({ onDelete, file }: props) => {
 					onClick={() => setOpenedModal(true)}
 					style={{ maxHeight: '50px', objectFit: 'contain' }}
 				/>
-				<span onClick={() => onDelete(file)} className='absolute top-0 right-0 transform -translate-y-2/4 translate-x-2/4 cursor-pointer z-10'><CloseButton icon={<X size={20} color='#ff4e4e' />} size={22} radius={'xl'} className='bg-[#2b2d31] transition-all hover:bg-[#35373c]' /></span>
+				<span onClick={() => {
+					if (!file.key) return
+					onDelete(file)
+				}} className='absolute top-0 right-0 transform -translate-y-2/4 translate-x-2/4 cursor-pointer z-10'><CloseButton icon={<X size={20} color='#ff4e4e' />} size={22} radius={'xl'} className='bg-[#2b2d31] transition-all hover:bg-[#35373c]' /></span>
 			</div>
 			<PreviewMedia
 				isOpened={isOpenedModal}

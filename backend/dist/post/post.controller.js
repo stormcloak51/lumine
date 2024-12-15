@@ -58,6 +58,9 @@ let PostController = class PostController {
     upsertDraft(data, user) {
         return this.postService.upsertDraft(user.id, data);
     }
+    deleteMediaDraft(key, user) {
+        return this.postService.deleteMediaDraft(user.id, key);
+    }
 };
 exports.PostController = PostController;
 __decorate([
@@ -159,6 +162,15 @@ __decorate([
     __metadata("design:paramtypes", [post_dto_1.UpsertDraftDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "upsertDraft", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Delete)('deleteMediaDraft'),
+    __param(0, (0, common_1.Body)('key')),
+    __param(1, (0, user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "deleteMediaDraft", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __metadata("design:paramtypes", [post_service_1.PostService])

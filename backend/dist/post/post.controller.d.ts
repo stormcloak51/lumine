@@ -211,4 +211,9 @@ export declare class PostController {
         content: string;
         userId: string;
     }>;
+    deleteMediaDraft(key: string, user: User): Promise<{
+        id: number;
+        content: string;
+        userId: string;
+    }>;
 }

@@ -7,6 +7,6 @@ export interface TPaginatedResponse<T> {
 }
 
 export interface IAsset {
-	key: string
+	key: string  | null
 	url: string
 }

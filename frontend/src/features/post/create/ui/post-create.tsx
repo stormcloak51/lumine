@@ -77,9 +77,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
 	const { handleSend, contentLength } = useSendPost(editor!)
 
 	if (!editor) return null
-
 	if (isDraftLoading) return <Loading />
-
 	return (
 		<motion.div
 			onKeyDown={getHotkeyHandler([['mod+Enter', handleSend]])}

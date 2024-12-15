@@ -303,7 +303,7 @@ export class PostService {
         userId,
         content: data.content || '',
         media: {
-          create: data.media.map((asset) => {
+          create: data?.media?.map((asset) => {
             return {
               key: asset.key,
               url: asset.url,
@@ -314,7 +314,7 @@ export class PostService {
       update: {
         content: data.content,
         media: {
-          upsert: data.media.map(asset => {
+          upsert: data?.media?.map(asset => {
             return {
               where: {
                 key: asset.key
@@ -332,6 +332,21 @@ export class PostService {
         },
       },
     });
+  }
+
+  async deleteMediaDraft(userId: string, key: string) {
+    return await this.prisma.postDraft.update({
+      where: {
+        userId,
+      },
+      data: {
+        media: {
+          delete: {
+            key
+          }
+        }
+      }
+    })
   }
 
   async getDraft(userId: string) {

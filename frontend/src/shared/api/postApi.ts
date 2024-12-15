@@ -67,15 +67,16 @@ class PostApi {
 
 	// ==================== DRAFTS ====================
 
-	async findDraft() {
+	async findDraft(): Promise<IPostDraft> {
 		try {
-			const response: AxiosResponse<IPostDraft[]> = await axiosWithAuth.get(this.BASE_URL 
+			const response = await axiosWithAuth.get(this.BASE_URL 
 				+ '/getDraft'
 			)
-			console.log(response.data)
-			return JSON.parse(JSON.stringify(response.data))
+			
+			return JSON.parse(JSON.stringify(response.data)) as IPostDraft
 		} catch (err) {
 			console.log(err)
+			return {} as IPostDraft
 		}
 	}
 
@@ -84,7 +85,18 @@ class PostApi {
 			const response = await axiosWithAuth.post(this.BASE_URL + '/upsertDraft', data)
 			return JSON.parse(JSON.stringify(response.data))
 		} catch(err) {
-			console.log(err)
+			console.error(err)
+			return err
+		}
+	}
+
+	async deleteMediaDraft(key: string){
+		try {
+			const response = await axiosWithAuth.delete(this.BASE_URL + '/deleteMediaDraft', {data: {key}})
+			return JSON.parse(JSON.stringify(response.data))
+		} catch (err) {
+			console.error(err)
+			return err
 		}
 	}
 }

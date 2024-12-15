@@ -12,13 +12,10 @@ export default function Loading() {
 						shadow='sm'
 						radius='md'
 					>
-						{/* Header section with avatar and user info */}
 						<div className='flex justify-start items-center'>
 							<div className='flex flex-row gap-x-4 items-center'>
-								{/* Avatar */}
 								<Skeleton height={40} circle />
 
-								{/* Username and time */}
 								<div className='flex flex-row items-center gap-x-4'>
 									<Skeleton height={20} width={120} radius='md' />
 									<Skeleton height={8} circle />
@@ -27,7 +24,6 @@ export default function Loading() {
 							</div>
 						</div>
 
-						{/* Post content */}
 						<div className='mt-4'>
 							<Skeleton height={8} radius='xl' mt={6} />
 							<Skeleton height={8} radius='xl' mt={6} />
