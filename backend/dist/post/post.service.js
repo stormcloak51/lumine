@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostService = void 0;
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../prisma.service");
 const user_constants_1 = require("../config/constants/user.constants");
+const prisma_service_1 = require("../prisma/prisma.service");
 let PostService = class PostService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -133,8 +133,8 @@ let PostService = class PostService {
                 content: data.content,
                 User: {
                     connect: {
-                        id: data.User.id,
-                        username: data.User.username,
+                        id: data.UserDto.id,
+                        username: data.UserDto.username,
                     },
                 },
             },
@@ -150,8 +150,8 @@ let PostService = class PostService {
                     create: {
                         user: {
                             connect: {
-                                id: data.user.id,
-                                username: data.user.username,
+                                id: data.UserDto.id,
+                                username: data.UserDto.username,
                             },
                         },
                     },
@@ -175,7 +175,7 @@ let PostService = class PostService {
                 Like: {
                     delete: {
                         userId_postId: {
-                            userId: data.user.id,
+                            userId: data.UserDto.id,
                             postId: data.postId,
                         },
                     },
@@ -228,7 +228,7 @@ let PostService = class PostService {
                 id: data.postId,
             },
         });
-        if (post.userId !== data.userId)
+        if (post.userId !== data.UserDtoId)
             throw new common_1.BadRequestException("You can't update someones else's post!");
         return await this.prisma.postModel.delete({
             where: {
@@ -244,7 +244,7 @@ let PostService = class PostService {
                 id: data.postId,
             },
         });
-        if (post.userId !== data.userId)
+        if (post.userId !== data.UserDtoId)
             throw new common_1.BadRequestException("You can't update someones else's post!");
         return await this.prisma.postModel.update({
             where: {

@@ -1,10 +1,10 @@
 'use client'
-import { useMutation } from '@tanstack/react-query'
-import {FormData} from '../model/login.types'
 import { authApi } from '@/shared/api/authApi'
+import { useUser } from '@/shared/stores/user/user.store'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useUser } from '@/shared/stores/user.store'
 import { useState } from 'react'
+import { FormData } from '../model/login.types'
 
 export const useLoginMutation = () => {
 	const router = useRouter()

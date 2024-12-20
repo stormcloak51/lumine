@@ -16,6 +16,7 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_dto_1 = require("../dtos/user.dto");
+const auth_decorator_1 = require("../auth/decorators/auth.decorator");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -32,6 +33,8 @@ let UserController = class UserController {
 };
 exports.UserController = UserController;
 __decorate([
+    (0, auth_decorator_1.Authorization)('ADMIN'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     (0, common_1.Get)('all'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -45,6 +48,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOne", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),

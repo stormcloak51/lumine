@@ -1,6 +1,6 @@
 import { ArrayMaxSize, IsArray, IsNumber, IsObject, IsString, IsUrl, ValidateNested } from 'class-validator'
 import {Type} from 'class-transformer'
-import { User } from './user.dto'
+import { UserDto } from './user.dto'
 
 export class CreatePostDto {
 	@IsString()
@@ -8,8 +8,8 @@ export class CreatePostDto {
 
 	@IsObject()
 	@ValidateNested()
-	@Type(() => User)
-	User: User
+	@Type(() => UserDto)
+	UserDto: UserDto
 }
 
 export class LikePostDto {
@@ -18,8 +18,8 @@ export class LikePostDto {
 
 	@IsObject()
 	@ValidateNested()
-	@Type(() => User)
-	user: User
+	@Type(() => UserDto)
+	UserDto: UserDto
 }
 
 export class EditPostDto {
@@ -27,7 +27,7 @@ export class EditPostDto {
 	postId: number
 
 	@IsString()
-	userId: string
+	UserDtoId: string
 
 	@IsString()
 	content: string
@@ -38,7 +38,7 @@ export class DeletePostDto {
 	postId: number
 
 	@IsString()
-	userId: string
+	UserDtoId: string
 }
 
 // ==================== DRAFTS ====================

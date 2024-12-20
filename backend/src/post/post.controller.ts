@@ -2,34 +2,37 @@ import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, R
 import { PostModel, User } from '@prisma/client';
 import { UpsertDraftDto, CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard'
 import { Request } from 'express'
 import * as cookie from 'cookie'
 import { AuthGuard } from '@nestjs/passport'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
+import { Authorization } from 'src/auth/decorators/auth.decorator'
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Get()
   findAll() {
     return this.postService.findAll();
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Get('sortedByLikes')
   findAllSortedByLikes(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     return this.postService.findAllSortedByLikes(page, limit);
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @Authorization()
   @Get('sortedByDate')
   findAllSortedByDate(@Query('page') page: number = 1, @Query('limit') limit: number = 10) {
     return this.postService.findAllSortedByDate(page, limit);
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Post('create')
   createPost(
     @Body()
@@ -40,20 +43,22 @@ export class PostController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
+  @Authorization()
   @Get('findById')
   findById(@Query('id', ParseIntPipe) id: number) {
     return this.postService.findById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Get('findByUsername')
   findByUsername(@Query('page') page: number = 1, @Query('limit') limit: number = 10, @Query('username') username: string){
     
     return this.postService.findAllByUsername(page, limit, username);
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Patch('like')
   likePost(
     @Body()
@@ -63,7 +68,8 @@ export class PostController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Patch('unlike')
   unlikePost(
     @Body()
@@ -72,13 +78,15 @@ export class PostController {
     return this.postService.unLikePost(data);
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Delete('delete')
   delete(@Body() data: DeletePostDto) {
     return this.postService.delete(data);
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Patch('edit')
   edit(@Body() data: EditPostDto){
     return this.postService.edit(data)
@@ -86,19 +94,22 @@ export class PostController {
 
   // ==================== DRAFTS ====================
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Get('getDraft')
   getDraft(@CurrentUser() user: User) {
     return this.postService.getDraft(user.id)
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Post('upsertDraft')
   upsertDraft(@Body() data: UpsertDraftDto, @CurrentUser() user: User){
     return this.postService.upsertDraft(user.id, data)
   }
 
-  @UseGuards(JwtAuthGuard)
+
+  @Authorization()
   @Delete('deleteMediaDraft')
   deleteMediaDraft(@Body('key') key: string, @CurrentUser() user: User){
     return this.postService.deleteMediaDraft(user.id, key)

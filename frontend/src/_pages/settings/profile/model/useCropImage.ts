@@ -1,13 +1,13 @@
+import { uploadContent } from '@/shared/api/upload-content'
 import { userApi } from '@/shared/api/userApi'
 import { IUserCredentials } from '@/shared/config/types/user.types'
-import { useMutation } from '@tanstack/react-query'
-import { notifications } from '@mantine/notifications'
-import { uploadContent } from '@/shared/api/upload-content'
-import { getCroppedImg } from '@/shared/lib/getCroppedImg'
-import { Area } from 'react-easy-crop'
-import { Dispatch, SetStateAction } from 'react'
-import { useUser } from '@/shared/stores/user.store'
+import { getCroppedImg } from '@/shared/helpers/getCroppedImg'
 import { capitalize } from '@/shared/lib/capitalize'
+import { useUser } from '@/shared/stores/user/user.store'
+import { notifications } from '@mantine/notifications'
+import { useMutation } from '@tanstack/react-query'
+import { Dispatch, SetStateAction } from 'react'
+import { Area } from 'react-easy-crop'
 
 interface props {
 	img: string
@@ -22,7 +22,7 @@ export const useCropImage = ({
 	croppedAreaPixels,
 	close,
 	setIsCropping,
-	type
+	type,
 }: props) => {
 	const { setUser, user } = useUser()
 	if (!user?.user) {

@@ -1,15 +1,11 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import '@mantine/notifications/styles.css';
-import {
-	createTheme,
-	MantineColorsTuple,
-	MantineProvider,
-} from '@mantine/core'
+import { createTheme, MantineColorsTuple, MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
-import * as font from '../shared/assets/fonts/fonts'
-import ClientProvider from './ClientProvider'
 import { Notifications } from '@mantine/notifications'
+import '@mantine/notifications/styles.css'
+import type { Metadata } from 'next'
+import * as font from '../public/assets/fonts/fonts'
+import ClientProvider from './ClientProvider'
+import './globals.css'
 
 export const metadata: Metadata = {
 	title: 'lumine',
@@ -43,9 +39,7 @@ export async function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<head>
-				{/* <ColorSchemeScript /> */}
-			</head>
+			<head>{/* <ColorSchemeScript /> */}</head>
 			<body
 				className={`${font.geistSans.variable} ${font.geistMono.variable} ${font.helvetica_bold.variable} ${font.helvetica_regular.variable} antialiased`}
 			>

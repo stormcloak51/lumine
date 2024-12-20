@@ -16,8 +16,8 @@ exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
 const post_dto_1 = require("../dtos/post.dto");
 const post_service_1 = require("./post.service");
-const jwt_guard_1 = require("../auth/guards/jwt.guard");
 const user_decorator_1 = require("../auth/decorators/user.decorator");
+const auth_decorator_1 = require("../auth/decorators/auth.decorator");
 let PostController = class PostController {
     constructor(postService) {
         this.postService = postService;
@@ -64,14 +64,14 @@ let PostController = class PostController {
 };
 exports.PostController = PostController;
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('sortedByLikes'),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
@@ -80,6 +80,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAllSortedByLikes", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('sortedByDate'),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
@@ -88,7 +89,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findAllSortedByDate", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -96,7 +97,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "createPost", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('findById'),
     __param(0, (0, common_1.Query)('id', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -104,7 +105,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findById", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('findByUsername'),
     __param(0, (0, common_1.Query)('page')),
     __param(1, (0, common_1.Query)('limit')),
@@ -114,7 +115,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "findByUsername", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('like'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -122,7 +123,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "likePost", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('unlike'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -130,7 +131,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "unlikePost", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Delete)('delete'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -138,7 +139,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('edit'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -146,7 +147,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "edit", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('getDraft'),
     __param(0, (0, user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
@@ -154,7 +155,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "getDraft", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('upsertDraft'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, user_decorator_1.CurrentUser)()),
@@ -163,7 +164,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "upsertDraft", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Delete)('deleteMediaDraft'),
     __param(0, (0, common_1.Body)('key')),
     __param(1, (0, user_decorator_1.CurrentUser)()),

@@ -6,7 +6,6 @@ import { PrismaService } from 'src/prisma/prisma.service'
 import { UserService } from 'src/user/user.service'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { JwtStrategy } from './jwt.strategy'
 
 @Module({
   imports: [ConfigModule, JwtModule.registerAsync({
@@ -15,7 +14,7 @@ import { JwtStrategy } from './jwt.strategy'
     useFactory: getJwtConfig,
   })],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, UserService, JwtStrategy],
+  providers: [AuthService, PrismaService, UserService],
   exports: [AuthService]
 })
 export class AuthModule {}

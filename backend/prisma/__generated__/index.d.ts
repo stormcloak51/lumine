@@ -58,7 +58,16 @@ export type Token = $Result.DefaultSelection<Prisma.$TokenPayload>
  * Enums
  */
 export namespace $Enums {
-  export const TokenType: {
+  export const RoleType: {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+};
+
+export type RoleType = (typeof RoleType)[keyof typeof RoleType]
+
+
+export const TokenType: {
   VERIFICATION: 'VERIFICATION',
   PASSWORD_RESET: 'PASSWORD_RESET',
   TWO_FACTOR: 'TWO_FACTOR'
@@ -67,6 +76,10 @@ export namespace $Enums {
 export type TokenType = (typeof TokenType)[keyof typeof TokenType]
 
 }
+
+export type RoleType = $Enums.RoleType
+
+export const RoleType: typeof $Enums.RoleType
 
 export type TokenType = $Enums.TokenType
 
@@ -2668,7 +2681,7 @@ export namespace Prisma {
     bio: string | null
     userAvatar: string | null
     userCover: string | null
-    role: string | null
+    role: $Enums.RoleType | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -2683,7 +2696,7 @@ export namespace Prisma {
     bio: string | null
     userAvatar: string | null
     userCover: string | null
-    role: string | null
+    role: $Enums.RoleType | null
     created_at: Date | null
     updated_at: Date | null
   }
@@ -2833,7 +2846,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover: string
-    role: string
+    role: $Enums.RoleType
     created_at: Date
     updated_at: Date
     _count: UserCountAggregateOutputType | null
@@ -2935,7 +2948,7 @@ export namespace Prisma {
       bio: string
       userAvatar: string
       userCover: string
-      role: string
+      role: $Enums.RoleType
       created_at: Date
       updated_at: Date
     }, ExtArgs["result"]["user"]>
@@ -3345,7 +3358,7 @@ export namespace Prisma {
     readonly bio: FieldRef<"User", 'String'>
     readonly userAvatar: FieldRef<"User", 'String'>
     readonly userCover: FieldRef<"User", 'String'>
-    readonly role: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'RoleType'>
     readonly created_at: FieldRef<"User", 'DateTime'>
     readonly updated_at: FieldRef<"User", 'DateTime'>
   }
@@ -9712,6 +9725,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'RoleType'
+   */
+  export type EnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType'>
+    
+
+
+  /**
+   * Reference to a field of type 'RoleType[]'
+   */
+  export type ListEnumRoleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RoleType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'TokenType'
    */
   export type EnumTokenTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TokenType'>
@@ -9818,7 +9845,7 @@ export namespace Prisma {
     bio?: StringFilter<"User"> | string
     userAvatar?: StringFilter<"User"> | string
     userCover?: StringFilter<"User"> | string
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleTypeFilter<"User"> | $Enums.RoleType
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     posts?: PostModelListRelationFilter
@@ -9861,7 +9888,7 @@ export namespace Prisma {
     bio?: StringFilter<"User"> | string
     userAvatar?: StringFilter<"User"> | string
     userCover?: StringFilter<"User"> | string
-    role?: StringFilter<"User"> | string
+    role?: EnumRoleTypeFilter<"User"> | $Enums.RoleType
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     posts?: PostModelListRelationFilter
@@ -9902,7 +9929,7 @@ export namespace Prisma {
     bio?: StringWithAggregatesFilter<"User"> | string
     userAvatar?: StringWithAggregatesFilter<"User"> | string
     userCover?: StringWithAggregatesFilter<"User"> | string
-    role?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleTypeWithAggregatesFilter<"User"> | $Enums.RoleType
     created_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updated_at?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -10302,7 +10329,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelCreateNestedManyWithoutUserInput
@@ -10322,7 +10349,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelUncheckedCreateNestedManyWithoutUserInput
@@ -10342,7 +10369,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUpdateManyWithoutUserNestedInput
@@ -10362,7 +10389,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUncheckedUpdateManyWithoutUserNestedInput
@@ -10382,7 +10409,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -10397,7 +10424,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10412,7 +10439,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10844,6 +10871,13 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type EnumRoleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RoleType | EnumRoleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleTypeFilter<$PrismaModel> | $Enums.RoleType
+  }
+
   export type PostModelListRelationFilter = {
     every?: PostModelWhereInput
     some?: PostModelWhereInput
@@ -10912,6 +10946,16 @@ export namespace Prisma {
     role?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
+  }
+
+  export type EnumRoleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RoleType | EnumRoleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleTypeWithAggregatesFilter<$PrismaModel> | $Enums.RoleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleTypeFilter<$PrismaModel>
+    _max?: NestedEnumRoleTypeFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -11345,6 +11389,10 @@ export namespace Prisma {
     create?: XOR<PostDraftCreateWithoutUserInput, PostDraftUncheckedCreateWithoutUserInput>
     connectOrCreate?: PostDraftCreateOrConnectWithoutUserInput
     connect?: PostDraftWhereUniqueInput
+  }
+
+  export type EnumRoleTypeFieldUpdateOperationsInput = {
+    set?: $Enums.RoleType
   }
 
   export type PostModelUpdateManyWithoutUserNestedInput = {
@@ -11841,6 +11889,23 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedEnumRoleTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.RoleType | EnumRoleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleTypeFilter<$PrismaModel> | $Enums.RoleType
+  }
+
+  export type NestedEnumRoleTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.RoleType | EnumRoleTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.RoleType[] | ListEnumRoleTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleTypeWithAggregatesFilter<$PrismaModel> | $Enums.RoleType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleTypeFilter<$PrismaModel>
+    _max?: NestedEnumRoleTypeFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -11906,7 +11971,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     likedPosts?: PostLikeCreateNestedManyWithoutUserInput
@@ -11925,7 +11990,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     likedPosts?: PostLikeUncheckedCreateNestedManyWithoutUserInput
@@ -12009,7 +12074,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     likedPosts?: PostLikeUpdateManyWithoutUserNestedInput
@@ -12028,7 +12093,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     likedPosts?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
@@ -12340,7 +12405,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelCreateNestedManyWithoutUserInput
@@ -12359,7 +12424,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelUncheckedCreateNestedManyWithoutUserInput
@@ -12499,7 +12564,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUpdateManyWithoutUserNestedInput
@@ -12518,7 +12583,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUncheckedUpdateManyWithoutUserNestedInput
@@ -12601,7 +12666,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelCreateNestedManyWithoutUserInput
@@ -12620,7 +12685,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelUncheckedCreateNestedManyWithoutUserInput
@@ -12677,7 +12742,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUpdateManyWithoutUserNestedInput
@@ -12696,7 +12761,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUncheckedUpdateManyWithoutUserNestedInput
@@ -12743,7 +12808,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelCreateNestedManyWithoutUserInput
@@ -12762,7 +12827,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelUncheckedCreateNestedManyWithoutUserInput
@@ -12823,7 +12888,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUpdateManyWithoutUserNestedInput
@@ -12842,7 +12907,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUncheckedUpdateManyWithoutUserNestedInput
@@ -12931,7 +12996,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelCreateNestedManyWithoutUserInput
@@ -12950,7 +13015,7 @@ export namespace Prisma {
     bio: string
     userAvatar: string
     userCover?: string
-    role?: string
+    role?: $Enums.RoleType
     created_at?: Date | string
     updated_at?: Date | string
     posts?: PostModelUncheckedCreateNestedManyWithoutUserInput
@@ -13005,7 +13070,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUpdateManyWithoutUserNestedInput
@@ -13024,7 +13089,7 @@ export namespace Prisma {
     bio?: StringFieldUpdateOperationsInput | string
     userAvatar?: StringFieldUpdateOperationsInput | string
     userCover?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleTypeFieldUpdateOperationsInput | $Enums.RoleType
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostModelUncheckedUpdateManyWithoutUserNestedInput

@@ -200,6 +200,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.RoleType = exports.$Enums.RoleType = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  USER: 'USER'
+};
+
 exports.TokenType = exports.$Enums.TokenType = {
   VERIFICATION: 'VERIFICATION',
   PASSWORD_RESET: 'PASSWORD_RESET',

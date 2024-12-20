@@ -42,7 +42,7 @@ model User {
   bio        String
   userAvatar String
   userCover  String   @default("https://firebasestorage.googleapis.com/v0/b/lumine-d6ae4.appspot.com/o/general%2Fdefault-cover.png?alt=media&token=4d474931-41b8-4f5b-b11c-1982adff3170")
-  role       String   @default("USER")
+  role       RoleType   @default(USER)
   created_at DateTime @default(now()) @map("created_at")
   updated_at DateTime @updatedAt @map("updated_at")
 
@@ -127,7 +127,7 @@ model Token {
   @@map("tokens")
 }
 
-enum Role {
+enum RoleType {
   OWNER
   ADMIN
   USER

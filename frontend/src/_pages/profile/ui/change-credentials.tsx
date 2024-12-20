@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '@/shared/lib/useAuth'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { Button } from '@mantine/core'
 import { Pen } from 'lucide-react'
 import Link from 'next/link'
@@ -12,9 +12,7 @@ interface IChagneCredentials {
 
 export const ChangeCredentials: FC<IChagneCredentials> = ({ currId }) => {
 	const {
-		user: {
-			id,
-		},
+		user: { id },
 	} = useAuth()
 
 	if (id !== currId) {
@@ -27,7 +25,8 @@ export const ChangeCredentials: FC<IChagneCredentials> = ({ currId }) => {
 			className='text-[16px] font-sans'
 			leftSection={<Pen size={20} />}
 			color={'#ffd37d'}
-			variant={'light'}>
+			variant={'light'}
+		>
 			Change
 		</Button>
 	)

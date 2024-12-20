@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   HttpCode,
+  HttpStatus,
   Post,
   Req,
   Res,
@@ -13,54 +14,27 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto'
 import { Request, Response } from 'express'
+import { UserDto } from 'src/dtos/user.dto'
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UsePipes(new ValidationPipe())
-  @Post('login')
-  @HttpCode(200)
-  async signIn(@Body() dto: LoginDto, @Res({passthrough: true}) res: Response) {
-
-    const {refreshToken, ...response} = await this.authService.login(dto);
-    this.authService.addRefreshTokenToResponse(res, refreshToken);
-
-    return response
-  }
-
-  @UsePipes(new ValidationPipe())
-  @HttpCode(200)
   @Post('register')
-  async register(@Body() dto: RegisterDto, @Res({passthrough: true}) res: Response) {
-    const {refreshToken, ...response} = await this.authService.register(dto);
-    this.authService.addRefreshTokenToResponse(res, refreshToken);
-
-    return response
+  @HttpCode(HttpStatus.OK)
+  async register(@Req() req: Request, @Body() dto: RegisterDto) {
+    return await this.authService.register(req, dto)
   }
 
-  @HttpCode(200)
-  @Post('login/access-token')
-  async getNewTokens(@Req() req: Request, @Res({passthrough: true}) res: Response) {
-    const refreshTokenFromCookies = await req.cookies['refresh_token']
-
-    if (!refreshTokenFromCookies) {
-      this.authService.removeRefreshTokenFromResponse(res);
-      throw new UnauthorizedException('Refresh token not found')
-    }
-
-    const {refreshToken, ...response} = await this.authService.getNewTokens(refreshTokenFromCookies)
-
-    this.authService.addRefreshTokenToResponse(res, refreshToken)
-
-    return response
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(@Req() req: Request, @Body() dto: LoginDto) {
+    return await this.authService.login(req, dto)
   }
 
-  @HttpCode(200)
   @Post('logout')
-  async logout(@Res({passthrough: true}) res: Response) {
-    this.authService.removeRefreshTokenFromResponse(res);
-
-    return true
+  @HttpCode(HttpStatus.OK)
+  async logout(@Req() req: Request, @Res({passthrough: true}) res: Response) {
+    return await this.authService.logout(req, res)
   }
-}
+} 

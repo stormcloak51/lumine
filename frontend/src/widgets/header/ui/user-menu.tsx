@@ -1,12 +1,12 @@
 'use client'
-import { useAuth } from '@/shared/lib/useAuth'
-import { useUser } from '@/shared/stores/user.store'
 import { authApi } from '@/shared/api/authApi'
+import { useAuth } from '@/shared/stores/user/useAuth'
+import { useUser } from '@/shared/stores/user/user.store'
+import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { Menu, rem } from '@mantine/core'
 import { Aperture, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
-import LumineAvatar from '@/shared/ui/LumineAvatar'
 
 interface props {
 	size: number

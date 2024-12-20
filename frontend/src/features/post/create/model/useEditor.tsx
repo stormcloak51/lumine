@@ -1,42 +1,45 @@
-import { useMemo } from 'react';
-import { useEditor as useTiptapEditor, EditorOptions } from '@tiptap/react';
-import Document from '@tiptap/extension-document';
-import Paragraph from '@tiptap/extension-paragraph';
-import Text from '@tiptap/extension-text';
-import Bold from '@tiptap/extension-bold';
-import Italic from '@tiptap/extension-italic';
-import Underline from '@tiptap/extension-underline';
-import Strike from '@tiptap/extension-strike';
-import Placeholder from '@tiptap/extension-placeholder';
-import Heading from '@tiptap/extension-heading';
+import { randomPostPhrases } from '@/shared/helpers/randomPhrases'
+import Bold from '@tiptap/extension-bold'
+import Document from '@tiptap/extension-document'
+import Heading from '@tiptap/extension-heading'
 import History from '@tiptap/extension-history'
-import { randomPostPhrases } from '@/shared/lib/randomPhrases';
+import Italic from '@tiptap/extension-italic'
+import Paragraph from '@tiptap/extension-paragraph'
+import Placeholder from '@tiptap/extension-placeholder'
+import Strike from '@tiptap/extension-strike'
+import Text from '@tiptap/extension-text'
+import Underline from '@tiptap/extension-underline'
+import { EditorOptions, useEditor as useTiptapEditor } from '@tiptap/react'
+import { useMemo } from 'react'
 
 export const useEditor = (options: Partial<EditorOptions>) => {
-  return useTiptapEditor({
-    ...options,
-    extensions: useMemo(() => [
-      Document,
-      Paragraph,
-      Text,
-      Bold,
-      Italic,
-      Underline,
-      Strike,
-      History,
-      Placeholder.configure({
-        placeholder: randomPostPhrases(),
-        emptyEditorClass: 'is-editor-empty',
-      }),
-      Heading.configure({
-        levels: [1, 2, 3],
-      }),
-    ], []),
+	return useTiptapEditor({
+		...options,
+		extensions: useMemo(
+			() => [
+				Document,
+				Paragraph,
+				Text,
+				Bold,
+				Italic,
+				Underline,
+				Strike,
+				History,
+				Placeholder.configure({
+					placeholder: randomPostPhrases(),
+					emptyEditorClass: 'is-editor-empty',
+				}),
+				Heading.configure({
+					levels: [1, 2, 3],
+				}),
+			],
+			[]
+		),
 		immediatelyRender: true,
-    editorProps: {
-      attributes: {
-        class: '!outline-none !border-none',
-      },
-    },
-  });
-};
+		editorProps: {
+			attributes: {
+				class: '!outline-none !border-none',
+			},
+		},
+	})
+}

@@ -9,35 +9,60 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateUserDto = exports.User = void 0;
+exports.UpdateUserDto = exports.UserDto = void 0;
+const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
-class User {
+class UserDto {
 }
-exports.User = User;
+exports.UserDto = UserDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "username", void 0);
+], UserDto.prototype, "username", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "email", void 0);
+], UserDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "userAvatar", void 0);
+], UserDto.prototype, "userAvatar", void 0);
+__decorate([
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", String)
+], UserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "name", void 0);
+], UserDto.prototype, "userCover", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "surname", void 0);
+], UserDto.prototype, "name", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], User.prototype, "id", void 0);
+], UserDto.prototype, "surname", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserDto.prototype, "id", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserDto.prototype, "bio", void 0);
+__decorate([
+    (0, class_validator_1.IsEnum)(['ADMIN', 'USER']),
+    __metadata("design:type", String)
+], UserDto.prototype, "role", void 0);
+__decorate([
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", Date)
+], UserDto.prototype, "created_at", void 0);
+__decorate([
+    (0, class_validator_1.IsDateString)(),
+    __metadata("design:type", Date)
+], UserDto.prototype, "updated_at", void 0);
 class UpdateUserDto {
 }
 exports.UpdateUserDto = UpdateUserDto;

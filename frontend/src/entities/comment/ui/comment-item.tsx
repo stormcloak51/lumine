@@ -1,15 +1,15 @@
 'use client'
-import { useSubComments } from '../model/useSubComments'
 import { CommentCreate } from '@/features/comment/create/index'
 import {
 	CommentRoles,
 	TCommentResponse,
 } from '@/shared/config/types/comment.types'
-import { timeAgo } from '@/shared/lib/timeFormatter'
+import { timeAgo } from '@/shared/helpers/timeFormatter'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { UserHoverCard } from '@/shared/ui/UserHoverCard'
 import { Text } from '@mantine/core'
 import purify from 'dompurify'
+import { useSubComments } from '../model/useSubComments'
 import { CommentActions } from './comment-actions'
 import { CommentList } from './comment-list'
 

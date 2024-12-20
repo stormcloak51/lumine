@@ -1,81 +1,80 @@
-import { Prisma } from '@prisma/client';
 import { RegisterDto } from 'src/auth/dto/register.dto';
 import { UpdateUserDto } from 'src/dtos/user.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 export declare class UserService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(dto: RegisterDto): Promise<{
-        username: string;
-        email: string;
-        userAvatar: string;
         name: string;
         surname: string;
-        id: string;
+        username: string;
+        email: string;
+        password: string;
+        userAvatar: string;
         userCover: string;
+        id: string;
         bio: string;
+        role: import("@/prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        role: string;
     }>;
-    findOne(idOrEmailOrUsername: string): Prisma.Prisma__UserClient<{
-        username: string;
-        email: string;
-        userAvatar: string;
+    findOne(idOrEmailOrUsername: string): import("@/prisma/__generated__").Prisma.Prisma__UserClient<{
         name: string;
         surname: string;
-        id: string;
-        userCover: string;
-        bio: string;
-        created_at: Date;
-        updated_at: Date;
-        password: string;
-        role: string;
-    }, null, import("@prisma/client/runtime/library").DefaultArgs>;
-    findAll(): Prisma.PrismaPromise<{
         username: string;
         email: string;
+        password: string;
         userAvatar: string;
-        name: string;
-        surname: string;
-        id: string;
         userCover: string;
+        id: string;
         bio: string;
+        role: import("@/prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
+    }, null, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
+    findAll(): import("@/prisma/__generated__").Prisma.PrismaPromise<{
+        name: string;
+        surname: string;
+        username: string;
+        email: string;
         password: string;
-        role: string;
+        userAvatar: string;
+        userCover: string;
+        id: string;
+        bio: string;
+        role: import("@/prisma/__generated__").$Enums.RoleType;
+        created_at: Date;
+        updated_at: Date;
     }[]>;
     update({ id, dto }: {
         id: string;
         dto: UpdateUserDto;
     }): Promise<{
-        username: string;
-        email: string;
-        userAvatar: string;
         name: string;
         surname: string;
-        id: string;
+        username: string;
+        email: string;
+        password: string;
+        userAvatar: string;
         userCover: string;
+        id: string;
         bio: string;
+        role: import("@/prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        role: string;
     }>;
-    delete(id: string): Prisma.Prisma__UserClient<{
-        username: string;
-        email: string;
-        userAvatar: string;
+    delete(id: string): import("@/prisma/__generated__").Prisma.Prisma__UserClient<{
         name: string;
         surname: string;
-        id: string;
+        username: string;
+        email: string;
+        password: string;
+        userAvatar: string;
         userCover: string;
+        id: string;
         bio: string;
+        role: import("@/prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
-        password: string;
-        role: string;
-    }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
 }

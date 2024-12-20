@@ -5,7 +5,7 @@ import {
 	CommentRoles,
 	TCommentResponse,
 } from '@/shared/config/types/comment.types'
-import { useAuth } from '@/shared/lib/useAuth'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { Button, useMantineTheme } from '@mantine/core'
 import { useEffect, useState } from 'react'
 import { AiFillLike } from 'react-icons/ai'

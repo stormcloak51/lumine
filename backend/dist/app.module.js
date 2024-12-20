@@ -9,18 +9,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
-const post_module_1 = require("./post/post.module");
-const post_service_1 = require("./post/post.service");
-const prisma_service_1 = require("./prisma.service");
-const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const comment_module_1 = require("./comment/comment.module");
+const post_module_1 = require("./post/post.module");
+const post_service_1 = require("./post/post.service");
+const prisma_service_1 = require("./prisma/prisma.service");
+const user_module_1 = require("./user/user.module");
+const prisma_module_1 = require("./prisma/prisma.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot(), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule],
+        imports: [config_1.ConfigModule.forRoot({
+                isGlobal: true
+            }), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule, prisma_module_1.PrismaModule],
         providers: [post_service_1.PostService, prisma_service_1.PrismaService],
     })
 ], AppModule);

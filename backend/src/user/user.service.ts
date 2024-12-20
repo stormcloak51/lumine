@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { hash } from 'bcrypt'
 import { RegisterDto } from 'src/auth/dto/register.dto'
@@ -18,13 +18,13 @@ export class UserService {
       bio: '',
     };
 
-    return this.prisma.user.create({
+    return await this.prisma.user.create({
       data,
     });
   }
 
   findOne(idOrEmailOrUsername: string) {
-    return this.prisma.user.findFirst({
+    const user = this.prisma.user.findFirst({
       where: {
         OR: [
           {
@@ -39,6 +39,9 @@ export class UserService {
         ],
       },
     });
+    if (!user) throw new NotFoundException('User not found');
+
+    return user
   }
 
   findAll() {

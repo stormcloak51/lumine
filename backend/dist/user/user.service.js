@@ -13,7 +13,7 @@ exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const bcrypt_1 = require("bcrypt");
-const prisma_service_1 = require("../prisma.service");
+const prisma_service_1 = require("../prisma/prisma.service");
 let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -25,12 +25,12 @@ let UserService = class UserService {
             password,
             bio: '',
         };
-        return this.prisma.user.create({
+        return await this.prisma.user.create({
             data,
         });
     }
     findOne(idOrEmailOrUsername) {
-        return this.prisma.user.findFirst({
+        const user = this.prisma.user.findFirst({
             where: {
                 OR: [
                     {
@@ -45,6 +45,9 @@ let UserService = class UserService {
                 ],
             },
         });
+        if (!user)
+            throw new common_1.NotFoundException('User not found');
+        return user;
     }
     findAll() {
         return this.prisma.user.findMany();

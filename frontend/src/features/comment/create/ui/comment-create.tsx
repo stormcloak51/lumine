@@ -1,17 +1,17 @@
 'use client'
-import '@mantine/tiptap/styles.css'
-import { motion } from 'framer-motion'
-import { useState } from 'react'
-import { EditorContent, useEditor } from '@tiptap/react'
-import Placeholder from '@tiptap/extension-placeholder'
-import Document from '@tiptap/extension-document'
-import Text from '@tiptap/extension-text'
-import Paragraph from '@tiptap/extension-paragraph'
-import History from '@tiptap/extension-history'
+import { randomCommentPhrases } from '@/shared/helpers/randomPhrases'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { useClickOutside } from '@mantine/hooks'
+import '@mantine/tiptap/styles.css'
+import Document from '@tiptap/extension-document'
+import History from '@tiptap/extension-history'
+import Paragraph from '@tiptap/extension-paragraph'
+import Placeholder from '@tiptap/extension-placeholder'
+import Text from '@tiptap/extension-text'
+import { EditorContent, useEditor } from '@tiptap/react'
+import { motion } from 'framer-motion'
 import { SendHorizonal } from 'lucide-react'
-import { randomCommentPhrases } from '@/shared/lib/randomPhrases'
-import { useAuth } from '@/shared/lib/useAuth'
+import { useState } from 'react'
 
 export const CommentCreate = ({
 	onSubmit,
@@ -19,10 +19,15 @@ export const CommentCreate = ({
 	commentId,
 	cl = '',
 }: {
-	postId: number,
-	commentId?: number,
+	postId: number
+	commentId?: number
 	cl?: string
-	onSubmit: (data: { content: string; postId: number; userId: string, commentId?: number }) => void
+	onSubmit: (data: {
+		content: string
+		postId: number
+		userId: string
+		commentId?: number
+	}) => void
 }) => {
 	const [isActive, setActive] = useState(false)
 	const { user } = useAuth()
@@ -30,7 +35,8 @@ export const CommentCreate = ({
 	const editor = useEditor({
 		extensions: [
 			Document,
-			Text,History,
+			Text,
+			History,
 			Paragraph,
 			Placeholder.configure({ placeholder: randomCommentPhrases() }),
 		],
@@ -89,13 +95,13 @@ export const CommentCreate = ({
 				editor={editor}
 				color='white'
 			/>
-		<button
+			<button
 				onClick={() => {
 					onSubmit({
 						content: editor.getHTML(),
 						userId: user.id,
 						postId,
-						commentId: commentId
+						commentId: commentId,
 					})
 					editor.commands.clearContent()
 				}}

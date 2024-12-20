@@ -1,131 +1,75 @@
 import {
-  BadRequestException,
+  ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import * as bcrypt from 'bcrypt'
-import { Response } from 'express'
-import { PrismaService } from 'src/prisma/prisma.service'
+import { Request, Response } from 'express'
 import { UserService } from '../user/user.service'
-import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'
+import { User } from 'prisma/__generated__'
+import { UserDto } from 'src/dtos/user.dto'
+import { plainToInstance } from 'class-transformer'
+import { LoginDto } from './dto/login.dto'
+import * as bcrypt from 'bcrypt'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class AuthService {
-  EXPIRE_DAY_REFRESH_TOKEN = 1;
-  REFRESH_TOKEN_NAME = 'refresh_token';
+  constructor( private readonly userService: UserService, private readonly configService: ConfigService ) {}
 
-  constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-    private prisma: PrismaService,
-  ) {}
-
-  async login(dto: LoginDto) {
-    const { password, ...user } = await this.validateUser(dto);
-
-    const tokens = this.issueTokens(user.id);
-
-    return {
-      user,
-      ...tokens,
-    };
-  }
-
-  async register(dto: RegisterDto) {
-    const oldUser = await this.userService.findOne(dto.email);
-
-    if (oldUser) throw new BadRequestException('User already exists');
-
-    const { password, ...user } = await this.userService.create(dto);
-
-    const tokens = this.issueTokens(user.id);
-
-    return {
-      user,
-      ...tokens,
-    };
-  }
-
-  async getNewTokens(refreshToken: string){
-    try {
-      const result = await this.jwtService.verifyAsync(refreshToken);
-      if (!result) throw new UnauthorizedException('Invalid refresh token');
-  
-      const user = await this.userService.findOne(result.id);
-      const tokens = this.issueTokens(user.id);
-  
-      return {
-        user,
-        ...tokens
-      };
-    } catch (error) {
-      throw new UnauthorizedException('Invalid refresh token');
+  async register(req: Request, dto: RegisterDto): Promise<UserDto> {
+    const isExists = await this.userService.findOne(dto.email)
+    if (isExists) {
+      throw new ConflictException('User with this email already exists')
     }
+    const newUser = await this.userService.create(dto)
+
+
+    return this.saveSession(req, newUser)
   }
 
-  private issueTokens(userId: string) {
-    const data = { id: userId };
+  async login(req: Request, dto: LoginDto) {
+    const user = await this.userService.findOne(dto.usernameOrEmail)
 
-    const accessToken = this.jwtService.sign(data, {
-      expiresIn: '1h',
-    });
+    if (!user) {
+      throw new NotFoundException('User with such credentials does not exist')
+    }
 
-    const refreshToken = this.jwtService.sign(data, {
-      expiresIn: '7d',
-    });
+    const isValidPass = await bcrypt.compare(dto.password, user.password)
 
-    return { accessToken, refreshToken };
+    if (!isValidPass) {
+      throw new UnauthorizedException('Password is incorrect, please try again')
+    }
+
+    return this.saveSession(req, user) 
   }
 
-  public async validateUser(dto: LoginDto) {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        OR: [
-          {
-            id: dto.usernameOrEmail,
-          },
-          {
-            email: dto.usernameOrEmail,
-          },
-          {
-            username: dto.usernameOrEmail,
-          },
-        ],
-      },
-    });
+  async logout(req: Request, res: Response): Promise<void> {
+    return new Promise((resolve, reject) => {
+      req.session.destroy(err => {
+        if (err) {
+          return reject(
+            new InternalServerErrorException('Failed to destroy session. Session is already destroyed or try again later')
+          )
+        }
 
-    if (!user) throw new NotFoundException('User not found');
-
-    const isValid = await bcrypt.compare(dto.password, user.password);
-
-    if (!isValid) throw new UnauthorizedException('Invalid password');
-
-    return user;
+        res.clearCookie(this.configService.getOrThrow<string>('SESSION_NAME'))
+        resolve()
+      })
+    })
   }
 
-  addRefreshTokenToResponse(res: Response, refreshToken: string) {
-    const expiresIn = new Date();
-    expiresIn.setDate(expiresIn.getDate() + this.EXPIRE_DAY_REFRESH_TOKEN);
+  private async saveSession(req: Request, user: User): Promise<UserDto> {
+    return new Promise((resolve, reject) => {
+      req.session.userId = user.id
 
-    res.cookie(this.REFRESH_TOKEN_NAME, refreshToken, {
-      httpOnly: true,
-      domain: 'localhost',
-      expires: expiresIn,
-      secure: false,
-      sameSite: 'lax',
-    });
-  }
-
-  removeRefreshTokenFromResponse(res: Response) {
-    res.cookie(this.REFRESH_TOKEN_NAME, '', {
-      httpOnly: true,
-      domain: 'localhost',
-      expires: new Date(0),
-      secure: false,
-      sameSite: 'lax',
-    });
+      req.session.save(err => {
+        if (err) return reject(new InternalServerErrorException('Failed to save session. Please check parameters and try again'))
+        const plainedUser = plainToInstance(UserDto, user)
+        resolve(plainedUser)
+      })
+    })
   }
 }

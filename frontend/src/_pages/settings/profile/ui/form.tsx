@@ -1,16 +1,22 @@
 'use client'
-import { useAuth } from '@/shared/lib/useAuth'
-import { Button, Divider, Flex, Title, useMantineTheme, Text } from '@mantine/core'
+import { DMSans } from '@/public/assets/fonts/fonts'
+import { useAuth } from '@/shared/stores/user/useAuth'
+import {
+	Button,
+	Divider,
+	Flex,
+	Text,
+	Title,
+	useMantineTheme,
+} from '@mantine/core'
+import { useEffect } from 'react'
 import { MdOutlineAlternateEmail } from 'react-icons/md'
-import { Field, ROLES } from './field'
-import { ProfileBackground } from './profile-background'
-import { ProfileAvatar } from './profile-avatar'
-import { useEditSchema } from '../model/useEditSchema'
 import { EditProfileFormValues } from '../model/edit.types'
 import { useEditMutation } from '../model/useEditMutation'
-import { DMSans } from '@/shared/assets/fonts/fonts'
-import { useEffect } from 'react'
-
+import { useEditSchema } from '../model/useEditSchema'
+import { Field, ROLES } from './field'
+import { ProfileAvatar } from './profile-avatar'
+import { ProfileBackground } from './profile-background'
 
 export const ProfileForm = () => {
 	const { user } = useAuth()
@@ -48,11 +54,16 @@ export const ProfileForm = () => {
 				<ProfileAvatar />
 			</Flex>
 			<Divider mt={20} mb={10} size={0.5} color={'rgb(66,66,66)'} w={'100%'} />
-			<form className={`flex flex-col gap-y-4 w-full px-4 ${DMSans.className}`} onSubmit={form.onSubmit(onSubmit)}>
+			<form
+				className={`flex flex-col gap-y-4 w-full px-4 ${DMSans.className}`}
+				onSubmit={form.onSubmit(onSubmit)}
+			>
 				<Field
 					role={ROLES.TEXTAREA}
 					label='Bio'
-					placeholder={'Designer from Saint Petersburg, love coffee and open typography.'}
+					placeholder={
+						'Designer from Saint Petersburg, love coffee and open typography.'
+					}
 					cl='w-full'
 					key={form.key('bio')}
 					{...form.getInputProps('bio')}
@@ -78,9 +89,7 @@ export const ProfileForm = () => {
 					placeholder={user?.username}
 					LeftSectionIcon={MdOutlineAlternateEmail}
 					key={form.key('username')}
-					
 					{...form.getInputProps('username')}
-					
 				/>
 				{/* <Field
 					label='Email'
@@ -91,7 +100,8 @@ export const ProfileForm = () => {
 				<Button
 					type='submit'
 					color={theme.colors.myColor[6]}
-					className='rounded-lg mt-5 w-[200px] ml-auto transform transition-all duration-200 hover:scale-105 hover:shadow-lg hover:brightness-110 active:scale-95'>
+					className='rounded-lg mt-5 w-[200px] ml-auto transform transition-all duration-200 hover:scale-105 hover:shadow-lg hover:brightness-110 active:scale-95'
+				>
 					Save changes
 				</Button>
 			</form>

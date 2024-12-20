@@ -21,67 +21,42 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async signIn(dto, res) {
-        const { refreshToken, ...response } = await this.authService.login(dto);
-        this.authService.addRefreshTokenToResponse(res, refreshToken);
-        return response;
+    async register(req, dto) {
+        return await this.authService.register(req, dto);
     }
-    async register(dto, res) {
-        const { refreshToken, ...response } = await this.authService.register(dto);
-        this.authService.addRefreshTokenToResponse(res, refreshToken);
-        return response;
+    async login(req, dto) {
+        return await this.authService.login(req, dto);
     }
-    async getNewTokens(req, res) {
-        const refreshTokenFromCookies = await req.cookies['refresh_token'];
-        if (!refreshTokenFromCookies) {
-            this.authService.removeRefreshTokenFromResponse(res);
-            throw new common_1.UnauthorizedException('Refresh token not found');
-        }
-        const { refreshToken, ...response } = await this.authService.getNewTokens(refreshTokenFromCookies);
-        this.authService.addRefreshTokenToResponse(res, refreshToken);
-        return response;
-    }
-    async logout(res) {
-        this.authService.removeRefreshTokenFromResponse(res);
-        return true;
+    async logout(req, res) {
+        return await this.authService.logout(req, res);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.UsePipes)(new common_1.ValidationPipe()),
-    (0, common_1.Post)('login'),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)({ passthrough: true })),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "signIn", null);
-__decorate([
-    (0, common_1.UsePipes)(new common_1.ValidationPipe()),
-    (0, common_1.HttpCode)(200),
     (0, common_1.Post)('register'),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)({ passthrough: true })),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [register_dto_1.RegisterDto, Object]),
+    __metadata("design:paramtypes", [Object, register_dto_1.RegisterDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
 __decorate([
-    (0, common_1.HttpCode)(200),
-    (0, common_1.Post)('login/access-token'),
+    (0, common_1.Post)('login'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, login_dto_1.LoginDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "getNewTokens", null);
-__decorate([
-    (0, common_1.HttpCode)(200),
-    (0, common_1.Post)('logout'),
-    __param(0, (0, common_1.Res)({ passthrough: true })),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
 exports.AuthController = AuthController = __decorate([

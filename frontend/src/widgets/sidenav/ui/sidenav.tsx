@@ -1,6 +1,6 @@
 'use client'
-import { inter } from '@/shared/assets/fonts/fonts'
-import { useAuth } from '@/shared/lib/useAuth'
+import { inter } from '@/public/assets/fonts/fonts'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import {

@@ -1,20 +1,20 @@
-import { User } from './user.dto';
+import { UserDto } from './user.dto';
 export declare class CreatePostDto {
     content: string;
-    User: User;
+    UserDto: UserDto;
 }
 export declare class LikePostDto {
     postId: number;
-    user: User;
+    UserDto: UserDto;
 }
 export declare class EditPostDto {
     postId: number;
-    userId: string;
+    UserDtoId: string;
     content: string;
 }
 export declare class DeletePostDto {
     postId: number;
-    userId: string;
+    UserDtoId: string;
 }
 export declare class UpsertDraftDto {
     content: string;

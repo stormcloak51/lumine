@@ -1,28 +1,25 @@
-import { useAuth } from '@/shared/lib/useAuth'
 import { postApi } from '@/shared/api/postApi'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Editor } from '@tiptap/react'
 
-
-
 export const useSendPost = (editor: Editor) => {
-
-	const {user} = useAuth()
+	const { user } = useAuth()
 	const queryClient = useQueryClient()
 
 	const mutation = useMutation({
 		mutationFn: async (content: string) => {
 			await postApi.create({
 				content,
-				User: user
+				User: user,
 			})
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['posts'] })
 			editor?.commands.clearContent()
-		}
+		},
 	})
-	
+
 	const handleSend = () => {
 		const postContent = editor.getHTML()
 
@@ -35,6 +32,6 @@ export const useSendPost = (editor: Editor) => {
 
 	return {
 		handleSend,
-		contentLength
+		contentLength,
 	}
 }

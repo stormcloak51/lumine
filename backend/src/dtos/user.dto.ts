@@ -1,6 +1,7 @@
-import { IsString } from 'class-validator'
+import { Exclude } from 'class-transformer'
+import { IsDateString, IsEnum, IsString } from 'class-validator'
 
-export class User {
+export class UserDto {
 	@IsString()
 	username: string
 
@@ -10,6 +11,12 @@ export class User {
 	@IsString()
 	userAvatar: string
 
+	@Exclude()
+	password: string
+
+	@IsString()
+	userCover: string
+
 	@IsString()
 	name: string
 
@@ -18,6 +25,18 @@ export class User {
 
 	@IsString()
 	id: string
+
+	@IsString()
+	bio: string
+
+	@IsEnum(['ADMIN', 'USER'])
+	role: string
+
+	@IsDateString()
+	created_at: Date
+
+	@IsDateString()
+	updated_at: Date
 }
 
 export class UpdateUserDto {

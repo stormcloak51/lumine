@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'
 import { IsString, MinLength, MaxLength, Matches, IsEmail, IsUrl } from 'class-validator';
 
 export class RegisterDto {

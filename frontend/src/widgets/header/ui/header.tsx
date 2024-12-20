@@ -1,6 +1,6 @@
 'use client'
+import { krona } from '@/public/assets/fonts/fonts'
 import LumineBlackMaterialLogo from '@/shared/assets/icons/lumine-material-black.png'
-import { krona } from '@/shared/assets/fonts/fonts'
 import { Box, Group, Input, Text, Title, useMantineTheme } from '@mantine/core'
 import { Bell, Search, Sun } from 'lucide-react'
 import Image from 'next/image'

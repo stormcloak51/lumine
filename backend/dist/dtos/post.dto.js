@@ -23,9 +23,9 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => user_dto_1.User),
-    __metadata("design:type", user_dto_1.User)
-], CreatePostDto.prototype, "User", void 0);
+    (0, class_transformer_1.Type)(() => user_dto_1.UserDto),
+    __metadata("design:type", user_dto_1.UserDto)
+], CreatePostDto.prototype, "UserDto", void 0);
 class LikePostDto {
 }
 exports.LikePostDto = LikePostDto;
@@ -36,9 +36,9 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsObject)(),
     (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => user_dto_1.User),
-    __metadata("design:type", user_dto_1.User)
-], LikePostDto.prototype, "user", void 0);
+    (0, class_transformer_1.Type)(() => user_dto_1.UserDto),
+    __metadata("design:type", user_dto_1.UserDto)
+], LikePostDto.prototype, "UserDto", void 0);
 class EditPostDto {
 }
 exports.EditPostDto = EditPostDto;
@@ -49,7 +49,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], EditPostDto.prototype, "userId", void 0);
+], EditPostDto.prototype, "UserDtoId", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -64,7 +64,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], DeletePostDto.prototype, "userId", void 0);
+], DeletePostDto.prototype, "UserDtoId", void 0);
 class UpsertDraftDto {
 }
 exports.UpsertDraftDto = UpsertDraftDto;

@@ -1,5 +1,5 @@
 import { PostCreate } from '@/features/post/create/index'
-import { DMSans } from '@/shared/assets/fonts/fonts'
+import { DMSans } from '@/public/assets/fonts/fonts'
 import { TPost } from '@/shared/config/types/post.types'
 import { Button, Menu, Modal, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'

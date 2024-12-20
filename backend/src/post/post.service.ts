@@ -148,8 +148,8 @@ export class PostService {
         content: data.content,
         User: {
           connect: {
-            id: data.User.id,
-            username: data.User.username,
+            id: data.UserDto.id,
+            username: data.UserDto.username,
           },
         },
       },
@@ -166,8 +166,8 @@ export class PostService {
           create: {
             user: {
               connect: {
-                id: data.user.id,
-                username: data.user.username,
+                id: data.UserDto.id,
+                username: data.UserDto.username,
               },
             },
           },
@@ -193,7 +193,7 @@ export class PostService {
         Like: {
           delete: {
             userId_postId: {
-              userId: data.user.id,
+              userId: data.UserDto.id,
               postId: data.postId,
             },
           },
@@ -251,7 +251,7 @@ export class PostService {
       },
     });
 
-    if (post.userId !== data.userId)
+    if (post.userId !== data.UserDtoId)
       throw new BadRequestException("You can't update someones else's post!");
 
     return await this.prisma.postModel.delete({
@@ -270,7 +270,7 @@ export class PostService {
       },
     });
 
-    if (post.userId !== data.userId)
+    if (post.userId !== data.UserDtoId)
       throw new BadRequestException("You can't update someones else's post!");
 
     return await this.prisma.postModel.update({
