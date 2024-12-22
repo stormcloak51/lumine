@@ -19,7 +19,7 @@ export function middleware(req: NextRequest) {
 		return NextResponse.next()
 	}
 
-	if (!token && req.nextUrl.pathname !== '/') {
+	if (!token && req.nextUrl.pathname in config.matcher) {
 		const url = req.nextUrl.clone()
 		url.pathname = '/login'
 		return NextResponse.redirect(url)
@@ -34,6 +34,13 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/login',
+    '/register',
+    '/',
+    '/feed',
+    '/profile/:path*',
+    '/settings/profile',
+    '/(.*)',
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ]
 }

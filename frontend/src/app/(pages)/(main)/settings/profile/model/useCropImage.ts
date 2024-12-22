@@ -1,8 +1,8 @@
 import { uploadContent } from '@/shared/api/upload-content'
 import { userApi } from '@/shared/api/userApi'
-import { IUserCredentials } from '@/shared/config/types/user.types'
+import { IUser } from '@/shared/config/types/user.types'
 import { getCroppedImg } from '@/shared/helpers/getCroppedImg'
-import { capitalize } from '@/shared/lib/capitalize'
+import { capitalize } from '@/shared/helpers/capitalize'
 import { useUser } from '@/shared/stores/user/user.store'
 import { notifications } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
@@ -25,12 +25,12 @@ export const useCropImage = ({
 	type,
 }: props) => {
 	const { setUser, user } = useUser()
-	if (!user?.user) {
+	if (!user) {
 		throw new Error('User ID is required')
 	}
 	const mutation = useMutation({
-		mutationFn: async (data: { dto: Partial<IUserCredentials> }) => {
-			return await userApi.update({ id: user?.user.id, dto: data.dto })
+		mutationFn: async (data: { dto: Partial<IUser> }) => {
+			return await userApi.update({ id: user.id, dto: data.dto })
 		},
 	})
 
@@ -42,11 +42,11 @@ export const useCropImage = ({
 				const url = await uploadContent(
 					croppedImage,
 					'accounts/' +
-						user?.user.username +
+						user.username +
 						'/' +
 						type +
 						croppedImage.type.split('/')[1],
-					user?.user.username
+					user.username
 				)
 
 				if (type === 'avatar') {
@@ -55,14 +55,14 @@ export const useCropImage = ({
 							userAvatar: url,
 						},
 					})
-					setUser({ ...user, user: { ...user.user, userAvatar: url } })
+					setUser({ ...user, userAvatar: url  })
 				} else {
 					mutation.mutate({
 						dto: {
 							userCover: url,
 						},
 					})
-					setUser({ ...user, user: { ...user.user, userCover: url } })
+					setUser({ ...user, userCover: url })
 				}
 
 				notifications.show({

@@ -202,7 +202,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/user/Documents/Learning/lumin/lumine/backend/prisma/__generated__",
+      "value": "C:\\Personal\\Learning\\lumine\\lumine\\backend\\prisma\\__generated__",
       "fromEnvVar": null
     },
     "config": {
@@ -211,12 +211,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/user/Documents/Learning/lumin/lumine/backend/prisma/schema.prisma",
+    "sourceFilePath": "C:\\Personal\\Learning\\lumine\\lumine\\backend\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -277,8 +277,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "prisma/__generated__/libquery_engine-darwin-arm64.dylib.node")
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "prisma/__generated__/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/__generated__/schema.prisma")

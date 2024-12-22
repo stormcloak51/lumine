@@ -1,4 +1,3 @@
-import { roboto } from '@/public/assets/fonts/fonts'
 import { Button } from '@mantine/core'
 import { ChevronRight, LucideProps } from 'lucide-react'
 import Link from 'next/link'
@@ -36,9 +35,7 @@ export const SettingsSidenavItem = ({
 				root: 'h-10 !px-2 w-[200px] flex',
 				section: 'data-[position=right]:ml-auto',
 			}}
-			className={`text-[#d2d5d8] font-sans font-[400] ${
-				roboto.className
-			} text-[1em] tracking-wide hover:bg-[#181818] hover:text-zinc-300 flex transition-all ${
+			className={`text-[#d2d5d8] font-sans font-[400] text-[1em] tracking-wide hover:bg-[#181818] hover:text-zinc-300 flex transition-all ${
 				isActive && 'bg-[#181818] text-zinc-300'
 			}`}
 			variant='subtle'

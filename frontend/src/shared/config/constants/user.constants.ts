@@ -1,6 +1,7 @@
+import { EUserRoles, IUser } from '../types/user.types'
 
 
-export const emptyUser = {
+export const emptyUser: IUser = {
 	id: '',
 	username: '',
 	name: '',
@@ -9,7 +10,7 @@ export const emptyUser = {
 	bio: '',
 	email: '',
 	password: '',
-	role: '',
+	role: EUserRoles.USER,
 	created_at: '',
 	updated_at: '',
 	userCover: '',

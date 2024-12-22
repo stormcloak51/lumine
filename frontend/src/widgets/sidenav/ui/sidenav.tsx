@@ -1,5 +1,4 @@
 'use client'
-import { inter } from '@/public/assets/fonts/fonts'
 import { useAuth } from '@/shared/stores/user/useAuth'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { Group, Stack, Text, Title } from '@mantine/core'
@@ -26,7 +25,7 @@ export const SideNav = () => {
 
 	return (
 		<nav
-			className={`${inter.className} flex flex-col px-4 pt-4 pb-3 w-[270px] rounded-xl fixed bg-[rgba(31,33,36,0.7)] shadow-[0px_64px_64px_-32px_rgba(41,15,0,0.56)] backdrop-blur-[80px] border border-[rgba(126,126,126,0.15)]`}
+			className={`flex flex-col px-4 pt-4 pb-3 w-[270px] rounded-xl fixed bg-[rgba(31,33,36,0.7)] shadow-[0px_64px_64px_-32px_rgba(41,15,0,0.56)] backdrop-blur-[80px] border border-[rgba(126,126,126,0.15)]`}
 		>
 			<Group>
 				<LumineAvatar

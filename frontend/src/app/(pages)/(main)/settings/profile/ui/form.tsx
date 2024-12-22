@@ -1,5 +1,4 @@
 'use client'
-import { DMSans } from '@/public/assets/fonts/fonts'
 import { useAuth } from '@/shared/stores/user/useAuth'
 import {
 	Button,
@@ -55,7 +54,7 @@ export const ProfileForm = () => {
 			</Flex>
 			<Divider mt={20} mb={10} size={0.5} color={'rgb(66,66,66)'} w={'100%'} />
 			<form
-				className={`flex flex-col gap-y-4 w-full px-4 ${DMSans.className}`}
+				className={`flex flex-col gap-y-4 w-full px-4`}
 				onSubmit={form.onSubmit(onSubmit)}
 			>
 				<Field
