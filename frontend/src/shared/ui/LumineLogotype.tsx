@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import logotype from '@/shared/assets/icons/Obsidian.svg'
+import logotype from '@/public/assets/icons/Obsidian.svg'
 
 interface props extends React.ImgHTMLAttributes<HTMLImageElement> {
 	src?: string

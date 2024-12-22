@@ -10,6 +10,7 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
+          0: '#fff8e1',
           50: "#fff8e1",
           100: "#ffefcb",
           200: "#ffdd9a",
@@ -21,8 +22,27 @@ const config: Config = {
           800: "#ca8500",
           900: "#b07200"
         },
-        
       },
+
+      animation: {
+        blob: 'blob 7s infinite'
+      },
+      keyframes: {
+        blob: {
+          '0%': {
+            transform: 'translate(0px, 0px) scale(1)',
+          },
+          '33%': {
+            transform: 'translate(15px, -25px) scale(1.2)',
+          },
+          '66%': {
+            transform: 'translate(-10px, 10px) scale(0.8)',
+          },
+          '100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+          }
+        }
+      }
     },
   },
   plugins: [],

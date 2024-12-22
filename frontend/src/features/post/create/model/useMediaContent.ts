@@ -1,6 +1,6 @@
 import { IAsset } from '@/shared/config/types/general.types'
 import { useUrls } from '@/shared/hooks/useUrls'
-import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
+import { useMediaContentStore } from '@/shared/stores/post/post-mediacontent.store'
 import { notifications } from '@mantine/notifications'
 import { useState } from 'react'
 import { usePreviewMutation } from './usePreviewMutation'

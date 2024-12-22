@@ -1,6 +1,5 @@
 'use client'
-import { krona } from '@/public/assets/fonts/fonts'
-import LumineBlackMaterialLogo from '@/shared/assets/icons/lumine-material-black.png'
+import LumineBlackMaterialLogo from '@/public/assets/icons/lumine-material-black.png'
 import { Box, Group, Input, Text, Title, useMantineTheme } from '@mantine/core'
 import { Bell, Search, Sun } from 'lucide-react'
 import Image from 'next/image'
@@ -21,7 +20,7 @@ export function Header() {
 						height={36}
 						width={36}
 					/>
-					<Title className={`${krona.className}  tracking-tighter`} size='28'>
+					<Title className={`  tracking-tighter`} size='28'>
 						<Text
 							size='28'
 							fw={700}

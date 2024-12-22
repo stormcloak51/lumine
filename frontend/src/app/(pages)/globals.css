@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1d1e1b84;
+    --foreground: #ededed;
+  }
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.helvetica-bold {
+  font-family: var(--font-helvetica-bold);
+}
+
+.helvetica-regular {
+  font-family: var(--font-helvetica-regular);
+}
+
+.inter-900 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+.inter-700 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+.inter-500 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.inter-400 {
+  font-family: "Inter", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #666;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.prose-sm {
+  /* font-size: 0.875rem; */
+  line-height: 1.25rem;
+}
+
+/* Optional: Style the placeholder text differently when editor is focused */
+.ProseMirror:focus p.is-editor-empty:first-child::before {
+  color: #777;
+}
+
+.ProseMirror h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.ProseMirror h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 1px;
+  scrollbar-width: thin;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 100px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #777;
+  border-radius: 100px;
+}

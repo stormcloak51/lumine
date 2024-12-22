@@ -1,7 +1,7 @@
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import {postApi} from '@/shared/api/postApi'
 import { useQuery } from '@tanstack/react-query'
-import { useMediaContentStore } from '@/shared/stores/post-mediacontent.store'
+import { useMediaContentStore } from '@/shared/stores/post/post-mediacontent.store'
 import { IPostDraft } from '@/shared/config/types/post.types'
 
 export const useDraft = () => {

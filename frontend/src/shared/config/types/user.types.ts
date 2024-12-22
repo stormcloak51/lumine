@@ -31,7 +31,7 @@ export type TUserLogin = {
 }
 
 
-export interface IUserCredentials {
+export interface IUser {
 	id: string
 	name: string
 	surname: string
@@ -41,12 +41,18 @@ export interface IUserCredentials {
 	userAvatar: string
 	userCover: string
 	bio: string
-	role: string
+	role: EUserRoles
 	created_at: Date | string | null
 	updated_at: Date | string | null
 }
 
 export type TUserData = {
 	access_token?: string
-	user: IUserCredentials
+	user: IUser
 }
+
+export enum EUserRoles {
+	ADMIN,
+	USER,
+	OWNER,
+} 

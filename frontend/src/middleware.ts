@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(req: NextRequest) {
-	const token = req.cookies.get('refresh_token')?.value
+	const token = req.cookies.get('session')?.value
 
 	if (req.nextUrl.pathname.startsWith('/api/uploadthing')) {
 		return NextResponse.next()
