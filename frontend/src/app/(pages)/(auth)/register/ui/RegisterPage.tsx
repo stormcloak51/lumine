@@ -5,7 +5,7 @@ import { useRegisterSchema } from '../model/useRegisterSchema'
 import { Text, TextInput, PasswordInput, Button, Switch, Title } from '@mantine/core'
 import Link from 'next/link'
 import { useRegisterMutation } from '../model/useRegisterMutation'
-import { FormData } from '../model/register.types'
+import { RegisterFormData } from '@/shared/config/types/auth.types'
 import { UploadImage } from './upload-image'
 import { LumineLogotype } from '@/shared/ui/LumineLogotype'
 
@@ -13,7 +13,7 @@ export const RegisterPage = () => {
 	const { form } = useRegisterSchema()
 	const { mutate, isPending } = useRegisterMutation()
 
-	const onSubmit = async (data: FormData) => {
+	const onSubmit = async (data: RegisterFormData) => {
 		mutate(data)
 	}
 

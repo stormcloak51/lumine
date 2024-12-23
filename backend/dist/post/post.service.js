@@ -133,51 +133,37 @@ let PostService = class PostService {
                 content: data.content,
                 User: {
                     connect: {
-                        id: data.UserDto.id,
-                        username: data.UserDto.username,
+                        id: data.id,
+                        username: data.username,
                     },
                 },
             },
         });
     }
-    async likePost(data) {
-        const post = await this.prisma.postModel.update({
+    async likePost(postId, userId) {
+        const post = await this.prisma.postModel.findUnique({
             where: {
-                id: data.postId,
-            },
-            data: {
-                Like: {
-                    create: {
-                        user: {
-                            connect: {
-                                id: data.UserDto.id,
-                                username: data.UserDto.username,
-                            },
-                        },
-                    },
-                },
+                id: postId
             },
             include: {
-                Like: true,
-            },
+                Like: true
+            }
         });
-        return {
-            ...post,
-            likes: post.Like.length,
-        };
-    }
-    async unLikePost(data) {
-        const post = await this.prisma.postModel.update({
+        if (!post) {
+            throw new common_1.BadRequestException('Post not found');
+        }
+        const isLiked = post.Like.some(like => like.userId === userId);
+        const updatedPost = await this.prisma.postModel.update({
             where: {
-                id: data.postId,
+                id: postId,
             },
             data: {
                 Like: {
-                    delete: {
+                    [isLiked ? 'disconnect' : 'connect']: {
                         userId_postId: {
-                            userId: data.UserDto.id,
-                            postId: data.postId,
-                        },
+                            userId,
+                            postId
+                        }
                     },
                 },
             },
@@ -186,7 +172,7 @@ let PostService = class PostService {
             },
         });
         return {
-            ...post,
+            ...updatedPost,
             likes: post.Like.length,
         };
     }
@@ -220,19 +206,19 @@ let PostService = class PostService {
             likes: post.Like.length,
         };
     }
-    async delete(data) {
-        if (!data.postId)
+    async delete(postId, userId) {
+        if (!postId)
             throw new common_1.BadRequestException('Id not found');
         const post = await this.prisma.postModel.findUnique({
             where: {
-                id: data.postId,
+                id: postId,
             },
         });
-        if (post.userId !== data.UserDtoId)
+        if (post.userId !== userId)
             throw new common_1.BadRequestException("You can't update someones else's post!");
         return await this.prisma.postModel.delete({
             where: {
-                id: data.postId,
+                id: postId,
             },
         });
     }

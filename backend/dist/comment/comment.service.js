@@ -58,17 +58,17 @@ let CommentService = class CommentService {
             total,
         };
     }
-    async create(dto, postId) {
+    async create(dto, userId) {
         const comment = await this.prisma.comment.create({
             data: {
                 post: {
                     connect: {
-                        id: postId
+                        id: dto.postId
                     }
                 },
                 user: {
                     connect: {
-                        id: dto.userId
+                        id: userId
                     }
                 },
                 content: dto.content

@@ -1,11 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { PostModel } from '@prisma/client'
+import { PostModel, User } from '@prisma/client'
 import { userSelect } from 'src/config/constants/user.constants'
 import {
   CreatePostDto,
-  DeletePostDto,
   EditPostDto,
-  LikePostDto,
   UpsertDraftDto,
 } from '../dtos/post.dto'
 import { PrismaService } from '../prisma/prisma.service'
@@ -142,60 +140,48 @@ export class PostService {
     }
   }
 
-  createPost(data: CreatePostDto) {
+  createPost(data: CreatePostDto & User) {
+
     return this.prisma.postModel.create({
       data: {
         content: data.content,
         User: {
           connect: {
-            id: data.UserDto.id,
-            username: data.UserDto.username,
+            id: data.id,
+            username: data.username,
           },
         },
       },
     });
   }
 
-  async likePost(data: LikePostDto) {
-    const post = await this.prisma.postModel.update({
+  async likePost(postId: number, userId: string ) {
+    const post = await this.prisma.postModel.findUnique({
       where: {
-        id: data.postId,
-      },
-      data: {
-        Like: {
-          create: {
-            user: {
-              connect: {
-                id: data.UserDto.id,
-                username: data.UserDto.username,
-              },
-            },
-          },
-        },
+        id: postId
       },
       include: {
-        Like: true,
-      },
-    });
+        Like: true
+      }
+    })
 
-    return {
-      ...post,
-      likes: post.Like.length,
-    };
-  }
+    if (!post) {
+      throw new BadRequestException('Post not found');
+    }
 
-  async unLikePost(data: LikePostDto) {
-    const post = await this.prisma.postModel.update({
+    const isLiked = post.Like.some(like => like.userId === userId)
+
+    const updatedPost = await this.prisma.postModel.update({
       where: {
-        id: data.postId,
+        id: postId,
       },
       data: {
         Like: {
-          delete: {
+          [isLiked ? 'disconnect' : 'connect']: {
             userId_postId: {
-              userId: data.UserDto.id,
-              postId: data.postId,
-            },
+              userId,
+              postId
+            }
           },
         },
       },
@@ -205,7 +191,7 @@ export class PostService {
     });
 
     return {
-      ...post,
+      ...updatedPost,
       likes: post.Like.length,
     };
   }
@@ -242,21 +228,21 @@ export class PostService {
     };
   }
 
-  async delete(data: DeletePostDto) {
-    if (!data.postId) throw new BadRequestException('Id not found');
+  async delete(postId: number, userId: string ) {
+    if (!postId) throw new BadRequestException('Id not found');
 
     const post = await this.prisma.postModel.findUnique({
       where: {
-        id: data.postId,
+        id: postId,
       },
     });
 
-    if (post.userId !== data.UserDtoId)
+    if (post.userId !== userId)
       throw new BadRequestException("You can't update someones else's post!");
 
     return await this.prisma.postModel.delete({
       where: {
-        id: data.postId,
+        id: postId,
       },
     });
   }

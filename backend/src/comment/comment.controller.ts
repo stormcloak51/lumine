@@ -15,6 +15,7 @@ import {
   LikeCommentDto,
   EditCommentDto,
 } from 'src/auth/dto/comment.dto';
+import { CurrentUser } from '../auth/decorators/user.decorator'
 
 @Controller('comment')
 export class CommentController {
@@ -31,9 +32,9 @@ export class CommentController {
   @Post('create')
   async create(
     @Body() dto: CreateCommentDto,
-    @Body('postId', ParseIntPipe) postId: number,
+    @CurrentUser('id') userId: string,
   ) {
-    return await this.commentService.create(dto, postId);
+    return await this.commentService.create(dto, userId);
   }
 
   @Post('like')
@@ -70,8 +71,8 @@ export class CommentController {
   async createSubcomment(
     @Body('postId', ParseIntPipe) postId: number,
     @Body('commentId', ParseIntPipe) commentId: number,
-    @Body('userId') userId: string,
-    @Body('content') content: string
+    @Body('content') content: string,
+    @CurrentUser('id') userId: string,
   ) {
     const dto = { content, userId, commentId, postId };
     return await this.commentService.createSubcomment(dto);

@@ -9,10 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpsertDraftDto = exports.DeletePostDto = exports.EditPostDto = exports.LikePostDto = exports.CreatePostDto = void 0;
+exports.UpsertDraftDto = exports.EditPostDto = exports.CreatePostDto = void 0;
 const class_validator_1 = require("class-validator");
-const class_transformer_1 = require("class-transformer");
-const user_dto_1 = require("./user.dto");
 class CreatePostDto {
 }
 exports.CreatePostDto = CreatePostDto;
@@ -20,25 +18,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreatePostDto.prototype, "content", void 0);
-__decorate([
-    (0, class_validator_1.IsObject)(),
-    (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => user_dto_1.UserDto),
-    __metadata("design:type", user_dto_1.UserDto)
-], CreatePostDto.prototype, "UserDto", void 0);
-class LikePostDto {
-}
-exports.LikePostDto = LikePostDto;
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], LikePostDto.prototype, "postId", void 0);
-__decorate([
-    (0, class_validator_1.IsObject)(),
-    (0, class_validator_1.ValidateNested)(),
-    (0, class_transformer_1.Type)(() => user_dto_1.UserDto),
-    __metadata("design:type", user_dto_1.UserDto)
-], LikePostDto.prototype, "UserDto", void 0);
 class EditPostDto {
 }
 exports.EditPostDto = EditPostDto;
@@ -54,17 +33,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], EditPostDto.prototype, "content", void 0);
-class DeletePostDto {
-}
-exports.DeletePostDto = DeletePostDto;
-__decorate([
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], DeletePostDto.prototype, "postId", void 0);
-__decorate([
-    (0, class_validator_1.IsString)(),
-    __metadata("design:type", String)
-], DeletePostDto.prototype, "UserDtoId", void 0);
 class UpsertDraftDto {
 }
 exports.UpsertDraftDto = UpsertDraftDto;

@@ -39,14 +39,14 @@ export class FetchClient {
 		return `?${searchParams.toString()}`
 	}
 
-	private async request<T>(
+	async request<T>(
 		endpoint: string,
 		method: RequestInit['method'],
-		options: RequestOptions = {}
+		options?: RequestOptions
 	) {
 		let url = `${this.baseUrl}/${endpoint}`
 
-		if (options.params) {
+		if (options?.params) {
 			url += this.createSearchParams(options.params)
 		}
 
@@ -55,7 +55,7 @@ export class FetchClient {
 			...(!!this.options && { ...this.options }),
 			method,
 			headers: {
-				...(!!options.headers && options.headers),
+				...(!!options?.headers && options.headers),
 				...this.headers,
 			},
 		}
@@ -84,7 +84,7 @@ export class FetchClient {
 
 	public post<T>(
 		endpoint: string,
-		body?: Record<string, string>,
+		body?: T,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'POST', {
@@ -100,7 +100,7 @@ export class FetchClient {
 	public put<T>(
 		endpoint: string,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		body: Record<string, any>,
+		body: T,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'PUT', {
@@ -113,13 +113,16 @@ export class FetchClient {
 		})
 	}
 
-	public delete<T>(endpoint: string, options: Omit<RequestOptions, 'body'> = {}) {
-		return this.request<T>(endpoint, 'DELETE', options)
+	public delete<T>(endpoint: string, body: T, options?: Omit<RequestOptions, 'body'>) {
+		return this.request<T>(endpoint, 'DELETE', {
+			...options,
+			...(!!body && { body: JSON.stringify(body) }),
+		})
 	}
 
 	public patch<T>(
 		endpoint: string,
-		body: Record<string, any>,
+		body: T,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'PATCH', {

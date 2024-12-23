@@ -1,10 +1,10 @@
 'use client'
-import { authApi } from '@/shared/api/authApi'
+import { authService } from '../../services/auth.service'
 import { useUser } from '@/shared/stores/user/user.store'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { FormData } from './login.types'
+import { LoginFormData } from '@/shared/config/types/auth.types'
 
 export const useLoginMutation = () => {
 	const router = useRouter()
@@ -13,9 +13,9 @@ export const useLoginMutation = () => {
 	const [redirecting, setRedirecting] = useState(false)
 
 	const mutation = useMutation({
-		mutationFn: async (data: FormData) => {
+		mutationFn: async (data: LoginFormData) => {
 			try {
-				const user = await authApi.main('login', data)
+				const user = await authService.login(data)
 				return user
 			} catch (err) {
 				console.log(err)

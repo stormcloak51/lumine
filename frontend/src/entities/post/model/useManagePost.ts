@@ -1,5 +1,4 @@
-import { postApi } from '@/shared/api/postApi'
-import { useAuth } from '@/shared/stores/user/useAuth'
+import { postService } from '@/shared/api/post.service'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface props {
@@ -11,14 +10,11 @@ export const useManagePost = ({
 	closeDeletePostModal,
 	closeEditPostModal,
 }: props) => {
-	const {
-		user: { id: userId },
-	} = useAuth()
 	const queryClient = useQueryClient()
 
 	const editPostMutation = useMutation({
 		mutationFn: ({ content, id }: { content: string; id: number }) =>
-			postApi.edit({ content, postId: id, userId }),
+			postService.edit(id, content),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['posts'] })
 			closeEditPostModal()
@@ -26,7 +22,7 @@ export const useManagePost = ({
 	})
 
 	const deletePostMutation = useMutation({
-		mutationFn: (id: number) => postApi.delete({ postId: id, userId }),
+		mutationFn: (id: number) => postService.delete(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['posts'] })
 			closeDeletePostModal()

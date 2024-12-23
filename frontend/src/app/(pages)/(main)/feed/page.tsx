@@ -3,7 +3,7 @@ import { Container } from '@mantine/core'
 import { PostCreate } from '@/features/post/create'
 import { PostList } from '@/entities/post/index'
 import { Metadata } from 'next'
-import { postApi } from '@/shared/api/postApi'
+import { postService } from '@/shared/api/post.service'
 import { Suspense } from 'react'
 import { TPost } from '@/shared/config/types/post.types'
 import DOMPurify from "isomorphic-dompurify";
@@ -26,7 +26,7 @@ const santizePosts = (posts: any) => {
 }
 
 export default async function Feed() {
-	const posts = await postApi.findAllSortedByDate(1, 10)
+	const posts = await postService.findAllSortedByDate(1, 10)
 	console.log(posts)
 	const sanitizedPosts = santizePosts(posts)
 	return (

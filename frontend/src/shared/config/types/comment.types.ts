@@ -1,10 +1,14 @@
-import { IUserCredentials } from './user.types'
+import { IUser } from './user.types'
 
 // =================================COMMENTS=================================
 
-export type TComment = {
+export type TComments = {
+	data: TCommentResponse[]
+	total: number
+}
+
+export type TCreateComment = {
 	postId: number
-	userId: string
 	content: string
 }
 
@@ -18,7 +22,7 @@ export type TCommentResponse = {
 	content: string
 	postId: number
 	userId: string
-	user: IUserCredentials
+	user: IUser
 	// UserLike: TCommentLikes[]
 	Like: TCommentLikes[]
 	likes: number
@@ -31,7 +35,6 @@ export type TCommentResponse = {
 export type TCommentLike = {
 	commentId: number
 	postId: number
-	userId: string
 }
 
 export type TCommentDelete = {
@@ -48,7 +51,6 @@ export type TCommentEdit = {
 // =================================SUBCOMMENTS=================================
 
 export type TSubComment = {
-	userId: string
 	commentId: number
 	postId: number
 	content: string

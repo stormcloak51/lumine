@@ -5,21 +5,6 @@ import { UserDto } from './user.dto'
 export class CreatePostDto {
 	@IsString()
 	content: string
-
-	@IsObject()
-	@ValidateNested()
-	@Type(() => UserDto)
-	UserDto: UserDto
-}
-
-export class LikePostDto {
-	@IsNumber()
-	postId: number
-
-	@IsObject()
-	@ValidateNested()
-	@Type(() => UserDto)
-	UserDto: UserDto
 }
 
 export class EditPostDto {
@@ -31,14 +16,6 @@ export class EditPostDto {
 
 	@IsString()
 	content: string
-}
-
-export class DeletePostDto {
-	@IsNumber()
-	postId: number
-
-	@IsString()
-	UserDtoId: string
 }
 
 // ==================== DRAFTS ====================

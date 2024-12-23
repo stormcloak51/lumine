@@ -1,5 +1,4 @@
-import { postApi } from '@/shared/api/postApi'
-import { TPost } from '@/shared/config/types/post.types'
+import { postService } from '@/shared/api/post.service'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useCallback, useRef } from 'react'
 
@@ -15,9 +14,9 @@ export const usePostList = ({ feed, username, initialData }: props) => {
 			queryKey: ['posts'],
 			queryFn: ({ pageParam = 1 }) => {
 				if (feed) {
-					return postApi.findAllSortedByDate(pageParam, 10)
+					return postService.findAllSortedByDate(pageParam, 10)
 				}
-				return postApi.findByUsername(username!, pageParam, 10)
+				return postService.findByUsername(username!, pageParam, 10)
 			},
 			getNextPageParam: (lastPage, pages) => {
 				const hasMore = lastPage.data.length === 10

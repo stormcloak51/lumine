@@ -5,7 +5,7 @@ import { Button, PasswordInput, Text, TextInput, Title } from '@mantine/core'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRef } from 'react'
-import { FormData } from '../model/login.types'
+import { LoginFormData } from '@/shared/config/types/auth.types'
 import { useLoginMutation } from '../model/useLoginMutation'
 import { useLoginSchema } from '../model/useLoginSchema'
 
@@ -15,7 +15,7 @@ export function LoginPage() {
 	const { form } = useLoginSchema()
 	const { mutate, isPending } = useLoginMutation()
 
-	const onSubmit = async (data: FormData) => {
+	const onSubmit = async (data: LoginFormData) => {
 		mutate(data)
 	}
 	return (

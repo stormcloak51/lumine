@@ -4,7 +4,6 @@ export declare class GetCommentsDto {
     page: number;
 }
 export declare class CreateCommentDto {
-    userId: string;
     postId: number;
     commentId?: number;
     content: string;

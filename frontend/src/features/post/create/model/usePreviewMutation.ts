@@ -1,4 +1,4 @@
-import { postApi } from '@/shared/api/postApi'
+import { postService } from '@/shared/api/post.service'
 import { utapiDeleteFiles } from '@/shared/api/uploadthing/actions'
 import { IAsset } from '@/shared/config/types/general.types'
 import { uploadFiles } from '@/shared/lib/uploadthing'
@@ -11,7 +11,7 @@ export const usePreviewMutation = () => {
       try {
         const result = await uploadFiles('mediaPost', {files})
         console.log(result, 'result')
-        await postApi.upsertDraft({
+        await postService.upsertDraft({
           media: result.map(item => {
             return {
               url: item.serverData.url,
@@ -37,7 +37,7 @@ export const usePreviewMutation = () => {
       if (!file.key) return { success: false, message: 'Something went wrong, please try again!' }
       try {
         await utapiDeleteFiles(file)
-        await postApi.deleteMediaDraft(file.key)
+        await postService.deleteMediaDraft(file.key)
         return {
           success: true,
           message: 'Successfully deleted file'

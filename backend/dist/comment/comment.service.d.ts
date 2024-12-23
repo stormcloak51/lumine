@@ -39,7 +39,7 @@ export declare class CommentService {
         }[];
         total: number;
     }>;
-    create(dto: CreateCommentDto, postId: number): Promise<{
+    create(dto: CreateCommentDto, userId: string): Promise<{
         likes: number;
         user: {
             name: string;

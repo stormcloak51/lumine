@@ -4,7 +4,7 @@ import { IUser } from '@/shared/config/types/user.types'
 
 
 class AuthService {
-	private baseUrl = '/auth'
+	private baseUrl = 'auth'
 
 	async register(body: TRegister) {
 		const response = await api.post<IUser>(`${this.baseUrl}/register`, body)

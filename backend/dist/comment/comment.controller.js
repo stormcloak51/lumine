@@ -16,6 +16,7 @@ exports.CommentController = void 0;
 const common_1 = require("@nestjs/common");
 const comment_service_1 = require("./comment.service");
 const comment_dto_1 = require("../auth/dto/comment.dto");
+const user_decorator_1 = require("../auth/decorators/user.decorator");
 let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
@@ -23,8 +24,8 @@ let CommentController = class CommentController {
     async get(postId, page = 1) {
         return await this.commentService.getById({ postId, page });
     }
-    async create(dto, postId) {
-        return await this.commentService.create(dto, postId);
+    async create(dto, userId) {
+        return await this.commentService.create(dto, userId);
     }
     async like(dto) {
         return this.commentService.likeComment(dto);
@@ -42,7 +43,7 @@ let CommentController = class CommentController {
             page,
         });
     }
-    async createSubcomment(postId, commentId, userId, content) {
+    async createSubcomment(postId, commentId, content, userId) {
         const dto = { content, userId, commentId, postId };
         return await this.commentService.createSubcomment(dto);
     }
@@ -59,9 +60,9 @@ __decorate([
 __decorate([
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Body)('postId', common_1.ParseIntPipe)),
+    __param(1, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_dto_1.CreateCommentDto, Number]),
+    __metadata("design:paramtypes", [comment_dto_1.CreateCommentDto, String]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "create", null);
 __decorate([
@@ -98,8 +99,8 @@ __decorate([
     (0, common_1.Post)('createSubcomment'),
     __param(0, (0, common_1.Body)('postId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)('commentId', common_1.ParseIntPipe)),
-    __param(2, (0, common_1.Body)('userId')),
-    __param(3, (0, common_1.Body)('content')),
+    __param(2, (0, common_1.Body)('content')),
+    __param(3, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, Number, String, String]),
     __metadata("design:returntype", Promise)

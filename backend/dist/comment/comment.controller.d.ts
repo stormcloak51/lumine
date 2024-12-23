@@ -39,7 +39,7 @@ export declare class CommentController {
         }[];
         total: number;
     }>;
-    create(dto: CreateCommentDto, postId: number): Promise<{
+    create(dto: CreateCommentDto, userId: string): Promise<{
         likes: number;
         user: {
             name: string;
@@ -126,7 +126,7 @@ export declare class CommentController {
         }[];
         total: number;
     }>;
-    createSubcomment(postId: number, commentId: number, userId: string, content: string): Promise<{
+    createSubcomment(postId: number, commentId: number, content: string, userId: string): Promise<{
         likes: number;
         user: {
             name: string;

@@ -1,5 +1,5 @@
 import { PostModel, User } from '@prisma/client';
-import { UpsertDraftDto, CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { UpsertDraftDto, CreatePostDto, EditPostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 export declare class PostController {
     private readonly postService;
@@ -56,7 +56,7 @@ export declare class PostController {
         }[];
         total: number;
     }>;
-    createPost(data: CreatePostDto): import("@/prisma/__generated__").Prisma.Prisma__PostModelClient<{
+    createPost(data: CreatePostDto, user: User): import("@/prisma/__generated__").Prisma.Prisma__PostModelClient<{
         id: number;
         created_at: Date;
         updated_at: Date;
@@ -157,7 +157,7 @@ export declare class PostController {
         }[];
         total: number;
     }>;
-    likePost(data: LikePostDto): Promise<{
+    likePost(postId: number, userId: string): Promise<{
         likes: number;
         Like: {
             userId: string;
@@ -169,19 +169,7 @@ export declare class PostController {
         userId: string;
         content: string;
     }>;
-    unlikePost(data: LikePostDto): Promise<{
-        likes: number;
-        Like: {
-            userId: string;
-            postId: number;
-        }[];
-        id: number;
-        created_at: Date;
-        updated_at: Date;
-        userId: string;
-        content: string;
-    }>;
-    delete(data: DeletePostDto): Promise<{
+    delete(postId: number, userId: string): Promise<{
         id: number;
         created_at: Date;
         updated_at: Date;

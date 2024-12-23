@@ -31,8 +31,8 @@ let PostController = class PostController {
     findAllSortedByDate(page = 1, limit = 10) {
         return this.postService.findAllSortedByDate(page, limit);
     }
-    createPost(data) {
-        return this.postService.createPost(data);
+    createPost(data, user) {
+        return this.postService.createPost({ ...data, ...user });
     }
     findById(id) {
         return this.postService.findById(id);
@@ -40,14 +40,11 @@ let PostController = class PostController {
     findByUsername(page = 1, limit = 10, username) {
         return this.postService.findAllByUsername(page, limit, username);
     }
-    likePost(data) {
-        return this.postService.likePost(data);
+    likePost(postId, userId) {
+        return this.postService.likePost(postId, userId);
     }
-    unlikePost(data) {
-        return this.postService.unLikePost(data);
-    }
-    delete(data) {
-        return this.postService.delete(data);
+    delete(postId, userId) {
+        return this.postService.delete(postId, userId);
     }
     edit(data) {
         return this.postService.edit(data);
@@ -92,8 +89,9 @@ __decorate([
     (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.CreatePostDto]),
+    __metadata("design:paramtypes", [post_dto_1.CreatePostDto, Object]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "createPost", null);
 __decorate([
@@ -118,24 +116,18 @@ __decorate([
     (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('like'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
+    __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "likePost", null);
 __decorate([
     (0, auth_decorator_1.Authorization)(),
-    (0, common_1.Patch)('unlike'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.LikePostDto]),
-    __metadata("design:returntype", void 0)
-], PostController.prototype, "unlikePost", null);
-__decorate([
-    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Delete)('delete'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_dto_1.DeletePostDto]),
+    __metadata("design:paramtypes", [Number, String]),
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 __decorate([
@@ -173,7 +165,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "deleteMediaDraft", null);
 exports.PostController = PostController = __decorate([
-    (0, common_1.Controller)('posts'),
+    (0, common_1.Controller)('post'),
     __metadata("design:paramtypes", [post_service_1.PostService])
 ], PostController);
 //# sourceMappingURL=post.controller.js.map

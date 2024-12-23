@@ -1,5 +1,5 @@
 'use client'
-import { authApi } from '@/shared/api/authApi'
+import { authService } from '@/app/(pages)/(auth)/services/auth.service'
 import { useAuth } from '@/shared/stores/user/useAuth'
 import { useUser } from '@/shared/stores/user/user.store'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
@@ -22,7 +22,7 @@ export const UserMenu: FC<props> = ({ size }) => {
 
 	const handleLogout = async () => {
 		try {
-			await authApi.logout()
+			await authService.logout()
 			deleteUser()
 			router.push('/login')
 		} catch (err) {

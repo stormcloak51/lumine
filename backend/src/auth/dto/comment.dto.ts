@@ -13,8 +13,6 @@ export class GetCommentsDto {
 }
 
 export class CreateCommentDto {
-	@IsString()
-	userId: string
 
 	@Transform(({value}) => parseInt(value))
 	postId: number;

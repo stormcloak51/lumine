@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, Request as RequestNest, UseGuards } from '@nestjs/common';
 import { PostModel, User } from '@prisma/client';
-import { UpsertDraftDto, CreatePostDto, DeletePostDto, EditPostDto, LikePostDto } from '../dtos/post.dto';
+import { UpsertDraftDto, CreatePostDto, EditPostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
 import { Request } from 'express'
 import * as cookie from 'cookie'
@@ -8,7 +8,7 @@ import { AuthGuard } from '@nestjs/passport'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
 import { Authorization } from 'src/auth/decorators/auth.decorator'
 
-@Controller('posts')
+@Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -37,9 +37,9 @@ export class PostController {
   createPost(
     @Body()
     data: CreatePostDto,
+    @CurrentUser() user: User,
   ) {
-    
-    return this.postService.createPost(data);
+    return this.postService.createPost({ ...data, ...user });
   }
 
 
@@ -57,34 +57,21 @@ export class PostController {
     return this.postService.findAllByUsername(page, limit, username);
   }
 
-
   @Authorization()
   @Patch('like')
   likePost(
     @Body()
-    data: LikePostDto,
+    postId: number,
+    @CurrentUser('id') userId: string,
   ) {
-    return this.postService.likePost(data);
+    return this.postService.likePost(postId, userId);
   }
-
-
-
-  @Authorization()
-  @Patch('unlike')
-  unlikePost(
-    @Body()
-    data: LikePostDto,
-  ) {
-    return this.postService.unLikePost(data);
-  }
-
 
   @Authorization()
   @Delete('delete')
-  delete(@Body() data: DeletePostDto) {
-    return this.postService.delete(data);
+  delete(@Body() postId: number, @CurrentUser('id') userId: string) {
+    return this.postService.delete(postId, userId);
   }
-
 
   @Authorization()
   @Patch('edit')
