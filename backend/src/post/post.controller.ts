@@ -60,8 +60,7 @@ export class PostController {
   @Authorization()
   @Patch('like')
   likePost(
-    @Body()
-    postId: number,
+    @Body('postId', ParseIntPipe) postId: number,
     @CurrentUser('id') userId: string,
   ) {
     return this.postService.likePost(postId, userId);

@@ -13,6 +13,7 @@ export const PostActions = ({ post, onClickComment, commentsCount }: props) => {
 
   const {isLiked, handleLike} = usePost({post})
 
+  
   return (
     <>
       <Button

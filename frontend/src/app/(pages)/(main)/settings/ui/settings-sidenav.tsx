@@ -5,8 +5,9 @@ import { FaPalette, FaUser } from 'react-icons/fa6'
 import { BiSolidLock } from 'react-icons/bi'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { NextPage } from 'next'
 
-export const SettingsSidenav = () => {
+export const SettingsSidenav: NextPage = () => {
 	const pathname = usePathname()?.split('/')[2]
 	const [activePage, setActivePage] = useState(pathname)
 

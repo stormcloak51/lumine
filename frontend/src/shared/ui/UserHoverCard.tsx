@@ -1,4 +1,4 @@
-import { TUserProfile } from '@/shared/config/types/user.types'
+import { IUser, TUserProfile } from '@/shared/config/types/user.types'
 import {
 	ActionIcon,
 	Blockquote,
@@ -14,7 +14,7 @@ import Link from 'next/link'
 import LumineAvatar from '../../shared/ui/LumineAvatar'
 
 interface props extends TextProps {
-	user: TUserProfile
+	user: IUser
 	targetSize?: MantineSize | (string & {}) | undefined
 }
 

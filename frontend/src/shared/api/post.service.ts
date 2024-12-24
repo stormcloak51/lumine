@@ -1,3 +1,4 @@
+import { TPaginatedResponse } from '../config/types/general.types'
 import { ICreatePost, IPostDraft, TPost } from '../config/types/post.types'
 import { api } from './base'
 
@@ -11,26 +12,25 @@ export class PostService {
   async findSortedByLikes(
     page: number = 1,
     limit: number = 10
-  ): Promise<TPost[]> {
-    const response = await api.get<TPost[]>(
+  ): Promise<TPaginatedResponse<TPost[]>> {
+    const response = await api.get<TPaginatedResponse<TPost[]>>(
       `post/sortedByLikes?page=${page}&limit=${limit}`
     )
+
     return response
   }
 
-  async findAllSortedByDate(
-    page: number = 1,
-    limit: number = 10
-  ): Promise<TPost[]> {
-    const response = await api.get<TPost[]>(
+  async findAllSortedByDate(page: number = 1, limit: number = 10) {
+    const response = await api.get<TPaginatedResponse<TPost>>(
       `post/sortedByDate?page=${page}&limit=${limit}`
     )
+
     return response
   }
 
   async findByUsername(username: string, page: number = 1, limit: number = 10) {
     try {
-      const response = await api.get<TPost[]>(
+      const response = await api.get<TPaginatedResponse<TPost>>(
         `post/findByUsername?username=${username}&page=${page}&limit=${limit}`
       )
       return response
@@ -45,7 +45,7 @@ export class PostService {
   }
 
   async like(postId: number) {
-    const response = await api.patch('post/like', postId)
+    const response = await api.patch<TPost>('post/like', {postId})
     return response
   }
 

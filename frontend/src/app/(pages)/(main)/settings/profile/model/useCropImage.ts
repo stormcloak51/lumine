@@ -1,5 +1,5 @@
 import { uploadContent } from '@/shared/api/upload-content'
-import { userApi } from '@/shared/api/userApi'
+import { userService } from '@/shared/api/user.service'
 import { IUser } from '@/shared/config/types/user.types'
 import { getCroppedImg } from '@/shared/helpers/getCroppedImg'
 import { capitalize } from '@/shared/helpers/capitalize'
@@ -30,7 +30,7 @@ export const useCropImage = ({
 	}
 	const mutation = useMutation({
 		mutationFn: async (data: { dto: Partial<IUser> }) => {
-			return await userApi.update({ id: user.id, dto: data.dto })
+			return await userService.update(data.dto)
 		},
 	})
 

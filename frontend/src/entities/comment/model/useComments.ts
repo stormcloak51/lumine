@@ -1,5 +1,5 @@
-import { commentApi } from '@/shared/api/commentApi'
-import { TComment, TCommentLike, TCommentResponse } from '@/shared/config/types/comment.types'
+import { commentService } from '@/shared/api/comment.service'
+import { TCreateComment, TCommentLike, TCommentResponse } from '@/shared/config/types/comment.types'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { TPaginatedResponse } from '@/shared/config/types/general.types'
@@ -19,7 +19,7 @@ export const useComments = (postId: number) => {
   } = useInfiniteQuery({
     queryKey: ['comments', postId],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await commentApi.getById(postId, pageParam)
+      const response = await commentService.getById(postId, pageParam)
 
       return response as TPaginatedResponse<TCommentResponse>
     },
@@ -31,7 +31,7 @@ export const useComments = (postId: number) => {
   })
 
   const createCommentMutation = useMutation({
-    mutationFn: (data: TComment) => commentApi.create(data),
+    mutationFn: (data: TCreateComment) => commentService.create(data),
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['posts']
@@ -45,7 +45,7 @@ export const useComments = (postId: number) => {
 
 	const likedCommentMutation = useMutation({
 		mutationFn: async (data: TCommentLike) => {
-      return commentApi.like(data)
+      return commentService.like(data)
     },
     onSettled: () => {
       queryClient.invalidateQueries({

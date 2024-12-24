@@ -10,6 +10,7 @@ import {
 import { UserService } from './user.service';
 import { UpdateUserDto } from 'src/dtos/user.dto';
 import { Authorization } from 'src/auth/decorators/auth.decorator'
+import { CurrentUser } from '../auth/decorators/user.decorator'
 
 @Controller('user')
 export class UserController {
@@ -29,8 +30,8 @@ export class UserController {
   }
 
   @Authorization()
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  @Patch()
+  update(@CurrentUser('id') id: string, @Body() dto: UpdateUserDto) {
     return this.userService.update({ id, dto });
   }
 }

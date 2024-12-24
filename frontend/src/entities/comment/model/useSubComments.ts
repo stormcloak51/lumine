@@ -1,4 +1,4 @@
-import { commentApi } from '@/shared/api/commentApi'
+import { commentService } from '@/shared/api/comment.service'
 import { TCommentLike, TCommentResponse, TSubComment } from '@/shared/config/types/comment.types'
 import { TPaginatedResponse } from '@/shared/config/types/general.types'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -25,7 +25,7 @@ export const useSubComments = ({postId, commentId}: props) => {
   } = useInfiniteQuery({
     queryKey: ['subComments', postId, commentId],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await commentApi.getSubcomments({postId, commentId, page: pageParam})
+      const response = await commentService.getSubcomments({postId, commentId, page: pageParam})
 
       return response as TPaginatedResponse<TCommentResponse>
     },
@@ -39,7 +39,7 @@ export const useSubComments = ({postId, commentId}: props) => {
 
   const createSubCommentMutation = useMutation({
     mutationFn: (data: Partial<TSubComment>) => {
-      return commentApi.createSubcomment(data)
+      return commentService.createSubcomment(data)
     },
     onSettled: () => {
       queryClient.invalidateQueries({
@@ -54,7 +54,7 @@ export const useSubComments = ({postId, commentId}: props) => {
 
   const likedSubCommentMutation = useMutation({
 		mutationFn: async (data: TCommentLike) => {
-      return commentApi.like(data)
+      return commentService.like(data)
     },
     onSettled: () => {
       queryClient.invalidateQueries({

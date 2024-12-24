@@ -3,13 +3,18 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(req: NextRequest) {
 	const token = req.cookies.get('session')?.value
 
+  const isProtectedRoute = config.matcher.some(route => {
+    const pattern = new RegExp(
+      `^${route.replace(/:\w+\*/g, '.*').replace(/:\w+/g, '[^/]+')}$`
+    )
+    return pattern.test(req.nextUrl.pathname)
+  })
+
 	if (req.nextUrl.pathname.startsWith('/api/uploadthing')) {
 		return NextResponse.next()
 	}
-
-	const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/register')
 	
-	if (isAuthPage) {
+	if (['/login', '/register', '/'].includes(req.nextUrl.pathname)) {
 		if (token) {
 			const url = req.nextUrl.clone()
 			url.pathname = '/feed'
@@ -18,29 +23,20 @@ export function middleware(req: NextRequest) {
 
 		return NextResponse.next()
 	}
-
-	if (!token && req.nextUrl.pathname in config.matcher) {
+	if (!token && isProtectedRoute) {
 		const url = req.nextUrl.clone()
 		url.pathname = '/login'
 		return NextResponse.redirect(url)
 	}
-
-	if (req.nextUrl.pathname === '/api/uploadthing') {
-    return NextResponse.next();
-  }
 
 	return NextResponse.next()
 }
 
 export const config = {
   matcher: [
-    '/login',
-    '/register',
-    '/',
     '/feed',
     '/profile/:path*',
     '/settings/profile',
-    '/(.*)',
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ]
 }

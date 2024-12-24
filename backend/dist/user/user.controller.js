@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_dto_1 = require("../dtos/user.dto");
 const auth_decorator_1 = require("../auth/decorators/auth.decorator");
+const user_decorator_1 = require("../auth/decorators/user.decorator");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -49,8 +50,8 @@ __decorate([
 ], UserController.prototype, "findOne", null);
 __decorate([
     (0, auth_decorator_1.Authorization)(),
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)(),
+    __param(0, (0, user_decorator_1.CurrentUser)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, user_dto_1.UpdateUserDto]),

@@ -18,7 +18,9 @@ export const SideNav = () => {
 		user: { userAvatar, surname, name, username },
 	} = useAuth()
 	const pathname = usePathname()!.substring(1)
-	const [index, setIndex] = useState<string>('feed')
+	
+	const [index, setIndex] = useState<string | null>(null)
+
 	useEffect(() => {
 		setIndex(pathname.split('/')[0])
 	}, [pathname])

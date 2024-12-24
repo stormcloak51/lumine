@@ -45,7 +45,7 @@ let CommentController = class CommentController {
     }
     async createSubcomment(postId, commentId, content, userId) {
         const dto = { content, userId, commentId, postId };
-        return await this.commentService.createSubcomment(dto);
+        return await this.commentService.createSubcomment(postId, commentId, userId, content);
     }
 };
 exports.CommentController = CommentController;

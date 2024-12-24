@@ -158,14 +158,22 @@ let PostService = class PostService {
                 id: postId,
             },
             data: {
-                Like: {
-                    [isLiked ? 'disconnect' : 'connect']: {
+                Like: isLiked ? {
+                    delete: {
                         userId_postId: {
                             userId,
                             postId
                         }
-                    },
-                },
+                    }
+                } : {
+                    create: {
+                        user: {
+                            connect: {
+                                id: userId
+                            }
+                        }
+                    }
+                }
             },
             include: {
                 Like: true,
@@ -173,7 +181,7 @@ let PostService = class PostService {
         });
         return {
             ...updatedPost,
-            likes: post.Like.length,
+            likes: updatedPost.Like.length,
         };
     }
     async findById(id) {

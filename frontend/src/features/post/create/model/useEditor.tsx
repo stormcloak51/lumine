@@ -35,7 +35,7 @@ export const useEditor = (options: Partial<EditorOptions>) => {
 			],
 			[]
 		),
-		immediatelyRender: true,
+		immediatelyRender: false,
 		editorProps: {
 			attributes: {
 				class: '!outline-none !border-none',

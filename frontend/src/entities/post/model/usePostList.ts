@@ -5,37 +5,29 @@ import { useCallback, useRef } from 'react'
 interface props {
 	feed: boolean
 	username?: string
-	initialData: any
 }
 
-export const usePostList = ({ feed, username, initialData }: props) => {
-	const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+export const usePostList = ({ feed, username }: props) => {
+	const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
 			queryKey: ['posts'],
-			queryFn: ({ pageParam = 1 }) => {
-				if (feed) {
-					return postService.findAllSortedByDate(pageParam, 10)
-				}
-				return postService.findByUsername(username!, pageParam, 10)
+			queryFn: async ({ pageParam = 1 }) => {
+				const response = feed ? await postService.findAllSortedByDate(pageParam) : await postService.findByUsername(username!, pageParam)
+				return response
 			},
 			getNextPageParam: (lastPage, pages) => {
-				const hasMore = lastPage.data.length === 10
+				const hasMore = lastPage?.data?.length === 10
 				return hasMore ? pages.length + 1 : undefined
 			},
 			initialPageParam: 1,
 			refetchOnMount: false,
-			initialData: {
-				pages: [initialData],
-				pageParams: [1],
-			},
 		})
 
-	const allPosts = data?.pages.flatMap(page => page)
-
+	// const allPosts = data?.pages.flatMap(page => page)
 	const observerRef = useRef<IntersectionObserver | null>(null)
 	const lastPostRef = useCallback(
 		(node: HTMLDivElement) => {
-			if (isLoading || isFetchingNextPage) return
+			if (status == 'pending' || isFetchingNextPage) return
 			if (observerRef.current) observerRef.current.disconnect()
 			observerRef.current = new IntersectionObserver(entries => {
 				if (entries[0].isIntersecting && hasNextPage) {
@@ -44,12 +36,12 @@ export const usePostList = ({ feed, username, initialData }: props) => {
 			})
 			if (node) observerRef.current.observe(node)
 		},
-		[isLoading, isFetchingNextPage, hasNextPage, fetchNextPage]
+		[status, isFetchingNextPage, hasNextPage, fetchNextPage]
 	)
 
 	return {
-		isLoading,
-		allPosts,
+		isLoading: status === 'pending',
+		allPosts: data?.pages,
 		lastPostRef,
 	}
 }

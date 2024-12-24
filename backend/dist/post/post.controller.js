@@ -115,7 +115,7 @@ __decorate([
 __decorate([
     (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('like'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)('postId', common_1.ParseIntPipe)),
     __param(1, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String]),

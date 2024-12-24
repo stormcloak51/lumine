@@ -7,6 +7,7 @@ import {
   UpsertDraftDto,
 } from '../dtos/post.dto'
 import { PrismaService } from '../prisma/prisma.service'
+import { UserService } from '../user/user.service'
 
 @Injectable()
 export class PostService {
@@ -176,15 +177,23 @@ export class PostService {
         id: postId,
       },
       data: {
-        Like: {
-          [isLiked ? 'disconnect' : 'connect']: {
+        Like: isLiked ? {
+          delete: {
             userId_postId: {
               userId,
               postId
             }
-          },
+          }
+        } : {
+          create: {
+            user: {
+              connect: {
+                id: userId
+              }
+            }
+          }
+        }
         },
-      },
       include: {
         Like: true,
       },
@@ -192,7 +201,7 @@ export class PostService {
 
     return {
       ...updatedPost,
-      likes: post.Like.length,
+      likes: updatedPost.Like.length,
     };
   }
 

@@ -1,5 +1,4 @@
 import { PostCreate } from '@/features/post/create/index'
-import { DMSans } from '@/public/assets/fonts/fonts'
 import { TPost } from '@/shared/config/types/post.types'
 import { Button, Menu, Modal, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -62,7 +61,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
 				classNames={{
 					title: '!text-2xl font-semibold',
 				}}
-				className={`${DMSans.className}`}
+				
 				radius={'lg'}
 				overlayProps={{
 					backgroundOpacity: 0.55,
@@ -109,7 +108,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
 					title: '!text-2xl font-semibold',
 					header: '!pb-[5px]',
 				}}
-				className={`${DMSans.className} w-auto`}
+				className={`w-auto`}
 				radius={'lg'}
 				overlayProps={{
 					backgroundOpacity: 0.55,

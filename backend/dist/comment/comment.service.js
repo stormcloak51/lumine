@@ -231,13 +231,13 @@ let CommentService = class CommentService {
             total,
         };
     }
-    async createSubcomment(dto) {
+    async createSubcomment(postId, commentId, userId, content) {
         const comment = await this.prisma.comment.create({
             data: {
-                postId: dto.postId,
-                parentId: dto.commentId,
-                userId: dto.userId,
-                content: dto.content
+                postId: postId,
+                parentId: commentId,
+                userId: userId,
+                content: content
             },
             include: {
                 user: {

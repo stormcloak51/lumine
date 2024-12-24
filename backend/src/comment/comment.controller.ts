@@ -75,6 +75,6 @@ export class CommentController {
     @CurrentUser('id') userId: string,
   ) {
     const dto = { content, userId, commentId, postId };
-    return await this.commentService.createSubcomment(dto);
+    return await this.commentService.createSubcomment(postId, commentId, userId,  content);
   }
 }

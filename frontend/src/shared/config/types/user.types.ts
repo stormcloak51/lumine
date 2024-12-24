@@ -12,7 +12,6 @@ export type TUser = {
 }
 
 export type TUserProfile = {
-	id: string
 	name: string
 	surname: string
 	username: string
@@ -37,7 +36,6 @@ export interface IUser {
 	surname: string
 	username: string
 	email: string
-	password: string
 	userAvatar: string
 	userCover: string
 	bio: string
@@ -45,6 +43,9 @@ export interface IUser {
 	created_at: Date | string | null
 	updated_at: Date | string | null
 }
+
+export type TEditProfile = Partial<Pick<IUser, 'name' 
+| 'surname' | 'bio' | 'userAvatar' | 'userCover'>>
 
 export type TUserData = {
 	access_token?: string
