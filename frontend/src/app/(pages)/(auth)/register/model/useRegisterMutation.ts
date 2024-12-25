@@ -37,6 +37,7 @@ export const useRegisterMutation = () => {
       }
     },
     onSuccess: (data) => {
+			console.log(data, 'DATA')
       setUser(data!)
       router.push('/feed')
     },

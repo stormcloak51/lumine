@@ -3,13 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export function middleware(req: NextRequest) {
 	const token = req.cookies.get('session')?.value
 
-  const isProtectedRoute = config.matcher.some(route => {
-    const pattern = new RegExp(
-      `^${route.replace(/:\w+\*/g, '.*').replace(/:\w+/g, '[^/]+')}$`
-    )
-    return pattern.test(req.nextUrl.pathname)
-  })
-
 	if (req.nextUrl.pathname.startsWith('/api/uploadthing')) {
 		return NextResponse.next()
 	}
@@ -23,7 +16,7 @@ export function middleware(req: NextRequest) {
 
 		return NextResponse.next()
 	}
-	if (!token && isProtectedRoute) {
+	if (!token) {
 		const url = req.nextUrl.clone()
 		url.pathname = '/login'
 		return NextResponse.redirect(url)
@@ -35,6 +28,8 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     '/feed',
+		'/login',
+		'/register',
     '/profile/:path*',
     '/settings/profile',
     '/((?!_next/static|_next/image|favicon.ico).*)',

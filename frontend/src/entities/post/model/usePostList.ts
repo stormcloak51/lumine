@@ -16,14 +16,15 @@ export const usePostList = ({ feed, username }: props) => {
 				return response
 			},
 			getNextPageParam: (lastPage, pages) => {
-				const hasMore = lastPage?.data?.length === 10
+				console.log(lastPage, 'lastpage')
+				const hasMore = lastPage?.data.length === 10
 				return hasMore ? pages.length + 1 : undefined
 			},
 			initialPageParam: 1,
 			refetchOnMount: false,
 		})
 
-	// const allPosts = data?.pages.flatMap(page => page)
+	
 	const observerRef = useRef<IntersectionObserver | null>(null)
 	const lastPostRef = useCallback(
 		(node: HTMLDivElement) => {

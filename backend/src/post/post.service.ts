@@ -153,6 +153,11 @@ export class PostService {
           },
         },
       },
+      include: {
+        User: true,
+        Like: true,
+        Comment: true,
+      }
     });
   }
 

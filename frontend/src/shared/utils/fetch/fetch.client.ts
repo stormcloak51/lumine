@@ -85,7 +85,7 @@ export class FetchClient {
 
 	public post<T>(
 		endpoint: string,
-		body?: T,
+		body?: any,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'POST', {
@@ -101,7 +101,7 @@ export class FetchClient {
 	public put<T>(
 		endpoint: string,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		body: T,
+		body: any,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'PUT', {
@@ -123,7 +123,7 @@ export class FetchClient {
 
 	public patch<T>(
 		endpoint: string,
-		body: T,
+		body: any,
 		options: RequestOptions = {}
 	) {
 		return this.request<T>(endpoint, 'PATCH', {

@@ -40,7 +40,7 @@ export class PostService {
   }
 
   async create(data: ICreatePost) {
-    const response = await api.post<ICreatePost>('post/create', data)
+    const response = await api.post<TPost>('post/create', data)
     return response
   }
 

@@ -57,6 +57,34 @@ export declare class PostController {
         total: number;
     }>;
     createPost(data: CreatePostDto, user: User): import("@/prisma/__generated__").Prisma.Prisma__PostModelClient<{
+        User: {
+            id: string;
+            created_at: Date;
+            updated_at: Date;
+            name: string;
+            username: string;
+            email: string;
+            password: string;
+            surname: string;
+            bio: string;
+            userAvatar: string;
+            userCover: string;
+            role: import("@/prisma/__generated__").$Enums.RoleType;
+        };
+        Like: {
+            userId: string;
+            postId: number;
+        }[];
+        Comment: {
+            id: number;
+            created_at: Date;
+            updated_at: Date;
+            content: string;
+            userId: string;
+            postId: number;
+            parentId: number | null;
+        }[];
+    } & {
         id: number;
         created_at: Date;
         updated_at: Date;
