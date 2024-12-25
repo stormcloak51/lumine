@@ -1,9 +1,8 @@
 'use client'
 import { Flex } from '@mantine/core'
 import { FC } from 'react'
-import { usePostList } from '../model/usePostList'
 import { PostItem } from './post-item'
-import Loading from '@/app/(pages)/(main)/feed/loading'
+import { usePostList } from '../model/usePostList'
 
 export interface IPostList {
 	feed: boolean
@@ -11,16 +10,16 @@ export interface IPostList {
 }
 
 export const PostList: FC<IPostList> = ({
-	username,
 	feed,
+	username
 }) => {
 
 	const { isLoading, allPosts, lastPostRef } = usePostList({
-		feed,
-		username,
-	})
+    feed,
+    username,
+  })
 
-	if (isLoading) return <Loading />
+	// if (isLoading) return <Loading />
 	return (
 		<Flex direction={'column'} className='gap-y-4'>
 			{allPosts && allPosts.map((postPage, index) => {

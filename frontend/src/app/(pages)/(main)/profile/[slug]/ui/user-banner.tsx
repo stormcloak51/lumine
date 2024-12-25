@@ -12,11 +12,11 @@ import {
 import { FC, useState } from 'react'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
 import { useClipboard } from '@mantine/hooks'
-import { IUserCredentials } from '@/shared/config/types/user.types'
+import { IUser } from '@/shared/config/types/user.types'
 import { ChangeCredentials } from './change-credentials'
 import Image from 'next/image'
 
-export const UserBanner: FC<IUserCredentials> = user => {
+export const UserBanner: FC<IUser> = user => {
 	const clipboard = useClipboard({ timeout: 1000 })
 	const [mounted, setMounted] = useState<boolean>(false)
 	return (

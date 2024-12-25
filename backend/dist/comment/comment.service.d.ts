@@ -7,10 +7,10 @@ export declare class CommentService {
         data: {
             likes: number;
             user: {
-                id: string;
-                username: string;
                 name: string;
+                username: string;
                 userAvatar: string;
+                id: string;
                 likedComments: {
                     created_at: Date;
                     userId: string;
@@ -30,11 +30,11 @@ export declare class CommentService {
                 }[];
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
-            postId: number;
             userId: string;
+            postId: number;
+            content: string;
             parentId: number | null;
         }[];
         total: number;
@@ -42,10 +42,10 @@ export declare class CommentService {
     create(dto: CreateCommentDto, userId: string): Promise<{
         likes: number;
         user: {
-            id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
+            id: string;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -58,20 +58,20 @@ export declare class CommentService {
             commentId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
         userId: string;
+        postId: number;
+        content: string;
         parentId: number | null;
     }>;
     likeComment(dto: LikeCommentDto): Promise<{
         likes: number;
         user: {
-            id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
+            id: string;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -88,39 +88,39 @@ export declare class CommentService {
             commentId: number;
         })[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
         userId: string;
+        postId: number;
+        content: string;
         parentId: number | null;
     }>;
     delete(dto: DeleteCommentDto): Promise<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
         userId: string;
+        postId: number;
+        content: string;
         parentId: number | null;
     }>;
     edit(dto: EditCommentDto): import("@/prisma/__generated__").Prisma.Prisma__CommentClient<{
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
         userId: string;
+        postId: number;
+        content: string;
         parentId: number | null;
     }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
     getSubcomments(dto: GetCommentsDto): Promise<{
         data: {
             likes: number;
             user: {
-                id: string;
-                username: string;
                 name: string;
+                username: string;
                 userAvatar: string;
+                id: string;
                 likedComments: {
                     created_at: Date;
                     userId: string;
@@ -133,11 +133,11 @@ export declare class CommentService {
                 commentId: number;
             }[];
             id: number;
-            content: string;
             created_at: Date;
             updated_at: Date;
-            postId: number;
             userId: string;
+            postId: number;
+            content: string;
             parentId: number | null;
         }[];
         total: number;
@@ -145,10 +145,10 @@ export declare class CommentService {
     createSubcomment(postId: number, commentId: number, userId: string, content: string): Promise<{
         likes: number;
         user: {
-            id: string;
-            username: string;
             name: string;
+            username: string;
             userAvatar: string;
+            id: string;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -161,11 +161,11 @@ export declare class CommentService {
             commentId: number;
         }[];
         id: number;
-        content: string;
         created_at: Date;
         updated_at: Date;
-        postId: number;
         userId: string;
+        postId: number;
+        content: string;
         parentId: number | null;
     }>;
 }

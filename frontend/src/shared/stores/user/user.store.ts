@@ -14,7 +14,7 @@ export const useUser = create<SliceProps>()(
       user: null,
       setUser: (user: Partial<IUser>) =>
         set((prev) => ({
-          user: prev.user ? { ...prev.user, ...user } : user as IUser,
+          user: prev.user ? { ...prev.user, ...user } : (user as IUser),
         })),
       deleteUser: () => set({ user: null }),
     }),

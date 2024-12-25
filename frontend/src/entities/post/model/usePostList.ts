@@ -10,7 +10,7 @@ interface props {
 export const usePostList = ({ feed, username }: props) => {
 	const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
-			queryKey: ['posts'],
+			queryKey: feed ? ['posts'] : ['posts', username],
 			queryFn: async ({ pageParam = 1 }) => {
 				const response = feed ? await postService.findAllSortedByDate(pageParam) : await postService.findByUsername(username!, pageParam)
 				return response
