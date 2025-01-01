@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { CreateCommentDto, DeleteCommentDto, EditCommentDto, GetCommentsDto, LikeCommentDto } from 'src/auth/dto/comment.dto'
 import { PrismaService } from 'src/prisma/prisma.service'
+import { userSelect } from '../config/constants/user.constants'
 
 @Injectable()
 export class CommentService {
@@ -13,17 +14,14 @@ export class CommentService {
 				parentId: null
 			},
 			orderBy: {
-				created_at: 'asc'
+				created_at: 'desc'
 			},
 			include: {
 				user: {
 					select: {
-						id: true,
-						likedComments: true,
-						username: true,
-						userAvatar: true,
-						name: true,
-					}
+						...userSelect,
+						likedPosts: true,
+					},
 				},
 				Like: true,
 				subComments: {
@@ -69,12 +67,9 @@ export class CommentService {
 			include: {
 				user: {
 					select: {
-						id: true,
-						likedComments: true,
-						username: true,
-						userAvatar: true,
-						name: true,
-					}
+						...userSelect,
+						likedPosts: true,
+					},
 				},
 				Like: true,
 			}
@@ -86,7 +81,7 @@ export class CommentService {
 		}
 	}
 
-	async likeComment(dto: LikeCommentDto) {
+	async likeComment(dto: LikeCommentDto, userId: string) {
 
 		const comment = await this.prisma.comment.findUnique({
 			where: {
@@ -105,7 +100,7 @@ export class CommentService {
 			const like = await prisma.commentLike.findFirst({
 				where: {
 					AND: [
-						{ userId: dto.userId },
+						{ userId: userId },
 						{ commentId: dto.commentId }
 					]
 				}
@@ -115,7 +110,7 @@ export class CommentService {
 				await prisma.commentLike.deleteMany({
 					where: {
 						AND: [
-							{ userId: dto.userId },
+							{ userId: userId },
 							{ commentId: dto.commentId }
 						]
 					}
@@ -124,7 +119,7 @@ export class CommentService {
 			} else {
 				return await prisma.commentLike.create({
 					data: {
-						userId: dto.userId,
+						userId: userId,
 						commentId: dto.commentId
 					}
 				})
@@ -138,12 +133,9 @@ export class CommentService {
 			include: {
 				user: {
 					select: {
-						id: true,
+						...userSelect,
 						likedComments: true,
-						username: true,
-						userAvatar: true,
-						name: true,
-					}
+					},
 				},
 				Like: {
 					include: {
@@ -213,12 +205,9 @@ export class CommentService {
 			include: {
 				user: {
 					select: {
-						id: true,
+						...userSelect,
 						likedComments: true,
-						username: true,
-						userAvatar: true,
-						name: true,
-					}
+					},
 				},
 				Like: true
 			},
@@ -253,12 +242,9 @@ export class CommentService {
 			include: {
 				user: {
 					select: {
-						id: true,
+						...userSelect,
 						likedComments: true,
-						username: true,
-						userAvatar: true,
-						name: true,
-					}
+					},
 				},
 				Like: true,
 			}

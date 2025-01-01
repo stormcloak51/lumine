@@ -182,7 +182,8 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
                 disabled={!editor.getText() || editor.getText().length === 0}
               >
                 <SendHorizontal
-                  className={`transition-all ${!(!editor.getText() || editor.getText().length === 0)
+                  className={`transition-all ${
+                    !(!editor.getText() || editor.getText().length === 0)
                       ? `text-[#ffd37d] animate-pulse`
                       : `text-[rgb(66,66,66)] animate-none`
                   }`}

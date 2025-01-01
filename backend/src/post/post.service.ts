@@ -7,7 +7,6 @@ import {
   UpsertDraftDto,
 } from '../dtos/post.dto'
 import { PrismaService } from '../prisma/prisma.service'
-import { UserService } from '../user/user.service'
 
 @Injectable()
 export class PostService {
@@ -142,7 +141,6 @@ export class PostService {
   }
 
   createPost(data: CreatePostDto & User) {
-
     return this.prisma.postModel.create({
       data: {
         content: data.content,
@@ -154,7 +152,11 @@ export class PostService {
         },
       },
       include: {
-        User: true,
+        User: {
+          select: {
+            ...userSelect,
+          },
+        },
         Like: true,
         Comment: true,
       }

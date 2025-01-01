@@ -11,13 +11,14 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
 const comment_controller_1 = require("./comment.controller");
 const comment_service_1 = require("./comment.service");
+const user_service_1 = require("../user/user.service");
 let CommentModule = class CommentModule {
 };
 exports.CommentModule = CommentModule;
 exports.CommentModule = CommentModule = __decorate([
     (0, common_1.Module)({
         controllers: [comment_controller_1.CommentController],
-        providers: [comment_service_1.CommentService, prisma_service_1.PrismaService],
+        providers: [comment_service_1.CommentService, prisma_service_1.PrismaService, user_service_1.UserService],
     })
 ], CommentModule);
 //# sourceMappingURL=comment.module.js.map

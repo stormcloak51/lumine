@@ -16,8 +16,8 @@ export const usePostList = ({ feed, username }: props) => {
 				return response
 			},
 			getNextPageParam: (lastPage, pages) => {
-				console.log(lastPage, 'lastpage')
-				const hasMore = lastPage?.data.length === 10
+				if (!lastPage) return
+				const hasMore = lastPage?.data.length >= 10
 				return hasMore ? pages.length + 1 : undefined
 			},
 			initialPageParam: 1,

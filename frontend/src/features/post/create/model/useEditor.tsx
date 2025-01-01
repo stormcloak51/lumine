@@ -13,33 +13,33 @@ import { EditorOptions, useEditor as useTiptapEditor } from '@tiptap/react'
 import { useMemo } from 'react'
 
 export const useEditor = (options: Partial<EditorOptions>) => {
-	return useTiptapEditor({
-		...options,
-		extensions: useMemo(
-			() => [
-				Document,
-				Paragraph,
-				Text,
-				Bold,
-				Italic,
-				Underline,
-				Strike,
-				History,
-				Placeholder.configure({
-					placeholder: randomPostPhrases(),
-					emptyEditorClass: 'is-editor-empty',
-				}),
-				Heading.configure({
-					levels: [1, 2, 3],
-				}),
-			],
-			[]
-		),
-		immediatelyRender: false,
-		editorProps: {
-			attributes: {
-				class: '!outline-none !border-none',
-			},
-		},
-	})
+  return useTiptapEditor({
+    ...options,
+    extensions: useMemo(
+      () => [
+        Document,
+        Paragraph,
+        Text,
+        Bold,
+        Italic,
+        Underline,
+        Strike,
+        History,
+        Placeholder.configure({
+          placeholder: randomPostPhrases(),
+          emptyEditorClass: 'is-editor-empty',
+        }),
+        Heading.configure({
+          levels: [1, 2, 3],
+        }),
+      ],
+      []
+    ),
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        class: '!outline-none !border-none',
+      },
+    },
+  })
 }

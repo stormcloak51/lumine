@@ -1,39 +1,42 @@
 'use client'
+
+import Loading from '@/app/(pages)/(main)/feed/loading'
 import { Flex } from '@mantine/core'
 import { FC } from 'react'
-import { PostItem } from './post-item'
+
 import { usePostList } from '../model/usePostList'
+import { PostItem } from './post-item'
 
 export interface IPostList {
-	feed: boolean
-	username?: string
+  feed: boolean
+  username?: string
 }
 
-export const PostList: FC<IPostList> = ({
-	feed,
-	username
-}) => {
-
-	const { isLoading, allPosts, lastPostRef } = usePostList({
+export const PostList: FC<IPostList> = ({ feed, username }) => {
+  const { isLoading, allPosts, lastPostRef } = usePostList({
     feed,
     username,
   })
 
-	// if (isLoading) return <Loading />
-	return (
-		<Flex direction={'column'} className='gap-y-4'>
-			{allPosts && allPosts.map((postPage, index) => {
-				return postPage?.data?.map((post, index) => {
-					const isLastPost = postPage?.data && postPage?.data?.length - 1 === index
-					return (
-						<PostItem
-							lastPostRef={isLastPost ? lastPostRef : undefined}
-							key={post.id}
-							{...post}
-						/>
-					)
-				})
-			})}
-		</Flex>
-	)
+  if (isLoading) return <Loading />
+  return (
+    <Flex direction={'column'} className="gap-y-4">
+      {allPosts &&
+        allPosts.map((postPage, pageIndex) => {
+          return postPage?.data?.map((post, postIndex) => {
+            const isLastPost =
+              postPage?.data &&
+              postPage?.data?.length - 1 === postIndex &&
+              pageIndex === allPosts.length - 1
+            return (
+              <PostItem
+                lastPostRef={isLastPost ? lastPostRef : undefined}
+                key={post.id}
+                {...post}
+              />
+            )
+          })
+        })}
+    </Flex>
+  )
 }

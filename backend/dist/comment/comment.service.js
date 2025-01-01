@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const user_constants_1 = require("../config/constants/user.constants");
 let CommentService = class CommentService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -23,17 +24,14 @@ let CommentService = class CommentService {
                 parentId: null
             },
             orderBy: {
-                created_at: 'asc'
+                created_at: 'desc'
             },
             include: {
                 user: {
                     select: {
-                        id: true,
-                        likedComments: true,
-                        username: true,
-                        userAvatar: true,
-                        name: true,
-                    }
+                        ...user_constants_1.userSelect,
+                        likedPosts: true,
+                    },
                 },
                 Like: true,
                 subComments: {
@@ -76,12 +74,9 @@ let CommentService = class CommentService {
             include: {
                 user: {
                     select: {
-                        id: true,
-                        likedComments: true,
-                        username: true,
-                        userAvatar: true,
-                        name: true,
-                    }
+                        ...user_constants_1.userSelect,
+                        likedPosts: true,
+                    },
                 },
                 Like: true,
             }
@@ -91,7 +86,7 @@ let CommentService = class CommentService {
             likes: comment.Like.length
         };
     }
-    async likeComment(dto) {
+    async likeComment(dto, userId) {
         const comment = await this.prisma.comment.findUnique({
             where: {
                 id: dto.commentId,
@@ -107,7 +102,7 @@ let CommentService = class CommentService {
             const like = await prisma.commentLike.findFirst({
                 where: {
                     AND: [
-                        { userId: dto.userId },
+                        { userId: userId },
                         { commentId: dto.commentId }
                     ]
                 }
@@ -116,7 +111,7 @@ let CommentService = class CommentService {
                 await prisma.commentLike.deleteMany({
                     where: {
                         AND: [
-                            { userId: dto.userId },
+                            { userId: userId },
                             { commentId: dto.commentId }
                         ]
                     }
@@ -126,7 +121,7 @@ let CommentService = class CommentService {
             else {
                 return await prisma.commentLike.create({
                     data: {
-                        userId: dto.userId,
+                        userId: userId,
                         commentId: dto.commentId
                     }
                 });
@@ -139,12 +134,9 @@ let CommentService = class CommentService {
             include: {
                 user: {
                     select: {
-                        id: true,
+                        ...user_constants_1.userSelect,
                         likedComments: true,
-                        username: true,
-                        userAvatar: true,
-                        name: true,
-                    }
+                    },
                 },
                 Like: {
                     include: {
@@ -205,12 +197,9 @@ let CommentService = class CommentService {
             include: {
                 user: {
                     select: {
-                        id: true,
+                        ...user_constants_1.userSelect,
                         likedComments: true,
-                        username: true,
-                        userAvatar: true,
-                        name: true,
-                    }
+                    },
                 },
                 Like: true
             },
@@ -242,12 +231,9 @@ let CommentService = class CommentService {
             include: {
                 user: {
                     select: {
-                        id: true,
+                        ...user_constants_1.userSelect,
                         likedComments: true,
-                        username: true,
-                        userAvatar: true,
-                        name: true,
-                    }
+                    },
                 },
                 Like: true,
             }

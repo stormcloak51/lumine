@@ -8,13 +8,19 @@ export declare class CommentController {
             likes: number;
             user: {
                 name: string;
+                surname: string;
                 username: string;
+                email: string;
                 userAvatar: string;
+                userCover: string;
                 id: string;
-                likedComments: {
-                    created_at: Date;
+                bio: string;
+                role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
+                likedPosts: {
                     userId: string;
-                    commentId: number;
+                    postId: number;
                 }[];
             };
             Like: {
@@ -43,13 +49,19 @@ export declare class CommentController {
         likes: number;
         user: {
             name: string;
+            surname: string;
             username: string;
+            email: string;
             userAvatar: string;
+            userCover: string;
             id: string;
-            likedComments: {
-                created_at: Date;
+            bio: string;
+            role: import("@/prisma/__generated__").$Enums.RoleType;
+            created_at: Date;
+            updated_at: Date;
+            likedPosts: {
                 userId: string;
-                commentId: number;
+                postId: number;
             }[];
         };
         Like: {
@@ -65,13 +77,20 @@ export declare class CommentController {
         content: string;
         parentId: number | null;
     }>;
-    like(dto: LikeCommentDto): Promise<{
+    like(dto: LikeCommentDto, userId: string): Promise<{
         likes: number;
         user: {
             name: string;
+            surname: string;
             username: string;
+            email: string;
             userAvatar: string;
+            userCover: string;
             id: string;
+            bio: string;
+            role: import("@/prisma/__generated__").$Enums.RoleType;
+            created_at: Date;
+            updated_at: Date;
             likedComments: {
                 created_at: Date;
                 userId: string;
@@ -102,9 +121,16 @@ export declare class CommentController {
             likes: number;
             user: {
                 name: string;
+                surname: string;
                 username: string;
+                email: string;
                 userAvatar: string;
+                userCover: string;
                 id: string;
+                bio: string;
+                role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
                 likedComments: {
                     created_at: Date;
                     userId: string;
@@ -130,9 +156,16 @@ export declare class CommentController {
         likes: number;
         user: {
             name: string;
+            surname: string;
             username: string;
+            email: string;
             userAvatar: string;
+            userCover: string;
             id: string;
+            bio: string;
+            role: import("@/prisma/__generated__").$Enums.RoleType;
+            created_at: Date;
+            updated_at: Date;
             likedComments: {
                 created_at: Date;
                 userId: string;

@@ -1,6 +1,7 @@
 import { Exclude } from 'class-transformer'
 import { IsDateString, IsEnum, IsString } from 'class-validator'
 
+
 export class UserDto {
 	@IsString()
 	username: string

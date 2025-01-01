@@ -1,7 +1,3 @@
-
-
 export const SettingsAppearance = () => {
-	return (
-		<div>SettingsAppearance</div>
-	)
+  return <div>SettingsAppearance</div>
 }

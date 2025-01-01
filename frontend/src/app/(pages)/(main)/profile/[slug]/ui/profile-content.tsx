@@ -1,15 +1,15 @@
+import { IUser } from '@/shared/config/types/user.types'
 import { Grid } from '@mantine/core'
 
 import { FollowerSection } from './follower-section'
 import { UserBanner } from './user-banner'
 import { Wrapper } from './wrapper'
-import { IUser } from '@/shared/config/types/user.types'
 
 export const ProfileContent = async ({
   user,
   params,
 }: {
-  user: IUser,
+  user: IUser
   params: { slug: string }
 }) => {
   return (

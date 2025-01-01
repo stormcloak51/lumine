@@ -11,7 +11,7 @@ import { UserHoverCard } from '@/shared/ui/UserHoverCard'
 import { Card, Divider, Text } from '@mantine/core'
 // import DOMpurify from 'dompurify'
 import { Circle, LoaderCircle } from 'lucide-react'
-import { FC, useState } from 'react'
+import { FC, useEffect } from 'react'
 
 import { PostActions } from './post-actions'
 import { ManagePost } from './post-manage'
@@ -21,8 +21,6 @@ export const PostItem: FC<
 > = (post) => {
   const { user } = useAuth()
 
-  const [commentLength, setCommentLength] = useState(post?.Comment?.length)
-
   const {
     comments,
     isLoading,
@@ -31,7 +29,16 @@ export const PostItem: FC<
     isCommentsVisible,
     hasNextPage,
     fetchNextPage,
+    setNewCommentId,
+    newCommentId,
   } = useComments(post.id)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNewCommentId(null)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [newCommentId])
 
   return (
     <Card
@@ -49,7 +56,7 @@ export const PostItem: FC<
             url={post.User.userAvatar}
             username={post.User.username}
           />
-          <UserHoverCard user={post.User} />
+          <UserHoverCard role="post" user={post.User} />
           <Circle fill="#ffdd9a" size={8} stroke="#ffdd9a" />
           <Text c="dimmed" size="md">
             {timeAgo(post.created_at)}
@@ -77,7 +84,11 @@ export const PostItem: FC<
         <PostActions
           post={post}
           onClickComment={toggleCommentsVisibility}
-          commentsCount={commentLength}
+          commentsCount={
+            comments && comments?.length
+              ? comments[0].total
+              : post.Comment.length
+          }
         />
       </div>
       <Divider
@@ -91,12 +102,12 @@ export const PostItem: FC<
         <CommentList
           hasNextPage={hasNextPage}
           fetchNextPage={fetchNextPage}
-          comments={comments}
+          comments={comments.flatMap((page) => page.data)}
+          newCommentId={newCommentId}
         />
       )}
       <CommentCreate
         onSubmit={(data) => {
-          setCommentLength((prev) => prev + 1)
           createComment(data)
           if (!isCommentsVisible) toggleCommentsVisibility()
         }}

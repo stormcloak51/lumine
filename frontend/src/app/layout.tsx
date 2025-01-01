@@ -40,9 +40,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-				
-			</head>
+      <head></head>
       <body>
         <ClientProvider>
           <MantineProvider defaultColorScheme="dark" theme={theme}>

@@ -50,6 +50,4 @@ export class LikeCommentDto {
 	@IsNumber()
 	postId: number
 
-	@IsString()
-	userId: string
 }

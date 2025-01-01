@@ -2,6 +2,7 @@ import {
   TCommentDelete,
   TCommentEdit,
   TCommentLike,
+  TCommentResponse,
   TComments,
   TCreateComment,
 	TSubComment,
@@ -20,23 +21,23 @@ export class CommentService {
   }
 
   async create(data: TCreateComment) {
-    const response = await api.post('comment/create', data)
+    const response = await api.post<TCommentResponse>('comment/create', data)
     return response
   }
 
   async like(data: TCommentLike) {
-    const response = await api.post('post/like', data)
-
+    const response = await api.post<TCommentResponse>('comment/like', data)
+    console.log(response)
     return response
   }
 
   async delete(data: TCommentDelete) {
-    const response = await api.patch('post/delete', data)
+    const response = await api.patch('comment/delete', data)
     return response
   }
 
   async edit(data: TCommentEdit) {
-    const response = await api.patch('post/edit', data)
+    const response = await api.patch('comment/edit', data)
     return response
   }
 

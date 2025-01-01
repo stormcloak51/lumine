@@ -1,24 +1,25 @@
+import '@mantine/core/styles.css'
 import type { Metadata } from 'next'
 
-import '@mantine/core/styles.css'
-
 export const metadata: Metadata = {
-	title: 'Shall we begin?',
-	description: 'Lumine network',
+  title: 'Shall we begin?',
+  description: 'Lumine network',
 }
 
 export default function AuthLayout({
-	children,
+  children,
 }: Readonly<{
-	children: React.ReactNode
+  children: React.ReactNode
 }>) {
-	return (
-		<section
-			className='w-[100%] min-h-screen flex justify-center items-center'
-			style={{
-				backgroundImage: 'radial-gradient(circle , rgba(245, 195, 86, 0.9), rgba(20, 20, 20, 0.3))',
-			}}>
-			{children}
-		</section>
-	)
+  return (
+    <section
+      className="w-[100%] min-h-screen flex justify-center items-center"
+      style={{
+        backgroundImage:
+          'radial-gradient(circle , rgba(245, 195, 86, 0.9), rgba(20, 20, 20, 0.3))',
+      }}
+    >
+      {children}
+    </section>
+  )
 }

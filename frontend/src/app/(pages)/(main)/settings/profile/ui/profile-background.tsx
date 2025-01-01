@@ -1,10 +1,9 @@
-import {
-  Button,
-} from '@mantine/core'
+import { Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
 import { useState } from 'react'
+
 import { ProfileModal } from './profile-modal'
 
 export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
@@ -32,7 +31,7 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
           fill
           quality={100}
           priority
-          sizes='(max-width: 768px) 100vw, 640px'
+          sizes="(max-width: 768px) 100vw, 640px"
         />
         <div
           className={`absolute top-4 right-4 transition-opacity duration-200 ${
@@ -50,7 +49,13 @@ export const ProfileBackground = ({ imageUrl }: { imageUrl: string }) => {
       </div>
 
       {/* Modal */}
-      <ProfileModal type='background' isOpened={isBackgroundModalOpened} close={closeBackgroundModal} file={file} setFile={setFile} />
+      <ProfileModal
+        type="background"
+        isOpened={isBackgroundModalOpened}
+        close={closeBackgroundModal}
+        file={file}
+        setFile={setFile}
+      />
     </>
   )
 }

@@ -1,4 +1,3 @@
-
 import { PostList } from '@/entities/post/index'
 import { PostCreate } from '@/features/post/create'
 import { Container } from '@mantine/core'

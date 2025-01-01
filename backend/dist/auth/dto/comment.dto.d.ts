@@ -20,5 +20,4 @@ export declare class EditCommentDto {
 export declare class LikeCommentDto {
     commentId: number;
     postId: number;
-    userId: string;
 }

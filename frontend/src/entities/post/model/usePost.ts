@@ -1,7 +1,8 @@
 import { postService } from '@/shared/api/post.service'
+import { TPaginatedResponse } from '@/shared/config/types/general.types'
 import { TPost, TPostLikes } from '@/shared/config/types/post.types'
 import { useAuth } from '@/shared/stores/user/useAuth'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { InfiniteData, QueryFilters, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 
 interface props {
@@ -16,16 +17,43 @@ export const usePost = ({ post }: props) => {
 
 
   const likePostMutation = useMutation({
-    mutationFn: (postId: number) => postService.like(postId),
-    onMutate: async (postId) => {
-      await queryClient.cancelQueries({queryKey: ['posts']})
-
-      const previousPosts = queryClient.getQueryData(['posts'])
-      console.log(previousPosts, 'previousPosts')
+    mutationFn: (postId: number) => {
+      return postService.like(postId)
     },
-		onSuccess: () => {
-			setIsLiked((prev) => !prev)
-		}
+    onSuccess: async (newPost) => {
+      const queryFilter: QueryFilters = {
+        queryKey: ['posts'],
+      }
+      
+      await queryClient.cancelQueries(queryFilter)
+      
+      queryClient.setQueriesData<InfiniteData<TPaginatedResponse<TPost> | undefined, unknown> | undefined>(queryFilter, (oldData) => {
+        if (!oldData) {
+          throw new Error('Post not found')
+        }
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => {
+            return {
+              ...page,
+              data: page?.data.map((existingPost) => {
+                if (existingPost.id === newPost.id) {
+                  return {
+                    ...existingPost,
+                    Like: isLiked ? existingPost.Like.filter(like => like.userId !== user?.id) : [...existingPost.Like, { userId: user?.id }],
+                    likes: isLiked ? existingPost.likes - 1 : existingPost.likes + 1
+                  }
+                }
+                return existingPost
+              })
+            }
+          })
+        }
+      })
+      setIsLiked(!isLiked)
+      
+    },
   })
 
   const handleLike = () => {

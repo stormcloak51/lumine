@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const comment_service_1 = require("./comment.service");
 const comment_dto_1 = require("../auth/dto/comment.dto");
 const user_decorator_1 = require("../auth/decorators/user.decorator");
+const auth_decorator_1 = require("../auth/decorators/auth.decorator");
 let CommentController = class CommentController {
     constructor(commentService) {
         this.commentService = commentService;
@@ -27,8 +28,8 @@ let CommentController = class CommentController {
     async create(dto, userId) {
         return await this.commentService.create(dto, userId);
     }
-    async like(dto) {
-        return this.commentService.likeComment(dto);
+    async like(dto, userId) {
+        return this.commentService.likeComment(dto, userId);
     }
     async delete(dto) {
         this.commentService.delete(dto);
@@ -50,6 +51,7 @@ let CommentController = class CommentController {
 };
 exports.CommentController = CommentController;
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('getById'),
     __param(0, (0, common_1.Query)('postId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('page', common_1.ParseIntPipe)),
@@ -58,6 +60,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "get", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('create'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, user_decorator_1.CurrentUser)('id')),
@@ -66,13 +69,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "create", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('like'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [comment_dto_1.LikeCommentDto]),
+    __metadata("design:paramtypes", [comment_dto_1.LikeCommentDto, String]),
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "like", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Delete)('delete'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -80,6 +86,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "delete", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Patch)('edit'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -87,6 +94,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "edit", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Get)('getSubcomments'),
     __param(0, (0, common_1.Query)('postId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('commentId', common_1.ParseIntPipe)),
@@ -96,6 +104,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], CommentController.prototype, "getSubcomments", null);
 __decorate([
+    (0, auth_decorator_1.Authorization)(),
     (0, common_1.Post)('createSubcomment'),
     __param(0, (0, common_1.Body)('postId', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Body)('commentId', common_1.ParseIntPipe)),

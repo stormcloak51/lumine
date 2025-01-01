@@ -25,7 +25,6 @@ export const useSendPost = () => {
             pageParams: [],
             pages: [{
               data: [post],
-              nextPage: undefined,
               total: 1
             }]
           }
@@ -37,8 +36,7 @@ export const useSendPost = () => {
             pageParams: oldData?.pageParams,
             pages: [
               {
-                data: [post, ...firstPage.data],
-                nextPage: firstPage.nextPage,
+                data: [{...post, Like: [], likes: 0, Comment: []}, ...firstPage.data],
                 total: firstPage.total + 1
               },
               ...oldData.pages.slice(1),
