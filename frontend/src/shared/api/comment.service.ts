@@ -27,7 +27,6 @@ export class CommentService {
 
   async like(data: TCommentLike) {
     const response = await api.post<TCommentResponse>('comment/like', data)
-    console.log(response)
     return response
   }
 

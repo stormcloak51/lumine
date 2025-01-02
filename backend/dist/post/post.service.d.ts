@@ -8,8 +8,8 @@ export declare class PostService {
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }[]>;
     findAllSortedByLikes(page?: number, limit?: number): Promise<{
         data: PostModel[];
@@ -19,17 +19,17 @@ export declare class PostService {
         data: {
             likes: number;
             User: {
-                id: string;
-                created_at: Date;
-                updated_at: Date;
                 name: string;
+                surname: string;
                 username: string;
                 email: string;
-                surname: string;
-                bio: string;
                 userAvatar: string;
                 userCover: string;
+                id: string;
+                bio: string;
                 role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
                 likedPosts: {
                     userId: string;
                     postId: number;
@@ -43,16 +43,16 @@ export declare class PostService {
                 id: number;
                 created_at: Date;
                 updated_at: Date;
-                content: string;
                 userId: string;
                 postId: number;
+                content: string;
                 parentId: number | null;
             }[];
             id: number;
             created_at: Date;
             updated_at: Date;
-            content: string;
             userId: string;
+            content: string;
         }[];
         total: number;
     }>;
@@ -60,17 +60,17 @@ export declare class PostService {
         data: {
             likes: number;
             User: {
-                id: string;
-                created_at: Date;
-                updated_at: Date;
                 name: string;
+                surname: string;
                 username: string;
                 email: string;
-                surname: string;
-                bio: string;
                 userAvatar: string;
                 userCover: string;
+                id: string;
+                bio: string;
                 role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
                 likedPosts: {
                     userId: string;
                     postId: number;
@@ -84,32 +84,32 @@ export declare class PostService {
                 id: number;
                 created_at: Date;
                 updated_at: Date;
-                content: string;
                 userId: string;
                 postId: number;
+                content: string;
                 parentId: number | null;
             }[];
             id: number;
             created_at: Date;
             updated_at: Date;
-            content: string;
             userId: string;
+            content: string;
         }[];
         total: number;
     }>;
     createPost(data: CreatePostDto & User): import("@/prisma/__generated__").Prisma.Prisma__PostModelClient<{
         User: {
-            id: string;
-            created_at: Date;
-            updated_at: Date;
             name: string;
+            surname: string;
             username: string;
             email: string;
-            surname: string;
-            bio: string;
             userAvatar: string;
             userCover: string;
+            id: string;
+            bio: string;
             role: import("@/prisma/__generated__").$Enums.RoleType;
+            created_at: Date;
+            updated_at: Date;
         };
         Like: {
             userId: string;
@@ -119,17 +119,17 @@ export declare class PostService {
             id: number;
             created_at: Date;
             updated_at: Date;
-            content: string;
             userId: string;
             postId: number;
+            content: string;
             parentId: number | null;
         }[];
     } & {
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
     likePost(postId: number, userId: string): Promise<{
         likes: number;
@@ -140,23 +140,23 @@ export declare class PostService {
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }>;
     findById(id: number): Promise<{
         likes: number;
         User: {
-            id: string;
-            created_at: Date;
-            updated_at: Date;
             name: string;
+            surname: string;
             username: string;
             email: string;
-            surname: string;
-            bio: string;
             userAvatar: string;
             userCover: string;
+            id: string;
+            bio: string;
             role: import("@/prisma/__generated__").$Enums.RoleType;
+            created_at: Date;
+            updated_at: Date;
             likedPosts: {
                 userId: string;
                 postId: number;
@@ -168,57 +168,57 @@ export declare class PostService {
         }[];
         Comment: ({
             user: {
-                id: string;
-                created_at: Date;
-                updated_at: Date;
                 name: string;
+                surname: string;
                 username: string;
                 email: string;
                 password: string;
-                surname: string;
-                bio: string;
                 userAvatar: string;
                 userCover: string;
+                id: string;
+                bio: string;
                 role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
             };
         } & {
             id: number;
             created_at: Date;
             updated_at: Date;
-            content: string;
             userId: string;
             postId: number;
+            content: string;
             parentId: number | null;
         })[];
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }>;
     delete(postId: number, userId: string): Promise<{
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }>;
     edit(data: EditPostDto): Promise<{
         id: number;
         created_at: Date;
         updated_at: Date;
-        content: string;
         userId: string;
+        content: string;
     }>;
     upsertDraft(userId: string, data: UpsertDraftDto): Promise<{
         id: number;
-        content: string;
         userId: string;
+        content: string;
     }>;
     deleteMediaDraft(userId: string, key: string): Promise<{
         id: number;
-        content: string;
         userId: string;
+        content: string;
     }>;
     getDraft(userId: string): Promise<{
         media: {
@@ -228,7 +228,7 @@ export declare class PostService {
         }[];
     } & {
         id: number;
-        content: string;
         userId: string;
+        content: string;
     }>;
 }

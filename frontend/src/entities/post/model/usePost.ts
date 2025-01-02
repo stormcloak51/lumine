@@ -52,7 +52,6 @@ export const usePost = ({ post }: props) => {
         }
       })
       setIsLiked(!isLiked)
-      
     },
   })
 
@@ -63,5 +62,6 @@ export const usePost = ({ post }: props) => {
   return {
     isLiked,
     handleLike,
+    data: likePostMutation.data
   }
 }

@@ -11,9 +11,8 @@ interface props {
 }
 
 export const PostActions = ({ post, onClickComment, commentsCount }: props) => {
-  const { isLiked, handleLike } = usePost({ post })
-
-  console.log(commentsCount)
+  const { isLiked, handleLike, data } = usePost({ post })
+  console.log(data)
   return (
     <>
       <Button
@@ -34,7 +33,7 @@ export const PostActions = ({ post, onClickComment, commentsCount }: props) => {
           inner: { display: 'flex', columnGap: '2px' },
         }}
       />
-      {commentsCount > 0 && (
+      {typeof commentsCount === 'number' && commentsCount > 0 && (
         <Button
           leftSection={<MessageCircle size={18} />}
           rightSection={commentsCount}
