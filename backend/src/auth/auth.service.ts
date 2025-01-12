@@ -12,7 +12,7 @@ import { User } from 'prisma/__generated__'
 import { UserDto } from 'src/dtos/user.dto'
 import { plainToInstance } from 'class-transformer'
 import { LoginDto } from './dto/login.dto'
-import * as bcrypt from 'bcrypt'
+import * as argon from 'argon2'
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()
@@ -37,7 +37,7 @@ export class AuthService {
       throw new NotFoundException('User with such credentials does not exist')
     }
 
-    const isValidPass = await bcrypt.compare(dto.password, user.password)
+    const isValidPass = await argon.verify(user.password, dto.password)
 
     if (!isValidPass) {
       throw new UnauthorizedException('Password is incorrect, please try again')

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { IAsset } from '../config/types/general.types'
+import { IAsset } from '@/shared/config/types/general.types'
 
 
 interface State {

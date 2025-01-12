@@ -1,10 +1,10 @@
-import { PostModel, User } from '@prisma/client';
+import { PostModel, User } from 'prisma/__generated__';
 import { CreatePostDto, EditPostDto, UpsertDraftDto } from '../dtos/post.dto';
 import { PrismaService } from '../prisma/prisma.service';
 export declare class PostService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    findAll(): import("@/prisma/__generated__").Prisma.PrismaPromise<{
+    findAll(): import("prisma/__generated__").Prisma.PrismaPromise<{
         id: number;
         created_at: Date;
         updated_at: Date;
@@ -27,7 +27,7 @@ export declare class PostService {
                 userCover: string;
                 id: string;
                 bio: string;
-                role: import("@/prisma/__generated__").$Enums.RoleType;
+                role: import("prisma/__generated__").$Enums.RoleType;
                 created_at: Date;
                 updated_at: Date;
                 likedPosts: {
@@ -68,7 +68,7 @@ export declare class PostService {
                 userCover: string;
                 id: string;
                 bio: string;
-                role: import("@/prisma/__generated__").$Enums.RoleType;
+                role: import("prisma/__generated__").$Enums.RoleType;
                 created_at: Date;
                 updated_at: Date;
                 likedPosts: {
@@ -97,7 +97,7 @@ export declare class PostService {
         }[];
         total: number;
     }>;
-    createPost(data: CreatePostDto & User): import("@/prisma/__generated__").Prisma.Prisma__PostModelClient<{
+    createPost(data: CreatePostDto & User): import("prisma/__generated__").Prisma.Prisma__PostModelClient<{
         User: {
             name: string;
             surname: string;
@@ -107,7 +107,7 @@ export declare class PostService {
             userCover: string;
             id: string;
             bio: string;
-            role: import("@/prisma/__generated__").$Enums.RoleType;
+            role: import("prisma/__generated__").$Enums.RoleType;
             created_at: Date;
             updated_at: Date;
         };
@@ -130,7 +130,7 @@ export declare class PostService {
         updated_at: Date;
         userId: string;
         content: string;
-    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
+    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs, import("prisma/__generated__").Prisma.PrismaClientOptions>;
     likePost(postId: number, userId: string): Promise<{
         likes: number;
         Like: {
@@ -154,7 +154,7 @@ export declare class PostService {
             userCover: string;
             id: string;
             bio: string;
-            role: import("@/prisma/__generated__").$Enums.RoleType;
+            role: import("prisma/__generated__").$Enums.RoleType;
             created_at: Date;
             updated_at: Date;
             likedPosts: {
@@ -177,7 +177,7 @@ export declare class PostService {
                 userCover: string;
                 id: string;
                 bio: string;
-                role: import("@/prisma/__generated__").$Enums.RoleType;
+                role: import("prisma/__generated__").$Enums.RoleType;
                 created_at: Date;
                 updated_at: Date;
             };

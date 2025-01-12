@@ -34,7 +34,7 @@ export const ProfileForm = () => {
       const fieldValue = errors?.message.split('`')[1]
       form.setFieldError(fieldValue, errors?.message)
     }
-  }, [errors])
+  }, [errors, form])
 
   return (
     <div>

@@ -1,3 +1,4 @@
+import { Prisma } from 'prisma/__generated__';
 import { RegisterDto } from 'src/auth/dto/register.dto';
 import { UpdateUserDto } from 'src/dtos/user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -14,11 +15,11 @@ export declare class UserService {
         userCover: string;
         id: string;
         bio: string;
-        role: import("@/prisma/__generated__").$Enums.RoleType;
+        role: import("prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
     }>;
-    findOne(idOrEmailOrUsername: string): import("@/prisma/__generated__").Prisma.Prisma__UserClient<{
+    findOne(idOrEmailOrUsername: string): Prisma.Prisma__UserClient<{
         name: string;
         surname: string;
         username: string;
@@ -28,11 +29,11 @@ export declare class UserService {
         userCover: string;
         id: string;
         bio: string;
-        role: import("@/prisma/__generated__").$Enums.RoleType;
+        role: import("prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
-    }, null, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
-    findAll(): import("@/prisma/__generated__").Prisma.PrismaPromise<{
+    }, null, import("@/prisma/__generated__/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
+    findAll(): Prisma.PrismaPromise<{
         name: string;
         surname: string;
         username: string;
@@ -42,7 +43,7 @@ export declare class UserService {
         userCover: string;
         id: string;
         bio: string;
-        role: import("@/prisma/__generated__").$Enums.RoleType;
+        role: import("prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
     }[]>;
@@ -59,11 +60,11 @@ export declare class UserService {
         userCover: string;
         id: string;
         bio: string;
-        role: import("@/prisma/__generated__").$Enums.RoleType;
+        role: import("prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
     }>;
-    delete(id: string): import("@/prisma/__generated__").Prisma.Prisma__UserClient<{
+    delete(id: string): Prisma.Prisma__UserClient<{
         name: string;
         surname: string;
         username: string;
@@ -73,8 +74,8 @@ export declare class UserService {
         userCover: string;
         id: string;
         bio: string;
-        role: import("@/prisma/__generated__").$Enums.RoleType;
+        role: import("prisma/__generated__").$Enums.RoleType;
         created_at: Date;
         updated_at: Date;
-    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
+    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs, Prisma.PrismaClientOptions>;
 }

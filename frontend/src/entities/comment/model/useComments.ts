@@ -15,7 +15,6 @@ import { useState } from 'react'
 
 export const useComments = (postId: number) => {
   const [isCommentsVisible, setIsCommentsVisible] = useState(false)
-  const [didUserAddComm, setUserAddComm] = useState(false)
   const queryClient = useQueryClient()
   const [newCommentId, setNewCommentId] = useState<number | null>(null)
 
@@ -87,7 +86,6 @@ export const useComments = (postId: number) => {
     },
   })
 
-
   const toggleCommentsVisibility = () => {
     setIsCommentsVisible((prev) => !prev)
   }
@@ -97,11 +95,10 @@ export const useComments = (postId: number) => {
     isLoading,
     error,
     createComment: createCommentMutation.mutate,
-    likeComment: console.log,
     toggleCommentsVisibility,
     isCommentsVisible,
     fetchNextPage,
-    hasNextPage: hasNextPage && !didUserAddComm,
+    hasNextPage: hasNextPage,
     count: comments?.pages.reduce((acc, curr) => acc + curr.data.length, 0),
     newCommentId,
     setNewCommentId,

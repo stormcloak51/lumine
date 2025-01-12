@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { PostModel, User } from '@prisma/client'
+import { PostModel, User } from 'prisma/__generated__'
 import { userSelect } from 'src/config/constants/user.constants'
 import {
   CreatePostDto,

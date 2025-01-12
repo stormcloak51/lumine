@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("../user/user.service");
 const user_dto_1 = require("../dtos/user.dto");
 const class_transformer_1 = require("class-transformer");
-const bcrypt = require("bcrypt");
+const argon = require("argon2");
 const config_1 = require("@nestjs/config");
 let AuthService = class AuthService {
     constructor(userService, configService) {
@@ -34,7 +34,7 @@ let AuthService = class AuthService {
         if (!user) {
             throw new common_1.NotFoundException('User with such credentials does not exist');
         }
-        const isValidPass = await bcrypt.compare(dto.password, user.password);
+        const isValidPass = await argon.verify(user.password, dto.password);
         if (!isValidPass) {
             throw new common_1.UnauthorizedException('Password is incorrect, please try again');
         }

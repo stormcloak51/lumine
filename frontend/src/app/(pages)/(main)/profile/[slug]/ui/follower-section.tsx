@@ -1,6 +1,6 @@
 'use client'
 
-import { TUser } from '@/types/user.types'
+import { TUser } from '@/shared/config/types/user.types'
 import { Avatar, Card, Grid, Title } from '@mantine/core'
 import { FC } from 'react'
 

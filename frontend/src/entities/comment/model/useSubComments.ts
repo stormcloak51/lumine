@@ -1,8 +1,9 @@
 import { commentService } from '@/shared/api/comment.service'
-import { TCommentLike, TCommentResponse, TSubComment } from '@/shared/config/types/comment.types'
+import { TCommentResponse, TSubComment } from '@/shared/config/types/comment.types'
 import { TPaginatedResponse } from '@/shared/config/types/general.types'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { InfiniteData, QueryFilters, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+
 
 
 interface props {
@@ -13,13 +14,14 @@ interface props {
 
 export const useSubComments = ({postId, commentId}: props) => {
 	
+  const [newSubCommentId, setNewSubCommentId] = useState<number | null>(null) // для перехода к комменту
 	const [isCommentsVisible, setIsCommentsVisible] = useState(false);
 	const queryClient = useQueryClient()
 
   const {
     data: comments,
     isLoading,
-    error,
+    // error,
     fetchNextPage,
     hasNextPage
   } = useInfiniteQuery({
@@ -27,7 +29,7 @@ export const useSubComments = ({postId, commentId}: props) => {
     queryFn: async ({ pageParam = 1 }) => {
       const response = await commentService.getSubcomments({postId, commentId, page: pageParam})
 
-      return response as TPaginatedResponse<TCommentResponse>
+      return response
     },
     getNextPageParam: (lastPage, pages) => {
       const hasMore = lastPage.data.length === 5
@@ -41,29 +43,42 @@ export const useSubComments = ({postId, commentId}: props) => {
     mutationFn: (data: Partial<TSubComment>) => {
       return commentService.createSubcomment(data)
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId]
-      })
-      queryClient.invalidateQueries({
+    onSuccess: (newSubComment) => {
+      const queryFilter: QueryFilters = {
         queryKey: ['subComments', postId, commentId],
-        refetchType: 'active'
-      })
-    }
-  })
+      }
 
-  const likedSubCommentMutation = useMutation({
-		mutationFn: async (data: TCommentLike) => {
-      return commentService.like(data)
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['comments', postId],
-        refetchType: 'none'
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['subComments', postId, commentId],
-        refetchType: 'active'
+      queryClient.cancelQueries(queryFilter)
+      
+      queryClient.setQueriesData<InfiniteData<TPaginatedResponse<TCommentResponse>, unknown> | undefined>(queryFilter, (oldData) => {
+        if (!oldData) {
+          return {
+            pageParams: [1],
+            pages: [
+              {
+                data: [newSubComment],
+                total: 1
+              }
+            ]
+          }
+        }
+
+        const updatedPages = oldData.pages.map((page, index) => {
+          if (index === 0) {
+            return {
+              total: page.total + 1,
+              data: [newSubComment, ...page.data]
+            }
+          }
+          return page
+        })
+
+
+        setNewSubCommentId(newSubComment.id)
+        return {
+          pages: updatedPages,
+          pageParams: oldData.pageParams,
+        }
       })
     }
   })
@@ -76,10 +91,11 @@ export const useSubComments = ({postId, commentId}: props) => {
 		comments: comments?.pages.flatMap(page => page.data),
 		isLoading,
     createSubcomment: createSubCommentMutation.mutate,
-		likeSubComment: likedSubCommentMutation.mutate,
     fetchNextPage,
 		hasNextPage,
 		isCommentsVisible,
-		toggleCommentsVisibility
+		toggleCommentsVisibility,
+    newSubCommentId,
+    setNewSubCommentId,
 	}
 }

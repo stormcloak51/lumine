@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { hash } from 'bcrypt'
+import { Prisma } from 'prisma/__generated__'
+import { hash } from 'argon2'
 import { RegisterDto } from 'src/auth/dto/register.dto'
 import { UpdateUserDto } from 'src/dtos/user.dto'
-
 import { PrismaService } from 'src/prisma/prisma.service'
 
 @Injectable()
@@ -11,7 +10,7 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: RegisterDto) {
-    const password: string = await hash(dto.password, 10);
+    const password: string = await hash(dto.password);
     const data = {
       ...dto,
       password,
@@ -60,7 +59,8 @@ export class UserService {
       });
       return updatedUser;
     } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError
+      ) {
         if (err.code === 'P2002') {
           const errorMessage = err.message;
 					const conflictingField = errorMessage.match(/Unique constraint failed on the fields: \((.*)\)/)[1];

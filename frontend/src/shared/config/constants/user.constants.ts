@@ -9,7 +9,6 @@ export const emptyUser: IUser = {
 	userAvatar: '',
 	bio: '',
 	email: '',
-	password: '',
 	role: EUserRoles.USER,
 	created_at: '',
 	updated_at: '',

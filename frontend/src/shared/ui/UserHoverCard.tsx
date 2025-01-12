@@ -16,13 +16,11 @@ import LumineAvatar from '../../shared/ui/LumineAvatar'
 
 interface props extends TextProps {
   user: IUser
-  role: string
   targetSize?: MantineSize | (string & {}) | undefined
 }
 
 export const UserHoverCard = ({
   user,
-  role,
   targetSize = 'lg',
   ...textProps
 }: props) => {

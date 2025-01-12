@@ -62,7 +62,7 @@ export class CommentService {
   }
 
   async createSubcomment(data: Partial<TSubComment>) {
-    const response = await api.post(
+    const response = await api.post<TCommentResponse>(
       'comment/createSubcomment',
       data
     )

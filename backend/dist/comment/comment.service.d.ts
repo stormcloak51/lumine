@@ -131,7 +131,7 @@ export declare class CommentService {
         postId: number;
         content: string;
         parentId: number | null;
-    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs>;
+    }, never, import("@/prisma/__generated__/runtime/library").DefaultArgs, import("@/prisma/__generated__").Prisma.PrismaClientOptions>;
     getSubcomments(dto: GetCommentsDto): Promise<{
         data: {
             likes: number;

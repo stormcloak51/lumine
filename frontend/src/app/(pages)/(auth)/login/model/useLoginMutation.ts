@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { LoginFormData } from '@/shared/config/types/auth.types'
+import { notifications } from '@mantine/notifications'
 
 export const useLoginMutation = () => {
 	const router = useRouter()
@@ -17,9 +18,13 @@ export const useLoginMutation = () => {
 			try {
 				const user = await authService.login(data)
 				return user
-			} catch (err) {
+			} catch (err: any) {
 				console.log(err)
-				return null
+				notifications.show({
+					color: 'red',
+					title: `Error ${err.statusCode}`,
+					message: err.message,
+				})
 			}
 		},
 		onMutate: () => {

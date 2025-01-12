@@ -25,7 +25,7 @@ export const MediaContent = ({ isFocused }: props) => {
     if (media) {
       setPreviews(media)
     }
-  }, [])
+  }, [setPreviews, media])
 
   return (
     <>

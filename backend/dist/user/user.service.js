@@ -11,15 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
-const client_1 = require("@prisma/client");
-const bcrypt_1 = require("bcrypt");
+const __generated__1 = require("../../prisma/__generated__/index.js");
+const argon2_1 = require("argon2");
 const prisma_service_1 = require("../prisma/prisma.service");
 let UserService = class UserService {
     constructor(prisma) {
         this.prisma = prisma;
     }
     async create(dto) {
-        const password = await (0, bcrypt_1.hash)(dto.password, 10);
+        const password = await (0, argon2_1.hash)(dto.password);
         const data = {
             ...dto,
             password,
@@ -65,7 +65,7 @@ let UserService = class UserService {
             return updatedUser;
         }
         catch (err) {
-            if (err instanceof client_1.Prisma.PrismaClientKnownRequestError) {
+            if (err instanceof __generated__1.Prisma.PrismaClientKnownRequestError) {
                 if (err.code === 'P2002') {
                     const errorMessage = err.message;
                     const conflictingField = errorMessage.match(/Unique constraint failed on the fields: \((.*)\)/)[1];

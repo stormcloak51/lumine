@@ -11,8 +11,7 @@ interface props {
 }
 
 export const PostActions = ({ post, onClickComment, commentsCount }: props) => {
-  const { isLiked, handleLike, data } = usePost({ post })
-  console.log(data)
+  const { isLiked, handleLike } = usePost({ post })
   return (
     <>
       <Button

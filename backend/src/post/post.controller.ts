@@ -1,10 +1,7 @@
 import { Body, Controller, Delete, Get, ParseIntPipe, Patch, Post, Query, Req, Request as RequestNest, UseGuards } from '@nestjs/common';
-import { PostModel, User } from '@prisma/client';
+import { PostModel, User } from 'prisma/__generated__';
 import { UpsertDraftDto, CreatePostDto, EditPostDto } from '../dtos/post.dto';
 import { PostService } from './post.service';
-import { Request } from 'express'
-import * as cookie from 'cookie'
-import { AuthGuard } from '@nestjs/passport'
 import { CurrentUser } from 'src/auth/decorators/user.decorator'
 import { Authorization } from 'src/auth/decorators/auth.decorator'
 

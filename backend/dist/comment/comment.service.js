@@ -192,7 +192,7 @@ let CommentService = class CommentService {
                 parentId: dto.commentId
             },
             orderBy: {
-                created_at: 'asc'
+                created_at: 'desc'
             },
             include: {
                 user: {

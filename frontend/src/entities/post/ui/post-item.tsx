@@ -38,7 +38,7 @@ export const PostItem: FC<
       setNewCommentId(null)
     }, 1000)
     return () => clearTimeout(timer)
-  }, [newCommentId])
+  }, [newCommentId, setNewCommentId])
 
   return (
     <Card
@@ -56,7 +56,7 @@ export const PostItem: FC<
             url={post.User.userAvatar}
             username={post.User.username}
           />
-          <UserHoverCard role="post" user={post.User} />
+          <UserHoverCard user={post.User} />
           <Circle fill="#ffdd9a" size={8} stroke="#ffdd9a" />
           <Text c="dimmed" size="md">
             {timeAgo(post.created_at)}

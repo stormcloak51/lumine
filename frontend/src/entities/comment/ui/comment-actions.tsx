@@ -17,14 +17,12 @@ interface ICommentActions {
 }
 
 export const CommentActions = ({
-  role,
+  role = CommentRoles.MAINCOMMENT,
   comment,
   onClickComment,
 }: ICommentActions) => {
-  const { like, isLiked } = useComment(comment)
+  const { like, isLiked } = useComment(comment, role)
 
-
-  console.log(comment, like.data, 'COMMENT')
   const theme = useMantineTheme()
 
   return (

@@ -24,7 +24,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
     { open: openEditPostModal, close: closeEditPostModal },
   ] = useDisclosure(false)
 
-  const [editedContent, setEditedContent] = useState(content)
+  const [editedContent] = useState(content)
   const theme = useMantineTheme()
 
   const { handleEdit, handleDelete } = useManagePost({

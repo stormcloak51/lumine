@@ -98,7 +98,7 @@ export const CommentCreate = ({
           onSubmit({
             content: editor.getHTML(),
             postId,
-            // commentId: commentId,
+            commentId: commentId,
           })
           editor.commands.clearContent()
         }}

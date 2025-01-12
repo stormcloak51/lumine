@@ -14,9 +14,12 @@ class AuthService {
 	}
 
 	async login(body: TLogin) {
-		const response = await api.post<IUser>(`${this.baseUrl}/login`, body)
-		console.log(response, body)
-		return response
+		try {
+			const response = await api.post<IUser>(`${this.baseUrl}/login`, body)
+			return response
+		} catch (err) {
+			throw JSON.parse(JSON.stringify(err))
+		}
 	}
 
 	async logout() {

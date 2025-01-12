@@ -31,11 +31,11 @@ export const CommentItem = ({
     comments,
     isLoading,
     createSubcomment,
-    likeSubComment,
     isCommentsVisible,
     toggleCommentsVisibility,
     fetchNextPage,
     hasNextPage,
+    newSubCommentId
   } = useSubComments({ postId: comment.postId, commentId: comment.id })
   const commentRef = useRef<HTMLDivElement>(null)
 
@@ -44,6 +44,8 @@ export const CommentItem = ({
       commentRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }, [isNew])
+
+
 
   return (
     <div ref={commentRef} className="flex flex-row gap-x-2">
@@ -61,7 +63,6 @@ export const CommentItem = ({
       >
         <div className="flex flex-row items-center gap-x-3">
           <UserHoverCard
-            role="comment"
             ml={0}
             targetSize="md"
             user={comment.user}
@@ -90,13 +91,12 @@ export const CommentItem = ({
                 comments={comments}
                 hasNextPage={hasNextPage}
                 fetchNextPage={fetchNextPage}
-                newCommentId={null}
+                newCommentId={newSubCommentId}
               />
               <CommentCreate
                 cl="mb-5"
                 commentId={comment.id}
                 onSubmit={(data) => {
-                  // setCommentLength(prev => prev + 1)
                   if (data.commentId) {
                     createSubcomment(data)
                     if (!isCommentsVisible) toggleCommentsVisibility()
