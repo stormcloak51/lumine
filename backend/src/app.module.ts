@@ -9,11 +9,12 @@ import { UserModule } from './user/user.module'
 import { PrismaModule } from './prisma/prisma.module';
 import { APP_INTERCEPTOR } from '@nestjs/core'
 import { ExcludePasswordInterceptor } from './interceptors/ExcludePassword.interceptor'
+import { FriendshipModule } from './friendship/friendship.module'
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true
-  }), PostModule, UserModule, AuthModule, CommentModule, PrismaModule],
+  }), PostModule, UserModule, AuthModule, CommentModule, PrismaModule, FriendshipModule],
   providers: [ PostService, PrismaService, {
     provide: APP_INTERCEPTOR,
     useClass: ExcludePasswordInterceptor

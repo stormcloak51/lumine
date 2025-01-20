@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./src/config/types"],
     "module": "commonjs",
+    "esModuleInterop": true,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -20,7 +22,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "types": ["@cloudflare/workers-types"],
-  },
+    "noFallthroughCasesInSwitch": false
+  }
 }

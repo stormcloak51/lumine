@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "./__generated__"
+  provider      = "prisma-client-js"
+  output        = "./__generated__"
   binaryTargets = ["native", "linux-arm64-openssl-3.0.x"]
 }
 
@@ -43,7 +43,7 @@ model User {
   bio        String
   userAvatar String
   userCover  String   @default("https://firebasestorage.googleapis.com/v0/b/lumine-d6ae4.appspot.com/o/general%2Fdefault-cover.png?alt=media&token=4d474931-41b8-4f5b-b11c-1982adff3170")
-  role       RoleType   @default(USER)
+  role       RoleType @default(USER)
   created_at DateTime @default(now()) @map("created_at")
   updated_at DateTime @updatedAt @map("updated_at")
 
@@ -52,6 +52,11 @@ model User {
   comments      Comment[]
   likedComments CommentLike[]
   postDraft     PostDraft?
+
+  sentRequests FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
+  friends    Friendship[] @relation("UserFriends")
+  friendsOf    Friendship[] @relation("FriendsOf")
 
   @@map("users")
 }
@@ -120,12 +125,39 @@ model PostDraft {
 model Token {
   id String @id @default(uuid())
 
-  email String
-  token String    @unique
-  type  TokenType
-  expiresIn DateTime @map("expires_in")
+  email     String
+  token     String    @unique
+  type      TokenType
+  expiresIn DateTime  @map("expires_in")
 
   @@map("tokens")
+}
+
+model FriendRequest {
+  id         String                  @default(cuid())
+  senderId   String
+  receiverId String
+  status     FriendshipRequestStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sender   User @relation("SentRequests", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedRequests", fields: [receiverId], references: [id])
+
+  @@unique([senderId, receiverId])
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  createdAt DateTime @default(now())
+
+  user   User @relation("UserFriends", fields: [userId], references: [id])
+  friend User @relation("FriendsOf", fields: [friendId], references: [id])
+
+  @@unique([userId, friendId])
 }
 
 enum RoleType {
@@ -138,4 +170,10 @@ enum TokenType {
   VERIFICATION
   PASSWORD_RESET
   TWO_FACTOR
+}
+
+enum FriendshipRequestStatus {
+  PENDING
+  DECLINED
+  ACCEPTED
 }

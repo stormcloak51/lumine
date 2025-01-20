@@ -18,6 +18,7 @@ const user_module_1 = require("./user/user.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const core_1 = require("@nestjs/core");
 const ExcludePassword_interceptor_1 = require("./interceptors/ExcludePassword.interceptor");
+const friendship_module_1 = require("./friendship/friendship.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -25,7 +26,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [config_1.ConfigModule.forRoot({
                 isGlobal: true
-            }), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule, prisma_module_1.PrismaModule],
+            }), post_module_1.PostModule, user_module_1.UserModule, auth_module_1.AuthModule, comment_module_1.CommentModule, prisma_module_1.PrismaModule, friendship_module_1.FriendshipModule],
         providers: [post_service_1.PostService, prisma_service_1.PrismaService, {
                 provide: core_1.APP_INTERCEPTOR,
                 useClass: ExcludePassword_interceptor_1.ExcludePasswordInterceptor

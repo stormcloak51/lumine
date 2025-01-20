@@ -181,6 +181,22 @@ exports.Prisma.TokenScalarFieldEnum = {
   expiresIn: 'expiresIn'
 };
 
+exports.Prisma.FriendRequestScalarFieldEnum = {
+  id: 'id',
+  senderId: 'senderId',
+  receiverId: 'receiverId',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FriendshipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  friendId: 'friendId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -207,6 +223,12 @@ exports.TokenType = exports.$Enums.TokenType = {
   TWO_FACTOR: 'TWO_FACTOR'
 };
 
+exports.FriendshipRequestStatus = exports.$Enums.FriendshipRequestStatus = {
+  PENDING: 'PENDING',
+  DECLINED: 'DECLINED',
+  ACCEPTED: 'ACCEPTED'
+};
+
 exports.Prisma.ModelName = {
   PostModel: 'PostModel',
   User: 'User',
@@ -215,7 +237,9 @@ exports.Prisma.ModelName = {
   CommentLike: 'CommentLike',
   Asset: 'Asset',
   PostDraft: 'PostDraft',
-  Token: 'Token'
+  Token: 'Token',
+  FriendRequest: 'FriendRequest',
+  Friendship: 'Friendship'
 };
 
 /**
