@@ -13,6 +13,7 @@ import { MessagesSquare, Quote, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 
 import LumineAvatar from '../../shared/ui/LumineAvatar'
+import { useFriendship } from '@/features/friendship/useFriendship'
 
 interface props extends TextProps {
   user: IUser
@@ -25,6 +26,7 @@ export const UserHoverCard = ({
   ...textProps
 }: props) => {
   const theme = useMantineTheme()
+  const {sendFriendRequest} = useFriendship()
 
   return (
     <HoverCard shadow="xl" openDelay={700}>
@@ -67,7 +69,7 @@ export const UserHoverCard = ({
               </Title>
             </div>
             <div className="flex flex-row gap-x-2">
-              <ActionIcon color={theme.colors.myColor[0]} variant="outline">
+              <ActionIcon color={theme.colors.myColor[0]} variant="outline" onClick={() => sendFriendRequest(user.id)}>
                 <UserPlus size={20} />
               </ActionIcon>
               <ActionIcon color={theme.colors.myColor[0]} variant="outline">
