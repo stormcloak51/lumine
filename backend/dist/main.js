@@ -13,11 +13,24 @@ const connect_redis_1 = require("connect-redis");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
-const session_adapter_1 = require("./adapters/session.adapter");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const config = app.get(config_1.ConfigService);
-    const redis = new ioredis_1.default(config.getOrThrow('REDIS_URI'));
+    const redis = new ioredis_1.default({
+        host: config.get('REDIS_HOST'),
+        port: parseInt(config.get('REDIS_PORT')),
+        password: config.get('REDIS_PASSWORD'),
+        retryStrategy: (times) => {
+            const delay = Math.min(times * 50, 2000);
+            return delay;
+        },
+    });
+    redis.on('error', (err) => {
+        console.error('Redis connection error:', err);
+    });
+    redis.on('connect', () => {
+        console.log('Successfully connected to Redis');
+    });
     app.use((0, cookie_parser_1.default)(config.getOrThrow('COOKIES_SECRET')));
     app.useGlobalPipes(new common_1.ValidationPipe({
         transform: true,
@@ -37,7 +50,7 @@ async function bootstrap() {
         store: new connect_redis_1.RedisStore({
             client: redis,
             prefix: config.getOrThrow('SESSION_FOLDER'),
-        })
+        }),
     }));
     app.setGlobalPrefix('api');
     app.enableCors({
@@ -45,7 +58,6 @@ async function bootstrap() {
         credentials: true,
         exposedHeaders: ['set-cookie'],
     });
-    app.useWebSocketAdapter(new session_adapter_1.SessionAdapter(app));
     await app.listen(config.getOrThrow('APPLICATION_PORT'));
 }
 bootstrap();

@@ -45,11 +45,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], SocketGateway.prototype, "handlePing", null);
 exports.SocketGateway = SocketGateway = __decorate([
-    (0, websockets_1.WebSocketGateway)({
-        cors: {
-            origin: process.env.ORIGIN || 'http://localhost:3000',
-            credentials: true,
-        },
-    })
+    (0, websockets_1.WebSocketGateway)({ namespace: 'mister' })
 ], SocketGateway);
 //# sourceMappingURL=socket.gateway.js.map

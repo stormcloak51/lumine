@@ -56,22 +56,10 @@ export const MediaContent = ({ isFocused }: props) => {
         disabled={isLoading || media?.length == 5}
       >
         {(props) => (
-          <Indicator
-            color="#ffbb38"
-            size={16}
-            label={
-              isLoading ? (
-                <LoaderCircle size={12} className="animate-spin" />
-              ) : (
-                media?.length
-              )
-            }
-          >
-            <Camera
-              {...props}
-              className={'text-[rgb(66,66,66)] cursor-pointer'}
-            />
-          </Indicator>
+          <Camera
+            {...props}
+            className={'text-[rgb(66,66,66)] cursor-pointer'}
+          />
         )}
       </FileButton>
     </>

@@ -1,12 +1,7 @@
 import { WebSocketGateway, WebSocketServer, SubscribeMessage, ConnectedSocket } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway({
-  cors: {
-    origin: process.env.ORIGIN || 'http://localhost:3000',
-    credentials: true,
-  },
-})
+@WebSocketGateway({namespace: 'mister'})
 export class SocketGateway {
   @WebSocketServer()
   server: Server;

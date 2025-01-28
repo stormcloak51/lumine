@@ -1,13 +1,20 @@
+import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { PrismaService } from '../prisma/prisma.service';
 import { AuthenticatedSocket } from '../config/types/auth.interface';
-export declare class FriendshipGateway {
+export declare class FriendshipGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private prisma;
     server: Server;
     constructor(prisma: PrismaService);
-    handleFriendRequest(client: AuthenticatedSocket, { receiverId }: {
+    handleConnection(client: Socket): void;
+    handleDisconnect(client: Socket): void;
+    handleFriendRequest(client: AuthenticatedSocket, data: {
         receiverId: string;
     }): Promise<{
+        success: boolean;
+        error: string;
+        request?: undefined;
+    } | {
         success: boolean;
         request: {
             sender: {
@@ -33,28 +40,29 @@ export declare class FriendshipGateway {
             updatedAt: Date;
         };
         error?: undefined;
+    }>;
+    acceptFriendRequest(client: AuthenticatedSocket, data: {
+        requestId: string;
+    }): Promise<{
+        success: boolean;
+        error: string;
+    }>;
+    declineFriendRequest(client: AuthenticatedSocket, data: {
+        requestId: string;
+    }): Promise<{
+        success: boolean;
+        request: {
+            id: string;
+            senderId: string;
+            receiverId: string;
+            status: import("@/prisma/__generated__").$Enums.FriendshipRequestStatus;
+            createdAt: Date;
+            updatedAt: Date;
+        };
+        error?: undefined;
     } | {
         success: boolean;
         error: string;
         request?: undefined;
-    }>;
-    handleFriendResponse(socket: Socket, { requestId, accept }: {
-        requestId: string;
-        accept: boolean;
-    }): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: string;
-    }>;
-    handleRemoveFriend(socket: Socket, { friendId }: {
-        friendId: string;
-    }): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
-        success: boolean;
-        error: string;
     }>;
 }

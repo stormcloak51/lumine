@@ -10,6 +10,7 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: RegisterDto) {
+    await this.checkUserExists(dto)
     const password: string = await hash(dto.password);
     const data = {
       ...dto,
@@ -22,7 +23,7 @@ export class UserService {
     });
   }
 
-  findOne(idOrEmailOrUsername: string) {
+  findOne(idOrEmailOrUsername: string, ) {
     const user = this.prisma.user.findFirst({
       where: {
         OR: [
@@ -41,6 +42,23 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
 
     return user
+  }
+
+  async checkUserExists(dto: RegisterDto) {
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: dto.email },
+          { username: dto.username }
+        ],
+      }
+    })
+
+    if (existingUser) {
+      throw new HttpException('User with this email or username already exists', HttpStatus.CONFLICT);
+    }
+
+    return existingUser
   }
 
   findAll() {

@@ -4,17 +4,34 @@ import { parseBoolean } from './lib/utils/parseBoolean.util';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { RedisStore } from 'connect-redis'
+import { RedisStore } from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import IORedis from 'ioredis';
-import { SessionAdapter } from './adapters/session.adapter'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
-  const redis = new IORedis(config.getOrThrow<string>('REDIS_URI'));
+  const redis = new IORedis({
+    host: config.get('REDIS_HOST'),
+    port: parseInt(config.get('REDIS_PORT')),
+    password: config.get('REDIS_PASSWORD'),
+    retryStrategy: (times) => {
+      const delay = Math.min(times * 50, 2000);
+      return delay;
+    },
+  });
 
+  // Add error handling for Redis
+  redis.on('error', (err) => {
+    console.error('Redis connection error:', err);
+  });
+
+  redis.on('connect', () => {
+    console.log('Successfully connected to Redis');
+  });
+
+  // Rest of your code remains the same
   app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')));
 
   app.useGlobalPipes(
@@ -39,18 +56,15 @@ async function bootstrap() {
       store: new RedisStore({
         client: redis,
         prefix: config.getOrThrow<string>('SESSION_FOLDER'),
-      })
+      }),
     }),
   );
-
   app.setGlobalPrefix('api');
   app.enableCors({
     origin: config.getOrThrow<string>('ORIGIN'),
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
-
-  app.useWebSocketAdapter(new SessionAdapter(app))
 
   await app.listen(config.getOrThrow<number>('APPLICATION_PORT'));
 }

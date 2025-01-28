@@ -20,10 +20,6 @@ export class AuthService {
   constructor( private readonly userService: UserService, private readonly configService: ConfigService ) {}
 
   async register(req: Request, dto: RegisterDto): Promise<UserDto> {
-    const isExists = await this.userService.findOne(dto.email)
-    if (isExists) {
-      throw new ConflictException('User with this email already exists')
-    }
     const newUser = await this.userService.create(dto)
 
 

@@ -19,7 +19,8 @@ let FriendshipService = class FriendshipService {
     async getFriendRequests(userId) {
         return await this.prisma.friendRequest.findMany({
             where: {
-                receiverId: userId
+                receiverId: userId,
+                status: 'PENDING'
             },
             include: {
                 sender: true,

@@ -11,9 +11,11 @@ import {
 } from '@mantine/core'
 import { MessagesSquare, Quote, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import { io } from 'socket.io-client'
 
 import LumineAvatar from '../../shared/ui/LumineAvatar'
-import { useFriendship } from '@/features/friendship/useFriendship'
+import { getSocket } from '../api/socket.service'
+import { useAuth } from '../stores/user/useAuth'
 
 interface props extends TextProps {
   user: IUser
@@ -26,7 +28,34 @@ export const UserHoverCard = ({
   ...textProps
 }: props) => {
   const theme = useMantineTheme()
-  const {sendFriendRequest} = useFriendship()
+
+  const {
+    user: { id },
+  } = useAuth()
+  const sendFriendRequest = () => {
+    if (id) {
+      console.log(1)
+      const socket = getSocket(id)
+      if (socket) {
+        console.log(2)
+        socket.emit(
+          'sendFriendRequest',
+          { receiverId: user.id },
+          (response: any) => {
+            if (!response.success) {
+              // You might want to show this error to the user using a notification system
+              console.error(response.error)
+            }
+          }
+        )
+      }
+    }
+  }
+
+  const cancelFriendRequest = () => {
+    const socket = getSocket(id)
+    socket.emit('cancelFriendRequest', { receiverId: user.id })
+  }
 
   return (
     <HoverCard shadow="xl" openDelay={700}>
@@ -69,10 +98,18 @@ export const UserHoverCard = ({
               </Title>
             </div>
             <div className="flex flex-row gap-x-2">
-              <ActionIcon color={theme.colors.myColor[0]} variant="outline" onClick={() => sendFriendRequest(user.id)}>
+              <ActionIcon
+                color={theme.colors.myColor[0]}
+                variant="outline"
+                onClick={() => sendFriendRequest()}
+              >
                 <UserPlus size={20} />
               </ActionIcon>
-              <ActionIcon color={theme.colors.myColor[0]} variant="outline">
+              <ActionIcon
+                color={theme.colors.myColor[0]}
+                variant="outline"
+                onClick={() => cancelFriendRequest()}
+              >
                 <MessagesSquare size={20} />
               </ActionIcon>
             </div>

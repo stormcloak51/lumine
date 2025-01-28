@@ -19,7 +19,12 @@ const prisma_module_1 = require("./prisma/prisma.module");
 const core_1 = require("@nestjs/core");
 const ExcludePassword_interceptor_1 = require("./interceptors/ExcludePassword.interceptor");
 const friendship_module_1 = require("./friendship/friendship.module");
+const ws_middleware_1 = require("./middlewares/ws.middleware");
+const friendship_gateway_1 = require("./friendship/friendship.gateway");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(ws_middleware_1.AuthSocketMiddleware).forRoutes(friendship_gateway_1.FriendshipGateway);
+    }
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
@@ -30,7 +35,7 @@ exports.AppModule = AppModule = __decorate([
         providers: [post_service_1.PostService, prisma_service_1.PrismaService, {
                 provide: core_1.APP_INTERCEPTOR,
                 useClass: ExcludePassword_interceptor_1.ExcludePasswordInterceptor
-            }],
+            }, ws_middleware_1.AuthSocketMiddleware],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

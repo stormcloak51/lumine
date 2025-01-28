@@ -1,8 +1,10 @@
 'use client'
 
 import Loading from '@/app/(pages)/(main)/feed/loading'
+import { getSocket } from '@/shared/api/socket.service'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { Flex } from '@mantine/core'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 import { usePostList } from '../model/usePostList'
 import { PostItem } from './post-item'
@@ -17,6 +19,7 @@ export const PostList: FC<IPostList> = ({ feed, username }) => {
     feed,
     username,
   })
+
 
   if (isLoading) return <Loading />
   return (

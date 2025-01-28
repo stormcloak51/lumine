@@ -1,34 +1,63 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, ConnectedSocket } from '@nestjs/websockets';
+// src/friendship/friendship.gateway.ts
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { PrismaService } from '../prisma/prisma.service';
+import { AuthenticatedSocket } from '../config/types/auth.interface';
 import { UseGuards } from '@nestjs/common';
-import { WsAuthGuard } from '@/src/auth/guards/ws-auth.guard';
-import { AuthenticatedSocket } from '../config/types/auth.interface'
 
 @WebSocketGateway({
-  cors: {
-    origin: process.env.ORIGIN, 
-  },
+  namespace: 'friendship',
+  origin: '*',
 })
-@UseGuards(WsAuthGuard)
-export class FriendshipGateway {
+export class FriendshipGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
   constructor(private prisma: PrismaService) {}
 
+  handleConnection(client: Socket) {
+
+    const userId = client.handshake.query.userId as string;
+    if (userId) {
+      client.join(userId);
+    }
+
+    this.server.emit('user-joined', {
+      message: `User ${client.id} joined the friendship namespace`,
+    })
+  }
+
+  handleDisconnect(client: Socket) {
+
+
+    client.leave(client.handshake.query.userId as string);
+    this.server.emit('user-left', {
+      message: `User ${client.id} left the friendship namespace`,
+    })
+  }
+
+
+
   @SubscribeMessage('sendFriendRequest')
   async handleFriendRequest(
     @ConnectedSocket() client: AuthenticatedSocket,
-    { receiverId }: { receiverId: string }
+    @MessageBody() data: { receiverId: string }
   ) {
-    const senderId = client.data.user.id;
+    const userId = client.handshake.query.userId as string
+
+    if (!data?.receiverId) {
+      return { success: false, error: 'Receiver ID is required' };
+    }
+
+    if (!userId) {
+      return { success: false, error: 'User not authenticated' };
+    }
 
     try {
       const request = await this.prisma.friendRequest.create({
         data: {
-          senderId,
-          receiverId,
+          senderId: userId,
+          receiverId: data.receiverId,
           status: 'PENDING',
         },
         include: {
@@ -36,110 +65,94 @@ export class FriendshipGateway {
         },
       });
 
-      // send friend request to receiver
-      this.server.to(receiverId).emit('friendRequest', {
+      this.server.to(data.receiverId).emit('friendRequest', {
         type: 'RECEIVED',
         request,
       });
+      client.emit('friendRequest', {
+        message: 'Successfully sent friend request',
+      })
 
       return { success: true, request };
     } catch (error) {
+      console.error('Friend request error:', error);
       return { success: false, error: 'Failed to send friend request' };
     }
   }
 
-  @SubscribeMessage('respondToFriendRequest')
-  async handleFriendResponse(
-    @ConnectedSocket() socket: Socket,
-    { requestId, accept }: { requestId: string; accept: boolean }
-  ) {
-    const userId = socket.data.user.id;
+  @SubscribeMessage("acceptFriendRequest")
+  async acceptFriendRequest(@ConnectedSocket() client: AuthenticatedSocket, @MessageBody() data: { requestId: string }) {
+
+    const userId = client.handshake.query.userId as string;
 
     try {
-      const request = await this.prisma.friendRequest.findUnique({
-        where: { senderId_receiverId: { senderId: userId, receiverId: requestId } },
-        include: { sender: true, receiver: true },
-      });
-
-      if (!request || request.receiverId !== userId) {
-        throw new Error('Invalid request');
-      }
-
-      if (accept) {
-        // create friendship
-        await this.prisma.$transaction([
-          this.prisma.friendship.create({
-            data: {
-              userId: request.senderId,
-              friendId: request.receiverId,
+      const friendship = await this.prisma.$transaction(async (tx) => {
+        await tx.friendRequest.update({
+          where: {
+            senderId_receiverId: {
+              senderId: data.requestId,
+              receiverId: userId
             },
-          }),
-          this.prisma.friendship.create({
-            data: {
-              userId: request.receiverId,
-              friendId: request.senderId,
-            },
-          }),
-          this.prisma.friendRequest.update({
-            where: {     senderId_receiverId: {
-							senderId: request.senderId,
-							receiverId: request.receiverId,
-						}, },
-            data: { status: 'ACCEPTED' },
-          }),
-        ]);
+          },
+          data: {
+            status: 'ACCEPTED'
+          }
+        })
 
-        // notify both users
-        this.server.to(request.senderId).emit('friendRequestAccepted', {
-          friend: request.receiver,
-        });
-        this.server.to(request.receiverId).emit('friendRequestAccepted', {
-          friend: request.sender,
-        });
-      } else {
-        await this.prisma.friendRequest.update({
-          where: { senderId_receiverId: { senderId: request.senderId, receiverId: request.receiverId } },
-          data: { status: 'DECLINED' },
-        });
+        await tx.friendship.create({
+          data: {
+            userId: userId,
+            friendId: data.requestId
+          }
+        })
+      })
 
-        this.server.to(request.senderId).emit('friendRequestDeclined', {
-          requestId,
-        });
-      }
+      this.server.to(data.requestId).emit('friendRequestAccepted', {
+        friendship
+      })
 
-      return { success: true };
+      client.emit('friendRequestAccepted', {
+        message: 'Successfully accepted friend request',
+        friendship,
+      })
+
     } catch (error) {
-      return { success: false, error: 'Failed to process friend request' };
+      console.error('Accept friend request error:', error);
+      return { success: false, error: 'Failed to accept friend request' };
     }
   }
 
-  @SubscribeMessage('removeFriend')
-  async handleRemoveFriend(
-    @ConnectedSocket() socket: Socket,
-    { friendId }: { friendId: string }
-  ) {
-    const userId = socket.data.user.id;
+  @SubscribeMessage("declineFriendRequest") 
+  async declineFriendRequest(@ConnectedSocket() client: AuthenticatedSocket, @MessageBody() data: { requestId: string }) {
+
+    const userId = client.handshake.query.userId as string;
 
     try {
-      // delete friendship
-      await this.prisma.$transaction([
-        this.prisma.friendship.deleteMany({
-          where: {
-            OR: [
-              { userId, friendId },
-              { userId: friendId, friendId: userId },
-            ],
-          },
-        }),
-      ]);
+      const request = await this.prisma.friendRequest.update({
+        where: {
+          senderId_receiverId: {
+            senderId: userId,
+            receiverId: data.requestId
+          }
+        },
+        data: {
+          status: 'DECLINED'
+        }
+      })
 
-      // Уведомляем обоих пользователей
-      this.server.to(friendId).emit('friendRemoved', { userId });
-      this.server.to(userId).emit('friendRemoved', { userId: friendId });
+      this.server.to(data.requestId).emit('friendRequest', {
+        type: 'DECLINED',
+        request
+      })
 
-      return { success: true };
+      client.emit('friendRequest', {
+        message: 'Successfully declined friend request'
+      })
+
+      return { success: true, request }
     } catch (error) {
-      return { success: false, error: 'Failed to remove friend' };
+      console.error('Decline friend request error:', error);
+      return { success: false, error: 'Failed to decline friend request' };
     }
   }
 }

@@ -1,4 +1,4 @@
-import { IFriendRequest, IFriendship } from '@/shared/config/types/friend.types';
+import { IFriendRequest } from '@/shared/config/types/friend.types';
 import { IUser } from '@/shared/config/types/user.types'
 import { create } from 'zustand';
 
@@ -11,6 +11,7 @@ interface FriendshipStore {
   removeFriend: (friendId: string) => void;
   addRequest: (request: IFriendRequest) => void;
   updateRequest: (requestId: string, status: 'ACCEPTED' | 'DECLINED') => void;
+  removeRequest: (requestId: string) => void;
 }
 
 export const useFriendshipStore = create<FriendshipStore>((set) => ({
@@ -31,5 +32,9 @@ export const useFriendshipStore = create<FriendshipStore>((set) => ({
       requests: state.requests.map((r) =>
         r.id === requestId ? { ...r, status } : r
       ),
+    })),
+  removeRequest: (requestId) =>
+    set((state) => ({
+      requests: state.requests.filter((r) => r.id !== requestId),
     })),
 }));

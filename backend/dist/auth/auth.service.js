@@ -45,10 +45,6 @@ let AuthService = class AuthService {
         this.configService = configService;
     }
     async register(req, dto) {
-        const isExists = await this.userService.findOne(dto.email);
-        if (isExists) {
-            throw new common_1.ConflictException('User with this email already exists');
-        }
         const newUser = await this.userService.create(dto);
         return this.saveSession(req, newUser);
     }

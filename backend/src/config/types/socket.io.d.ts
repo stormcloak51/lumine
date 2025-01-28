@@ -1,5 +1,5 @@
 import { Session } from 'express-session';
-import { User } from 'prisma/__generated__'; 
+import { User } from 'prisma/__generated__';
 
 declare module 'socket.io' {
   interface Handshake {
@@ -9,8 +9,6 @@ declare module 'socket.io' {
   }
 
   interface Socket {
-    data: {
-      user: User;
-    };
+    user: {id: string}
   }
 }

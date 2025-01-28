@@ -1,13 +1,11 @@
 'use client'
 
-import { SocketProvider } from '@/shared/stores/socket/socket.provider'
 import { MantineColorsTuple, MantineProvider, createTheme } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
-import Cookies from 'js-cookie'
-
+import '@mantine/notifications/styles.css'
 
 
 const myColor: MantineColorsTuple = [
@@ -47,18 +45,13 @@ export default function ClientProvider({
     })
   )
 
-  const token = Cookies.get()
-
-  console.log(token)
   return (
     <QueryClientProvider client={client}>
       <MantineProvider defaultColorScheme="dark" theme={theme}>
-        <SocketProvider sessionId={'s%3ARhPXltbdawHrja9D8bi1ZyqCrUnHE7xY.D8JfmMqoODJSDOIbRBn6KmPGnRcfHjJQDKtrMJbK0FE'}>
-          <Notifications />
+        <Notifications />
 
-          <ReactQueryDevtools initialIsOpen={false} />
-          {children}
-        </SocketProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        {children}
       </MantineProvider>
     </QueryClientProvider>
   )

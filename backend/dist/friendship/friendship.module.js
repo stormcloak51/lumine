@@ -11,13 +11,14 @@ const common_1 = require("@nestjs/common");
 const friendship_controller_1 = require("./friendship.controller");
 const friendship_service_1 = require("./friendship.service");
 const user_service_1 = require("../user/user.service");
+const friendship_gateway_1 = require("./friendship.gateway");
 let FriendshipModule = class FriendshipModule {
 };
 exports.FriendshipModule = FriendshipModule;
 exports.FriendshipModule = FriendshipModule = __decorate([
     (0, common_1.Module)({
         controllers: [friendship_controller_1.FriendshipController],
-        providers: [friendship_service_1.FriendshipService, user_service_1.UserService],
+        providers: [friendship_service_1.FriendshipService, user_service_1.UserService, friendship_gateway_1.FriendshipGateway],
         exports: [friendship_service_1.FriendshipService]
     })
 ], FriendshipModule);

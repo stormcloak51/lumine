@@ -19,6 +19,7 @@ let UserService = class UserService {
         this.prisma = prisma;
     }
     async create(dto) {
+        await this.checkUserExists(dto);
         const password = await (0, argon2_1.hash)(dto.password);
         const data = {
             ...dto,
@@ -48,6 +49,20 @@ let UserService = class UserService {
         if (!user)
             throw new common_1.NotFoundException('User not found');
         return user;
+    }
+    async checkUserExists(dto) {
+        const existingUser = await this.prisma.user.findFirst({
+            where: {
+                OR: [
+                    { email: dto.email },
+                    { username: dto.username }
+                ],
+            }
+        });
+        if (existingUser) {
+            throw new common_1.HttpException('User with this email or username already exists', common_1.HttpStatus.CONFLICT);
+        }
+        return existingUser;
     }
     findAll() {
         return this.prisma.user.findMany();
