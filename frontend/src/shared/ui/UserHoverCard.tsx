@@ -34,7 +34,7 @@ export const UserHoverCard = ({
   } = useAuth()
   const sendFriendRequest = () => {
     if (id) {
-      console.log(1)
+      console.log(id, user.id)
       const socket = getSocket(id)
       if (socket) {
         console.log(2)

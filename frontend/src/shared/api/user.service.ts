@@ -8,7 +8,6 @@ export class UserService {
     return response
   }
 
-  // @cache
   async getProfile(id: string): Promise<IUser> {
     const response = await api.get<IUser>(`user/${id}`)
     return response

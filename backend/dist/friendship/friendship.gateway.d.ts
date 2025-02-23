@@ -18,15 +18,15 @@ export declare class FriendshipGateway implements OnGatewayConnection, OnGateway
         success: boolean;
         request: {
             sender: {
-                id: string;
                 name: string;
+                surname: string;
                 username: string;
                 email: string;
                 password: string;
-                surname: string;
-                bio: string;
                 userAvatar: string;
                 userCover: string;
+                id: string;
+                bio: string;
                 role: import("@/prisma/__generated__").$Enums.RoleType;
                 created_at: Date;
                 updated_at: Date;
@@ -45,7 +45,32 @@ export declare class FriendshipGateway implements OnGatewayConnection, OnGateway
         requestId: string;
     }): Promise<{
         success: boolean;
+        friendship: {
+            friend: {
+                name: string;
+                surname: string;
+                username: string;
+                email: string;
+                password: string;
+                userAvatar: string;
+                userCover: string;
+                id: string;
+                bio: string;
+                role: import("@/prisma/__generated__").$Enums.RoleType;
+                created_at: Date;
+                updated_at: Date;
+            };
+        } & {
+            id: string;
+            userId: string;
+            createdAt: Date;
+            friendId: string;
+        };
+        error?: undefined;
+    } | {
+        success: boolean;
         error: string;
+        friendship?: undefined;
     }>;
     declineFriendRequest(client: AuthenticatedSocket, data: {
         requestId: string;

@@ -81,43 +81,58 @@ export class FriendshipGateway implements OnGatewayConnection, OnGatewayDisconne
   }
 
   @SubscribeMessage("acceptFriendRequest")
-  async acceptFriendRequest(@ConnectedSocket() client: AuthenticatedSocket, @MessageBody() data: { requestId: string }) {
-
-    const userId = client.handshake.query.userId as string;
-
+  async acceptFriendRequest(@ConnectedSocket() client: AuthenticatedSocket, @MessageBody() data: { requestId: string })
+  {
+    const userId = client.handshake.query.userId as string
+  
     try {
       const friendship = await this.prisma.$transaction(async (tx) => {
-        await tx.friendRequest.update({
+        // First, find the friend request
+        const friendRequest = await tx.friendRequest.findUnique({
           where: {
             senderId_receiverId: {
               senderId: data.requestId,
-              receiverId: userId
+              receiverId: userId,
             },
+            status: "PENDING",
           },
-          data: {
-            status: 'ACCEPTED'
-          }
         })
-
-        await tx.friendship.create({
+  
+        if (!friendRequest) {
+          throw new Error("Friend request not found")
+        }
+  
+        // Update the friend request status
+        await tx.friendRequest.update({
+          where: { senderId_receiverId: {senderId: data.requestId, receiverId: userId} },
+          data: { status: "ACCEPTED" },
+        })
+  
+        // Create the friendship
+        return await tx.friendship.create({
           data: {
             userId: userId,
-            friendId: data.requestId
-          }
+            friendId: data.requestId,
+          },
+          include: {
+            friend: true,
+          },
         })
       })
-
-      this.server.to(data.requestId).emit('friendRequestAccepted', {
-        friendship
-      })
-
-      client.emit('friendRequestAccepted', {
-        message: 'Successfully accepted friend request',
+  
+      this.server.to(data.requestId).emit("friendRequestAccepted", {
         friendship,
       })
-
+  
+      client.emit("friendRequestAccepted", {
+        message: "Successfully accepted friend request",
+        friendship,
+      })
+  
+      return { success: true, friendship };
     } catch (error) {
-      console.error('Accept friend request error:', error);
+      console.error("Accept friend request error:", error)
+      client.emit("friendRequestError", { message: "Failed to accept friend request" })
       return { success: false, error: 'Failed to accept friend request' };
     }
   }

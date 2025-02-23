@@ -1,10 +1,10 @@
-import { notifications } from '@mantine/notifications'
-import { useEffect } from 'react'
+import { notifications } from "@mantine/notifications"
+import { useEffect } from "react"
 
-import { FriendshipService } from '../api/friendship.service'
-import { getSocket } from '../api/socket.service'
-import { useFriendshipStore } from '../stores/friendship/friendship.store'
-import { useAuth } from '../stores/user/useAuth'
+import { FriendshipService } from "../api/friendship.service"
+import { getSocket } from "../api/socket.service"
+import { useFriendshipStore } from "../stores/friendship/friendship.store"
+import { useAuth } from "../stores/user/useAuth"
 
 export const useFriendship = () => {
   const friendshipStore = useFriendshipStore()
@@ -14,21 +14,26 @@ export const useFriendship = () => {
 
   const acceptFriendRequest = async (requestId: string) => {
     const socket = getSocket(id)
-    socket?.emit('acceptFriendRequest', { requestId })
+    socket?.emit("acceptFriendRequest", { requestId })
 
-    // Слушаем ответ от сервера
-    socket?.on('friendRequestAccepted', (data) => {
-      // Обновляем состояние store
-      console.log(data)
-      friendshipStore.removeRequest(requestId)
-      // friendshipStore.addFriend(data.friendship.user2)
+    return new Promise((resolve, reject) => {
+      socket?.once("friendRequestAccepted", (data) => {
+        console.log("Friend request accepted:", data)
+        friendshipStore.removeRequest(requestId)
+        friendshipStore.addFriend(data.friendship.friend)
+        resolve(data)
+      })
+
+      socket?.once("friendRequestError", (error) => {
+        console.error("Friend request error:", error)
+        reject(error)
+      })
+
+      // Set a timeout in case the server doesn't respond
+      setTimeout(() => {
+        reject(new Error("Friend request acceptance timed out"))
+      }, 5000)
     })
-
-    socket?.on('friendRequestError', (error) => {
-      console.error(error)
-    })
-
-    // Таймаут на случай если ответ не придет
   }
 
   useEffect(() => {
@@ -40,21 +45,24 @@ export const useFriendship = () => {
 
     getRequests()
 
-    socket?.on('friendRequest', (data) => {
-      if (data.type === 'RECEIVED') {
+    socket?.on("friendRequest", (data) => {
+      if (data.type === "RECEIVED") {
         friendshipStore.addRequest(data.request)
         notifications.show({
-          title: 'New Friend Request',
+          title: "New Friend Request",
           message: `${data.request.sender.name} ${data.request.sender.surname} wants to be your friend`,
-          color: 'yellow',
+          color: "yellow",
         })
       }
     })
 
     return () => {
-      socket?.off('friendRequest')
+      socket?.off("friendRequest")
+      socket?.off("friendRequestAccepted")
+      socket?.off("friendRequestError")
     }
-  }, [id])
+  }, [id, friendshipStore.addRequest])
 
   return { requests: friendshipStore.requests, acceptFriendRequest }
 }
+

@@ -1,41 +1,46 @@
-import { useFriendship } from '@/shared/hooks/useFriendship'
-import { Button, Popover, Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, Check } from 'lucide-react'
-import Image from 'next/image'
-import { useState } from 'react'
+import { useFriendship } from "@/shared/hooks/useFriendship"
+import { Button, Popover, Text } from "@mantine/core"
+import { notifications } from "@mantine/notifications"
+import { AnimatePresence, motion } from "framer-motion"
+import { Bell, Check } from "lucide-react"
+import Image from "next/image"
+import { useState, useCallback } from "react"
+import { useFriendshipStore } from "@/shared/stores/friendship/friendship.store"
 
 export const FriendRequests = () => {
-  const { requests, acceptFriendRequest } = useFriendship()
+  const { acceptFriendRequest } = useFriendship()
+  const requests = useFriendshipStore((state) => state.requests)
   const [animatingIds, setAnimatingIds] = useState<Set<string>>(new Set())
 
-  const handleAcceptRequest = async (request: any) => {
-    setAnimatingIds((prev) => new Set(prev).add(request.id))
+  const handleAcceptRequest = useCallback(
+    async (request: any) => {
+      setAnimatingIds((prev) => new Set(prev).add(request.id))
+      console.log(request)
+      try {
+        await acceptFriendRequest(request.senderId)
 
-    try {
-      await acceptFriendRequest(request.id)
-
-      notifications.show({
-        title: 'Friend Request Accepted',
-        message: `You are now friends with ${request.sender.name} ${request.sender.surname}`,
-        color: 'yellow',
-        icon: <Check size={16} />,
-      })
-    } catch (error) {
-      setAnimatingIds((prev) => {
-        const newSet = new Set(prev)
-        newSet.delete(request.id)
-        return newSet
-      })
-      console.error(error)
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to accept friend request',
-        color: 'red',
-      })
-    }
-  }
+        notifications.show({
+          title: "Friend Request Accepted",
+          message: `You are now friends with ${request.sender.name} ${request.sender.surname}`,
+          color: "yellow",
+          icon: <Check size={16} />,
+        })
+      } catch (error) {
+        setAnimatingIds((prev) => {
+          const newSet = new Set(prev)
+          newSet.delete(request.id)
+          return newSet
+        })
+        console.error(error)
+        notifications.show({
+          title: "Error",
+          message: "Failed to accept friend request",
+          color: "red",
+        })
+      }
+    },
+    [acceptFriendRequest],
+  )
 
   return (
     <Popover
@@ -44,14 +49,12 @@ export const FriendRequests = () => {
       withArrow
       overlayProps={{
         zIndex: 20,
-        blur: '8px',
+        blur: "8px",
       }}
       zIndex={21}
     >
       <Popover.Target>
-        <div className="relative cursor-pointer hover:opacity-80 transition-opacity" onClick={() => notifications.show({
-          message: 'helo'
-        })}>
+        <div className="relative cursor-pointer hover:opacity-80 transition-opacity">
           <Bell size={24} className="stroke-[#ffd37d]" />
           {requests.length > 0 && (
             <div className="absolute -top-2 -right-2 bg-[#ffd37d] text-black w-5 h-5 rounded-full flex items-center justify-center text-xs font-semibold">
@@ -62,14 +65,10 @@ export const FriendRequests = () => {
       </Popover.Target>
 
       <Popover.Dropdown className="rounded-xl bg-[#1f1f1f] border border-[#ffd37d]/20 p-4 space-y-4">
-        <Text className="text-[#ffd37d] font-semibold text-lg mb-4">
-          Friend Requests
-        </Text>
+        <Text className="text-[#ffd37d] font-semibold text-lg mb-4">Friend Requests</Text>
 
         {requests.length === 0 ? (
-          <Text className="text-gray-400 text-center py-4">
-            No pending friend requests
-          </Text>
+          <Text className="text-gray-400 text-center py-4">No pending friend requests</Text>
         ) : (
           <AnimatePresence>
             {requests.map((request) => (
@@ -82,7 +81,7 @@ export const FriendRequests = () => {
                 }}
                 exit={{ x: 400, opacity: 0 }}
                 transition={{
-                  type: 'spring',
+                  type: "spring",
                   stiffness: 100,
                   damping: 15,
                 }}
@@ -91,7 +90,7 @@ export const FriendRequests = () => {
                 <div className="flex items-center gap-x-3">
                   <div className="relative w-12 h-12">
                     <Image
-                      src={request.sender.userAvatar}
+                      src={request.sender.userAvatar || "/placeholder.svg"}
                       alt="avatar"
                       width={48}
                       height={48}
@@ -103,9 +102,7 @@ export const FriendRequests = () => {
                     <Text className="text-[#ffd37d] font-semibold">
                       {request.sender.name} {request.sender.surname}
                     </Text>
-                    <Text className="text-gray-400 text-sm">
-                      @{request.sender.username}
-                    </Text>
+                    <Text className="text-gray-400 text-sm">@{request.sender.username}</Text>
                   </div>
                 </div>
 
@@ -134,3 +131,4 @@ export const FriendRequests = () => {
     </Popover>
   )
 }
+
