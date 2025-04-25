@@ -3,10 +3,10 @@ import { TPost } from '@/shared/config/types/post.types'
 import { Button, Menu, Modal, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { Edit, Ellipsis, Trash } from 'lucide-react'
-import Link from 'next/link'
 import { useState } from 'react'
 
 import { useManagePost } from '../model/useManagePost'
+import { ModalDeleteUi } from '@/shared/ui/Modal/ui/modal-delete'
 
 interface IManagePost {
   post: TPost
@@ -24,7 +24,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
     { open: openEditPostModal, close: closeEditPostModal },
   ] = useDisclosure(false)
 
-  const [editedContent] = useState(content)
+  const [editedContent, setEditedContent] = useState(content)
   const theme = useMantineTheme()
 
   const { handleEdit, handleDelete } = useManagePost({
@@ -54,50 +54,12 @@ export const ManagePost = ({ post, content }: IManagePost) => {
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>
-      <Modal
+      <ModalDeleteUi
         opened={isDeletePostOpened}
         onClose={closeDeletePostModal}
-        title="Are you sure?"
-        centered
-        classNames={{
-          title: '!text-2xl font-semibold',
-        }}
-        radius={'lg'}
-        overlayProps={{
-          backgroundOpacity: 0.55,
-          blur: 3,
-        }}
-      >
-        <Text mb={10}>
-          This action will delete your post and it cannot be undone.
-        </Text>
-        <Text c={'dimmed'} mb={15}>
-          By the way, You can disable onDelete warnings in{' '}
-          <Link
-            className={`text-[${theme.colors.myColor[0]}] underline underline-offset-2`}
-            href={'/settings/misc'}
-          >
-            settings
-          </Link>
-        </Text>
-        <Button
-          onClick={() => handleDelete(post.id)}
-          mr={15}
-          radius={'lg'}
-          autoContrast
-          color={theme.colors.myColor[4]}
-        >
-          Delete
-        </Button>
-        <Button
-          onClick={closeDeletePostModal}
-          radius={'lg'}
-          color={theme.colors.myColor[4]}
-          variant="outline"
-        >
-          Cancel
-        </Button>
-      </Modal>
+        onSubmit={() => handleDelete(post.id)}
+        entity="post"
+      />
       <Modal
         opened={isEditPostOpened}
         onClose={closeEditPostModal}
@@ -118,7 +80,7 @@ export const ManagePost = ({ post, content }: IManagePost) => {
         <Text c={'dimmed'} mb={10}>
           This action will edit your post
         </Text>
-        <PostCreate content={content} />
+        <PostCreate content={editedContent} setContent={setEditedContent} />
         <Button
           onClick={() => handleEdit({ content: editedContent, id: post.id })}
           mr={15}

@@ -197,6 +197,30 @@ exports.Prisma.FriendshipScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ChatScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  content: 'content',
+  chatId: 'chatId',
+  userId: 'userId'
+};
+
+exports.Prisma.LastReadMessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  chatId: 'chatId',
+  messageId: 'messageId',
+  lastReadMessagePage: 'lastReadMessagePage',
+  readAt: 'readAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -239,7 +263,10 @@ exports.Prisma.ModelName = {
   PostDraft: 'PostDraft',
   Token: 'Token',
   FriendRequest: 'FriendRequest',
-  Friendship: 'Friendship'
+  Friendship: 'Friendship',
+  Chat: 'Chat',
+  Message: 'Message',
+  LastReadMessage: 'LastReadMessage'
 };
 
 /**

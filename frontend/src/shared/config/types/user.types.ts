@@ -1,3 +1,5 @@
+import { IFriend } from './friend.types'
+
 export type TUser = {
 	name: string
 	surname: string
@@ -42,6 +44,8 @@ export interface IUser {
 	role: EUserRoles
 	created_at: Date | string | null
 	updated_at: Date | string | null
+	friends: IFriend[]
+	friendsOf: IFriend[]
 }
 
 export type TEditProfile = Partial<Pick<IUser, 'name' 

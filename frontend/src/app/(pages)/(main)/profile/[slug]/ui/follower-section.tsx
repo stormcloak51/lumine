@@ -1,23 +1,39 @@
 'use client'
 
-import { TUser } from '@/shared/config/types/user.types'
+import { IUser } from '@/shared/config/types/user.types'
+import { useAuth } from '@/shared/stores/user/useAuth'
 import { Avatar, Card, Grid, Title } from '@mantine/core'
-import { FC } from 'react'
+import Link from 'next/link'
 
-export const FollowerSection: FC<{ userAvatar: TUser['userAvatar'] }> = ({
-  userAvatar,
+export const FollowerSection = ({
+  friends,
+  slug,
+}: {
+  friends: IUser[]
+  slug: string
 }) => {
+  const {
+    user: { username },
+  } = useAuth()
   return (
     <Grid.Col className="px-0 pt-4" span={4} offset={0.5}>
       <Card className="!bg-[#1f2124] rounded-lg border border-[rgb(66,66,66)] !py-[12px]">
-        <Title order={3} className="">
-          Friends
-        </Title>
+        <Link href={`/friends/${slug === username ? '' : slug}`}>
+          <Title order={3} className="cursor-pointer">
+            Friends - {friends?.length}
+          </Title>
+        </Link>
         <Avatar.Group spacing={'sm'}>
-          <Avatar size={46} src={userAvatar} />
-          <Avatar size={46} src={userAvatar} />
-          <Avatar size={46} src={userAvatar} />
-          <Avatar size={46}>+5</Avatar>
+          {friends?.map((friend) => (
+            <Avatar
+              className="border border-white/20"
+              component={Link}
+              href={`/profile/${friend?.username}`}
+              key={friend?.id}
+              size={46}
+              src={friend.userAvatar}
+            />
+          ))}
         </Avatar.Group>
       </Card>
     </Grid.Col>

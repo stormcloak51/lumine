@@ -14,9 +14,9 @@ interface props {
 }
 
 export const UserMenu: FC<props> = ({ size }) => {
-  const {
-    user: { userAvatar, username },
-  } = useAuth()
+  const { user } = useAuth()
+  const userAvatar = user?.userAvatar || ''
+  const username = user?.username || ''
   const { deleteUser } = useUser()
 
   const router = useRouter()
@@ -24,8 +24,10 @@ export const UserMenu: FC<props> = ({ size }) => {
   const handleLogout = async () => {
     try {
       await authService.logout()
-      deleteUser()
       router.push('/login')
+      setTimeout(() => {
+        deleteUser()
+      }, 500)
     } catch (err) {
       console.log(err)
     }

@@ -23,9 +23,10 @@ import { MediaContent } from './media-content'
 
 interface IPostCreate {
   content?: string
+  setContent?: (content: string) => void
 }
 
-export const PostCreate: FC<IPostCreate> = ({ content }) => {
+export const PostCreate: FC<IPostCreate> = ({ content, setContent }) => {
   const os = useOs()
   const [contentHeight, setContentHeight] = useState(100)
   const [styled, setStyled] = useState<boolean>(false)
@@ -46,6 +47,7 @@ export const PostCreate: FC<IPostCreate> = ({ content }) => {
       const element = editor.options.element
       if (element) setContentHeight(element.clientHeight)
       upsertDraft(editor.getHTML())
+      if (setContent) setContent(editor.getHTML())
     },
     onFocus: ({ editor }) => {
       if (editor) {

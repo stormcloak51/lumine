@@ -15,3 +15,12 @@ export interface IFriendship {
   friendId: string;
   createdAt: Date;
 }
+
+export interface IFriend {
+	id: string
+	createdAt: Date | string | null
+	friend: IUser
+	user: IUser
+	friendId: string
+	userId: string
+}

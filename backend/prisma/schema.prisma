@@ -5,8 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider      = "prisma-client-js"
-  output        = "./__generated__"
+  provider = "prisma-client-js"
+  output   = "./__generated__"
 }
 
 datasource db {
@@ -52,10 +52,14 @@ model User {
   likedComments CommentLike[]
   postDraft     PostDraft?
 
-  sentRequests FriendRequest[] @relation("SentRequests")
+  chats            Chat[]
+  messages         Message[]
+  lastReadMessages LastReadMessage[]
+
+  sentRequests     FriendRequest[] @relation("SentRequests")
   receivedRequests FriendRequest[] @relation("ReceivedRequests")
-  friends    Friendship[] @relation("UserFriends")
-  friendsOf    Friendship[] @relation("FriendsOf")
+  friends          Friendship[]    @relation("UserFriends")
+  friendsOf        Friendship[]    @relation("FriendsOf")
 
   @@map("users")
 }
@@ -157,6 +161,52 @@ model Friendship {
   friend User @relation("FriendsOf", fields: [friendId], references: [id])
 
   @@unique([userId, friendId])
+}
+
+model Chat {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages         Message[]
+  lastReadMessages LastReadMessage[]
+
+  members User[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content String
+
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  readBy LastReadMessage[]
+}
+
+model LastReadMessage {
+  id String @id @default(cuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId Int
+
+  lastReadMessagePage Int      @default(1)
+  readAt              DateTime @default(now())
+
+  @@unique([userId, chatId])
 }
 
 enum RoleType {

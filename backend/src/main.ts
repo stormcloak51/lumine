@@ -1,9 +1,10 @@
 import { AppModule } from './app.module';
-import { ms, StringValue } from './lib/utils/ms.util';
-import { parseBoolean } from './lib/utils/parseBoolean.util';
-import { ValidationPipe } from '@nestjs/common';
+import { ms, StringValue } from './infrastructure/lib/utils/ms.util';
+import { parseBoolean } from './infrastructure/lib/utils/parseBoolean.util';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { RedisStore } from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -12,6 +13,16 @@ import IORedis from 'ioredis';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
+  const logger = new Logger('Bootstrap');
+  const eventEmitter = app.get(EventEmitter2);
+
+  // Добавим диагностику для EventEmitter
+  eventEmitter.onAny((event, payload) => {
+    logger.log(`Event fired: ${event}`);
+  });
+
+  logger.log('EventEmitter is configured with listeners');
+
   const redis = new IORedis({
     host: config.get('REDIS_HOST'),
     port: parseInt(config.get('REDIS_PORT')),
@@ -37,6 +48,9 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: false,
+      skipMissingProperties: true,
     }),
   );
 

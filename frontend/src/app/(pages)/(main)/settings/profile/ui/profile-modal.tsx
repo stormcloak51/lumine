@@ -1,6 +1,7 @@
 // MODAL FOR CHANGING PROFILE/BACKGROUND IMAGES
 import { Modal, Text } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone'
+import { notifications } from '@mantine/notifications'
 import { Upload } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
@@ -45,12 +46,11 @@ export const ProfileModal = ({
         <Dropzone
           onDrop={(files) => setFile(files[0])}
           onReject={(files) =>
-            // notifications.show({
-            // 	title: 'File Rejected',
-            // 	message: files[0].errors[0].message,
-            // 	color: 'red',
-            // })
-            console.log(files, 'ERROR ON UPLOADING FILES')
+            notifications.show({
+              title: 'File Rejected',
+              message: files[0].errors[0].message,
+              color: 'red',
+            })
           }
           maxSize={type === 'background' ? 25 * 1024 ** 2 : 5 * 1024 ** 2}
           accept={IMAGE_MIME_TYPE}

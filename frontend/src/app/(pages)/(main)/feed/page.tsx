@@ -4,7 +4,7 @@ import { Container } from '@mantine/core'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Lumine - Discover',
+  title: 'Shrekogram - Discover',
   description: 'Discover the latest news!',
 }
 

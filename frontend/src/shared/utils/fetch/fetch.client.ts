@@ -39,11 +39,25 @@ export class FetchClient {
     return `?${searchParams.toString()}`
   }
 
+  // Активируем обработчик 401 ошибок только для не-auth эндпоинтов
+  private shouldHandleUnauthorized(endpoint: string): boolean {
+    // Исключаем эндпоинты аутентификации из обработки 401 ошибок
+    const authEndpoints = ['auth/login', 'auth/register']
+    return !authEndpoints.some((authPath) => endpoint.includes(authPath))
+  }
+
   private handleUnauthorized() {
+    // First, log out the user on the server side
     this.post('auth/logout').finally(() => {
       console.log('Logged out due to unauthorized status')
-      // Можно добавить редирект на страницу логина или другую логику
-			window.location.href = '/login'
+
+      // Перенаправляем на страницу логина
+      if (
+        typeof window !== 'undefined' &&
+        !window.location.pathname.includes('/login')
+      ) {
+        window.location.href = '/login'
+      }
     })
   }
 
@@ -75,7 +89,11 @@ export class FetchClient {
         const error = (await response.json()) as { message: string } | undefined
 
         // Handle 401 Unauthorized error
-        if (response.status === 401) {
+        console.log(error, 'error handled')
+        if (
+          response.status === 401 &&
+          this.shouldHandleUnauthorized(endpoint)
+        ) {
           this.handleUnauthorized()
           return null as unknown as T // Return early to prevent further processing
         }
@@ -92,7 +110,11 @@ export class FetchClient {
         return (await response.text()) as unknown as T
       }
     } catch (error) {
-      if (error instanceof FetchError && error.statusCode === 401) {
+      if (
+        error instanceof FetchError &&
+        error.statusCode === 401 &&
+        this.shouldHandleUnauthorized(endpoint)
+      ) {
         this.handleUnauthorized()
         return null as unknown as T
       }
@@ -129,7 +151,7 @@ export class FetchClient {
 
   public delete<T>(
     endpoint: string,
-    body: T,
+    body?: T,
     options?: Omit<RequestOptions, 'body'>
   ) {
     return this.request<T>(endpoint, 'DELETE', {

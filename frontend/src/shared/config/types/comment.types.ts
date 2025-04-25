@@ -29,7 +29,7 @@ export type TCommentResponse = {
 	created_at: Date
 	updated_at: Date
 	subComments?: TCommentResponse[]
-	parrentId?: number
+	parentId?: number
 }
 
 export type TCommentLike = {

@@ -2,7 +2,8 @@ import { userService } from '@/shared/api/user.service'
 import { IUser, TEditProfile } from '@/shared/config/types/user.types'
 import { useUser } from '@/shared/stores/user/user.store'
 import { useMutation } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+
+
 
 export const useEditMutation = () => {
 	const { setUser } = useUser()
@@ -14,7 +15,7 @@ export const useEditMutation = () => {
 			setUser(data)
 			console.log('SUCCESFFULY EDITED')
 		},
-		onError: (res: AxiosError) => {
+		onError: (res: any) => {
 			return res.response?.data
 		},
 	})

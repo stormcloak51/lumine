@@ -45,16 +45,18 @@ export class PostService {
   }
 
   async like(postId: number) {
-    const response = await api.patch<TPost>('post/like', {postId})
+    const response = await api.patch<TPost>('post/like', { postId })
     return response
   }
 
   async delete(postId: number) {
+    console.log(typeof postId)
     try {
-      const response = await api.delete(`post/delete/`, postId)
+      const response = await api.delete(`post/delete/${postId}`)
       return response
     } catch (error) {
       console.log(error)
+      throw error
     }
   }
 

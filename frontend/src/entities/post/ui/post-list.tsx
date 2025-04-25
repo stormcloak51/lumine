@@ -1,10 +1,8 @@
 'use client'
 
 import Loading from '@/app/(pages)/(main)/feed/loading'
-import { getSocket } from '@/shared/api/socket.service'
-import { useAuth } from '@/shared/stores/user/useAuth'
 import { Flex } from '@mantine/core'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 
 import { usePostList } from '../model/usePostList'
 import { PostItem } from './post-item'

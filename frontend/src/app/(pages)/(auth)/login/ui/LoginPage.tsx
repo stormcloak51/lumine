@@ -1,6 +1,6 @@
 'use client'
 
-import wallpaperImage from '@/public/assets/wallpapers/authPreview1.jpg'
+import wallpaperImage from '@/public/assets/wallpapers/Ventura.jpg'
 import { LoginFormData } from '@/shared/config/types/auth.types'
 import { LumineLogotype } from '@/shared/ui/LumineLogotype'
 import { Button, PasswordInput, Text, TextInput, Title } from '@mantine/core'
@@ -17,11 +17,12 @@ export function LoginPage() {
   const { form } = useLoginSchema()
   const { mutate, isPending } = useLoginMutation()
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = (data: LoginFormData) => {
     mutate(data)
   }
+
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#1f2124]">
+    <div className="min-h-screen w-full flex items-center bg-[#1f2124]">
       <div className="relative hidden md:block w-2/3 h-screen">
         <div className="absolute inset-0 bg-gradient-to-r from-[#1f2124]/80 to-transparent z-10" />
         <Image
@@ -30,7 +31,7 @@ export function LoginPage() {
           className="object-cover"
           fill
           priority
-          sizes="(max-width: 768px) 0vw, 66vw"
+          // sizes="(max-width: 768px) 0vw, 66vw"
           quality={100}
         />
         <div className="absolute bottom-0 left-0 p-12 z-20 text-white">
@@ -42,8 +43,11 @@ export function LoginPage() {
       </div>
 
       <form
-        className="w-full md:w-[390px] min-h-screen md:min-h-0 flex flex-col bg-[#1f2124] p-8 z-30 h-[100vh] border-l-[rgba(255,255,255,0.2)] border-l"
-        onSubmit={form.onSubmit(onSubmit)}
+        className="w-full md:w-1/3 min-h-screen md:min-h-0 flex flex-col bg-[#1f2124] p-8 z-30 h-[100vh] border-l-[rgba(255,255,255,0.2)] border-l"
+        onSubmit={(e) => {
+          e.preventDefault()
+          form.onSubmit(onSubmit)(e)
+        }}
       >
         <LumineLogotype cl="mb-5" />
         <Title className="mb-8">Log In</Title>

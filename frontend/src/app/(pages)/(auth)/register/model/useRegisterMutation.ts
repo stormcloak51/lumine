@@ -3,6 +3,7 @@
 import { uploadContent } from '@/shared/api/upload-content'
 import { RegisterFormData } from '@/shared/config/types/auth.types'
 import { useUser } from '@/shared/stores/user/user.store'
+import { notifications } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
@@ -33,13 +34,21 @@ export const useRegisterMutation = () => {
         return user
       } catch (err) {
         console.log(err)
-        return null
+        throw err
       }
     },
     onSuccess: (data) => {
-			console.log(data, 'DATA')
+      console.log(data, 'DATA')
       setUser(data!)
       router.push('/feed')
+    },
+    onError: (error) => {
+      console.error(error)
+      notifications.show({
+        title: 'Something went wrong',
+        message: error.message,
+        color: 'red',
+      })
     },
   })
 

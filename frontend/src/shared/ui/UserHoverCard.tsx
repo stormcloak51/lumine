@@ -11,11 +11,9 @@ import {
 } from '@mantine/core'
 import { MessagesSquare, Quote, UserPlus } from 'lucide-react'
 import Link from 'next/link'
-import { io } from 'socket.io-client'
 
 import LumineAvatar from '../../shared/ui/LumineAvatar'
-import { getSocket } from '../api/socket.service'
-import { useAuth } from '../stores/user/useAuth'
+import { useFriendship } from '../hooks/useFriendship'
 
 interface props extends TextProps {
   user: IUser
@@ -29,33 +27,7 @@ export const UserHoverCard = ({
 }: props) => {
   const theme = useMantineTheme()
 
-  const {
-    user: { id },
-  } = useAuth()
-  const sendFriendRequest = () => {
-    if (id) {
-      console.log(id, user.id)
-      const socket = getSocket(id)
-      if (socket) {
-        console.log(2)
-        socket.emit(
-          'sendFriendRequest',
-          { receiverId: user.id },
-          (response: any) => {
-            if (!response.success) {
-              // You might want to show this error to the user using a notification system
-              console.error(response.error)
-            }
-          }
-        )
-      }
-    }
-  }
-
-  const cancelFriendRequest = () => {
-    const socket = getSocket(id)
-    socket.emit('cancelFriendRequest', { receiverId: user.id })
-  }
+  const { sendFriendRequest, cancelFriendRequest } = useFriendship()
 
   return (
     <HoverCard shadow="xl" openDelay={700}>
@@ -101,7 +73,7 @@ export const UserHoverCard = ({
               <ActionIcon
                 color={theme.colors.myColor[0]}
                 variant="outline"
-                onClick={() => sendFriendRequest()}
+                onClick={() => sendFriendRequest(user.id, user.name, user.surname)}
               >
                 <UserPlus size={20} />
               </ActionIcon>

@@ -18,9 +18,12 @@ export const ProfileContent = async ({
       gutter={{ xs: 0, sm: 0, md: 0, lg: 0, xl: 0 }}
     >
       <UserBanner {...user} />
-      <Wrapper slug={params.slug} />
+      <Wrapper slug={params.slug} user={user} />
 
-      <FollowerSection userAvatar={user?.userAvatar} />
+      <FollowerSection
+        slug={params.slug}
+        friends={user.friends.map((friend) => friend.user)}
+      />
     </Grid>
   )
 }

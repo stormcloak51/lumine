@@ -1,6 +1,6 @@
 'use client'
 
-import wallpaperImage from '@/public/assets/wallpapers/authPreview1.jpg'
+import wallpaperImage from '@/public/assets/wallpapers/Ventura.jpg'
 import { RegisterFormData } from '@/shared/config/types/auth.types'
 import { LumineLogotype } from '@/shared/ui/LumineLogotype'
 import {
@@ -27,7 +27,7 @@ export const RegisterPage = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#1f2124]">
+    <div className="min-h-screen w-full flex items-center bg-[#1f2124]">
       <div className="relative hidden md:block w-2/3 h-screen">
         <div className="absolute inset-0 bg-gradient-to-r from-[#1f2124]/80 to-transparent z-10" />
         <Image
@@ -35,13 +35,13 @@ export const RegisterPage = () => {
           alt="Login wallpaper"
           className="object-cover"
           fill
-          sizes="(max-width: 768px) 0vw, 66vw"
+          // sizes="(max-width: 768px) 0vw, 66vw"
           priority
           quality={100}
         />
         <div className="absolute bottom-0 left-0 p-12 z-20 text-white">
           <h1 className="text-4xl font-bold mb-4">
-            Welcome to <span className="text-[#ffd37d]">lumine</span>
+            Welcome to <span className="text-[#ffd37d]">shrekogram</span>
           </h1>
           <p className="text-lg text-gray-200">
             Sign up to continue your journey
@@ -50,12 +50,12 @@ export const RegisterPage = () => {
       </div>
 
       <form
-        className="w-full md:w-[390px] min-h-screen md:min-h-0 flex flex-col bg-[#1f2124] p-8 z-30 h-[100vh] border-l-[rgba(255,255,255,0.2)] border-l"
+        className="w-full md:w-1/3 min-h-screen md:min-h-0 flex flex-col  bg-[#1f2124] p-8 z-30 h-[100vh] border-l-[rgba(255,255,255,0.2)] border-l"
         onSubmit={form.onSubmit(onSubmit)}
       >
         <LumineLogotype cl="mb-5" />
         <Title className="mb-8">Sign Up</Title>
-        <div className="mb-3 flex gap-x-4 justify-center">
+        <div className="mb-3 flex gap-x-4 justify-between">
           <TextInput
             key={form.key('name')}
             {...form.getInputProps('name')}

@@ -1,46 +1,13 @@
-import { useFriendship } from "@/shared/hooks/useFriendship"
-import { Button, Popover, Text } from "@mantine/core"
-import { notifications } from "@mantine/notifications"
-import { AnimatePresence, motion } from "framer-motion"
-import { Bell, Check } from "lucide-react"
-import Image from "next/image"
-import { useState, useCallback } from "react"
-import { useFriendshipStore } from "@/shared/stores/friendship/friendship.store"
+'use client'
+
+import { Avatar, Button, Popover, Text } from '@mantine/core'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Bell } from 'lucide-react'
+import { useFriendRequestsOperations } from './model/useFriendRequestsOperations'
 
 export const FriendRequests = () => {
-  const { acceptFriendRequest } = useFriendship()
-  const requests = useFriendshipStore((state) => state.requests)
-  const [animatingIds, setAnimatingIds] = useState<Set<string>>(new Set())
 
-  const handleAcceptRequest = useCallback(
-    async (request: any) => {
-      setAnimatingIds((prev) => new Set(prev).add(request.id))
-      console.log(request)
-      try {
-        await acceptFriendRequest(request.senderId)
-
-        notifications.show({
-          title: "Friend Request Accepted",
-          message: `You are now friends with ${request.sender.name} ${request.sender.surname}`,
-          color: "yellow",
-          icon: <Check size={16} />,
-        })
-      } catch (error) {
-        setAnimatingIds((prev) => {
-          const newSet = new Set(prev)
-          newSet.delete(request.id)
-          return newSet
-        })
-        console.error(error)
-        notifications.show({
-          title: "Error",
-          message: "Failed to accept friend request",
-          color: "red",
-        })
-      }
-    },
-    [acceptFriendRequest],
-  )
+  const { requests, animatingIds, handleAcceptRequest, handleDeclineRequest } = useFriendRequestsOperations()
 
   return (
     <Popover
@@ -49,7 +16,7 @@ export const FriendRequests = () => {
       withArrow
       overlayProps={{
         zIndex: 20,
-        blur: "8px",
+        blur: '8px',
       }}
       zIndex={21}
     >
@@ -65,10 +32,14 @@ export const FriendRequests = () => {
       </Popover.Target>
 
       <Popover.Dropdown className="rounded-xl bg-[#1f1f1f] border border-[#ffd37d]/20 p-4 space-y-4">
-        <Text className="text-[#ffd37d] font-semibold text-lg mb-4">Friend Requests</Text>
+        <Text className="text-[#ffd37d] font-semibold text-lg mb-4">
+          Friend Requests
+        </Text>
 
         {requests.length === 0 ? (
-          <Text className="text-gray-400 text-center py-4">No pending friend requests</Text>
+          <Text className="text-gray-400 text-center py-4">
+            No pending friend requests
+          </Text>
         ) : (
           <AnimatePresence>
             {requests.map((request) => (
@@ -81,7 +52,7 @@ export const FriendRequests = () => {
                 }}
                 exit={{ x: 400, opacity: 0 }}
                 transition={{
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 100,
                   damping: 15,
                 }}
@@ -89,11 +60,10 @@ export const FriendRequests = () => {
               >
                 <div className="flex items-center gap-x-3">
                   <div className="relative w-12 h-12">
-                    <Image
-                      src={request.sender.userAvatar || "/placeholder.svg"}
+                    <Avatar
+                      src={request.sender.userAvatar}
                       alt="avatar"
-                      width={48}
-                      height={48}
+                      size={48}
                       className="rounded-full object-cover border-2 border-[#ffd37d]/20"
                     />
                   </div>
@@ -102,7 +72,9 @@ export const FriendRequests = () => {
                     <Text className="text-[#ffd37d] font-semibold">
                       {request.sender.name} {request.sender.surname}
                     </Text>
-                    <Text className="text-gray-400 text-sm">@{request.sender.username}</Text>
+                    <Text className="text-gray-400 text-sm">
+                      @{request.sender.username}
+                    </Text>
                   </div>
                 </div>
 
@@ -118,6 +90,7 @@ export const FriendRequests = () => {
                   <Button
                     className="bg-transparent border border-[#ffd37d]/30 hover:border-[#ffd37d]/60 text-[#ffd37d] font-medium px-4 py-1 text-sm transition-colors"
                     size="xs"
+                    onClick={() => handleDeclineRequest(request)}
                     disabled={animatingIds.has(request.id)}
                   >
                     Decline
@@ -131,4 +104,3 @@ export const FriendRequests = () => {
     </Popover>
   )
 }
-

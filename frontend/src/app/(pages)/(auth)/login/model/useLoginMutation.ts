@@ -1,49 +1,40 @@
 'use client'
-import { authService } from '../../services/auth.service'
+
+import { LoginFormData } from '@/shared/config/types/auth.types'
 import { useUser } from '@/shared/stores/user/user.store'
+import { notifications } from '@mantine/notifications'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { LoginFormData } from '@/shared/config/types/auth.types'
-import { notifications } from '@mantine/notifications'
+
+import { authService } from '../../services/auth.service'
 
 export const useLoginMutation = () => {
-	const router = useRouter()
-	const setUser = useUser(state => state.setUser)
-	const [pending, setPending] = useState(false)
-	const [redirecting, setRedirecting] = useState(false)
+  const router = useRouter()
+  const setUser = useUser((state) => state.setUser)
 
-	const mutation = useMutation({
-		mutationFn: async (data: LoginFormData) => {
-			try {
-				const user = await authService.login(data)
-				return user
-			} catch (err: any) {
-				console.log(err)
-				notifications.show({
-					color: 'red',
-					title: `Error ${err.statusCode}`,
-					message: err.message,
-				})
-			}
-		},
-		onMutate: () => {
-			if (!redirecting) {
-				setPending(true)
-			}
-		},
-		onSettled: () => setPending(false),
-		onSuccess: data => {
-			if (data) {
-				setUser(data)
-				router.push('/feed')
-				setRedirecting(true)
-			}
-		},
-	})
+  const mutation = useMutation({
+    mutationFn: async (data: LoginFormData) => {
+      return await authService.login(data)
+    },
+    onSuccess: (data) => {
+      console.log(data)
+      if (data) {
+        setUser(data)
+        router.push('/feed')
+      }
+    },
+    onError: (error: any) => {
+      // Show error notification without causing page reload
+      notifications.show({
+        color: 'red',
+        title: `Authentication Failed`,
+        message: error.message || 'Invalid credentials',
+      })
+    },
+  })
 
-	return {
-		mutate: mutation.mutate,
-		isPending: pending,
-	}
+  return {
+    mutate: mutation.mutate,
+    isPending: mutation.isPending,
+  }
 }

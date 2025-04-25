@@ -5,17 +5,20 @@ import { create } from 'zustand'
 interface FriendshipStore {
   friends: IUser[]
   requests: IFriendRequest[]
+  isLoading: boolean
   setFriends: (friends: IUser[]) => void
   setRequests: (requests: IFriendRequest[]) => void
   addFriend: (friend: IUser) => void
   removeFriend: (friendId: string) => void
   addRequest: (request: IFriendRequest) => void
   removeRequest: (requestId: string) => void
+  setIsLoading: (isLoading: boolean) => void
 }
 
 export const useFriendshipStore = create<FriendshipStore>((set) => ({
   friends: [],
   requests: [],
+  isLoading: false,
   setFriends: (friends) => set({ friends }),
   setRequests: (requests) => set({ requests }),
   addFriend: (friend) =>
@@ -30,4 +33,5 @@ export const useFriendshipStore = create<FriendshipStore>((set) => ({
     set((state) => ({
       requests: state.requests.filter((r) => r.id !== requestId),
     })),
+  setIsLoading: (isLoading: boolean) => set({ isLoading }),
 }))

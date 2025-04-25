@@ -1,8 +1,9 @@
 'use client'
 
+import { useFriendsActions } from '@/entities/friend'
 import { useAuth } from '@/shared/stores/user/useAuth'
 import LumineAvatar from '@/shared/ui/LumineAvatar'
-import { Group, Stack, Text, Title } from '@mantine/core'
+import { Group, Loader, Stack, Text, Title } from '@mantine/core'
 import {
   CircleUserRound,
   House,
@@ -14,12 +15,14 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { SideNavItem } from './sidenav-item'
+import Link from 'next/link'
 
 export const SideNav = () => {
   const {
     user: { userAvatar, surname, name, username },
   } = useAuth()
   const pathname = usePathname()!.substring(1)
+  const { friends, isLoading } = useFriendsActions()
 
   const [index, setIndex] = useState<string | null>(null)
 
@@ -74,11 +77,11 @@ export const SideNav = () => {
           isActive={index === 'feed'}
         />
         <SideNavItem
-          title="Messages"
-          href={'/messages'}
+          title="Chats"
+          href={'/chats'}
           Icon={MessageCircle}
-          onClickEvent={() => setIndex(`messages`)}
-          isActive={index === 'messages'}
+          onClickEvent={() => setIndex(`chats`)}
+          isActive={index === 'chats'}
         />
         <SideNavItem
           title="Friends"
@@ -102,36 +105,27 @@ export const SideNav = () => {
         <Text className="text-[11px] font-medium" c={'dimmed'}>
           GO - TO PERSONS
         </Text>
-        <Group className="text-gray-400 hover:text-gray-300 cursor-pointer">
-          <LumineAvatar
-            size={30}
-            url={userAvatar}
-            username={`${name} ${surname}`}
-          />
-          <Text className="text-base">
-            {name} {surname}
-          </Text>
-        </Group>
-        <Group className="text-gray-400 hover:text-gray-300 cursor-pointer">
-          <LumineAvatar
-            size={30}
-            url={userAvatar}
-            username={`${name} ${surname}`}
-          />
-          <Text className="text-base">
-            {name} {surname}
-          </Text>
-        </Group>
-        <Group className="text-gray-400 hover:text-gray-300 cursor-pointer">
-          <LumineAvatar
-            size={30}
-            url={userAvatar}
-            username={`${name} ${surname}`}
-          />
-          <Text className="text-base">
-            {name} {surname}
-          </Text>
-        </Group>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          friends.slice(0, 3).map((friend) => (
+            <Group
+              key={friend.id}
+              className="text-gray-400 hover:text-gray-300 cursor-pointer"
+              component={Link}
+              href={`/profile/${friend.username}`}
+            >
+              <LumineAvatar
+                size={30}
+                url={friend.userAvatar}
+                username={`${friend.name} ${friend.surname}`}
+              />
+              <Text className="text-base">
+                {friend.name} {friend.surname}
+              </Text>
+            </Group>
+          ))
+        )}
       </Stack>
       <div
         className="w-full h-[1px] my-3"
